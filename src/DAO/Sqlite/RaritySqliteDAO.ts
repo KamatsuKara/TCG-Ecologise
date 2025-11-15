@@ -3,7 +3,7 @@ import { open, Database } from "sqlite";
 import { Rarity } from "../../Models/Rarity";
 import { RarityDAO } from "../RarityDAO";
 
-export class RarityDbDAO implements RarityDAO {
+export class RaritySqliteDAO implements RarityDAO {
   private db:Promise<Database>;
 
   constructor(dbFilePath: string){

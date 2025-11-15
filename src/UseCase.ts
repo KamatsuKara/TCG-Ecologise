@@ -1,5 +1,5 @@
 import { FactoryDAO } from "./DAO/FactoryDAO";
-import { FactoryDbDAO } from "./DAO/DB/FactoryDbDAO";
+import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
 import { Card } from "./Models/Card";
 import { CardHist } from "./Models/CardHist";
@@ -12,9 +12,8 @@ import { CardHistDAO } from "./DAO/CardHistDAO";
 import { CardModelDAO } from "./DAO/CardModelDAO";
 import { UserDAO } from "./DAO/UserDAO";
 import { RarityDAO } from "./DAO/RarityDAO";
-import { debug } from "console";
 
-const factory:FactoryDAO = new FactoryDbDAO('./dist/db/database.db');
+const factory:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
 const cardDAO:CardDAO = factory.createCardDAO();
 const cardHistDAO:CardHistDAO = factory.createCardHistDAO();
 const cardModelDAO:CardModelDAO = factory.createCardModelDAO();

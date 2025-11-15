@@ -3,7 +3,7 @@ import { open, Database } from "sqlite";
 import { CardModel } from "../../Models/CardModel";
 import { CardModelDAO } from "../CardModelDAO";
 
-export class CardModelDbDAO implements CardModelDAO {
+export class CardModelSqliteDAO implements CardModelDAO {
   private db:Promise<Database>;
 
   constructor(dbFilePath: string){

@@ -3,7 +3,7 @@ import { open, Database } from "sqlite";
 import { User } from "../../Models/User";
 import { UserDAO } from "../UserDAO";
 
-export class UserDbDAO implements UserDAO {
+export class UserSqliteDAO implements UserDAO {
   private db:Promise<Database>;
 
   constructor(dbFilePath: string){
