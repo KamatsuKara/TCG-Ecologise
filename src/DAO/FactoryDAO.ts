@@ -1,8 +1,8 @@
-import { CardDAO } from "../DAO/CardDAO";
-import { CardHistDAO } from "../DAO/CardHistDAO";
-import { CardModelDAO } from "../DAO/CardModelDAO";
-import { UserDAO } from "../DAO/UserDAO";
-import { RarityDAO } from "../DAO/RarityDAO";
+import { CardDAO } from "./CardDAO";
+import { CardHistDAO } from "./CardHistDAO";
+import { CardModelDAO } from "./CardModelDAO";
+import { UserDAO } from "./UserDAO";
+import { RarityDAO } from "./RarityDAO";
 
 export abstract class FactoryDAO{
     abstract createCardDAO():CardDAO;

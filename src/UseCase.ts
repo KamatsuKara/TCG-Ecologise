@@ -1,5 +1,5 @@
-import { FactoryDAO } from "./Models/FactoryDAO";
-import { FactoryDbDAO } from "./DAO/db/FactoryDbDAO";
+import { FactoryDAO } from "./DAO/FactoryDAO";
+import { FactoryDbDAO } from "./DAO/DB/FactoryDbDAO";
 
 import { Card } from "./Models/Card";
 import { CardHist } from "./Models/CardHist";

@@ -4,7 +4,7 @@ import { CardModelDbDAO } from "./CardModelDbDAO";
 import { UserDbDAO } from "./UserDbDAO";
 import { RarityDbDAO } from "./RarityDbDAO";
 
-import { FactoryDAO } from "../../Models/FactoryDAO";
+import { FactoryDAO } from "../FactoryDAO";
 
 import { CardDAO } from "../CardDAO";
 import { CardHistDAO } from "../CardHistDAO";
