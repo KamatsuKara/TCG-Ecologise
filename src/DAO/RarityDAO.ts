@@ -5,5 +5,5 @@ export interface RarityDAO {
     update(rarity:Rarity):Promise<void>;
     delete(rarity:Rarity):Promise<void>;
     findAll():Promise<Rarity[]>;
-    findById(id:number):Promise<Rarity|null>;
+    findById(id:number):Promise<Rarity|undefined>;
 }

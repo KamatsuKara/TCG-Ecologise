@@ -8,13 +8,13 @@ CREATE TABLE User (
 
 CREATE TABLE Card (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_onwer INT NOT NULL,
-    id_model INT NOT NULL,
+    id_user INT NOT NULL,
+    id_cardmodel INT NOT NULL,
     id_rarity INT NOT NULL,
     obtened DATETIME,
     created DATETIME,
-    CONSTRAINT fk_cards_owner FOREIGN KEY (id_onwer) REFERENCES User(id),
-    CONSTRAINT fk_cards_model FOREIGN KEY (id_model) REFERENCES CardModel(id),
+    CONSTRAINT fk_cards_owner FOREIGN KEY (id_user) REFERENCES User(id),
+    CONSTRAINT fk_cards_model FOREIGN KEY (id_cardmodel) REFERENCES CardModel(id),
     CONSTRAINT fk_cards_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
 );
 

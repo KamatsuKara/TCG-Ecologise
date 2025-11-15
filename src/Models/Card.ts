@@ -5,17 +5,17 @@ import { Rarity } from "./Rarity";
 export class Card {
     private id: number;
     private owner: User;
-    private model: CardModel;
+    private cardModel: CardModel;
     private rarity: Rarity;
-    private create: number;
+    private created: number;
     private obtened: number;
 
-    constructor(id:number, owner:User, model:CardModel, rarity:Rarity, create:number = Date.now(), obtened:number = Date.now()){
+    constructor(id:number, owner:User, cardModel:CardModel, rarity:Rarity, created:number = Date.now(), obtened:number = Date.now()){
         this.id = id;
         this.owner = owner;
-        this.model = model;
+        this.cardModel = cardModel;
         this.rarity = rarity;
-        this.create = create;
+        this.created = created;
         this.obtened = obtened;
     }
 
@@ -27,16 +27,16 @@ export class Card {
         return this.owner;
     }
 
-    public getModel():CardModel{
-        return this.model;
+    public getCardModel():CardModel{
+        return this.cardModel;
     }
 
     public getRarity():Rarity{
         return this.rarity;
     }
 
-    public getCreate():number{
-        return this.create;
+    public getCreated():number{
+        return this.created;
     }
     
     public getObtened():number{

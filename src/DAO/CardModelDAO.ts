@@ -5,6 +5,5 @@ export interface CardModelDAO {
     update(cardModel:CardModel):Promise<void>;
     delete(cardModel:CardModel):Promise<void>;
     findAll():Promise<CardModel[]>;
-    findById(id:number):Promise<CardModel|null>;
-    findByName(name:string):Promise<CardModel|null>;
+    findById(id:number):Promise<CardModel|undefined>;
 }

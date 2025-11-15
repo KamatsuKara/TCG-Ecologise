@@ -1,15 +1,16 @@
+import { Card } from "./Card";
+import { User } from "./User";
+
 export class CardHist {
     private id: number;
-    private cardId: number;
-    private ownerId: number;
-    private create: number;
+    private card: Card;
+    private owner: User;
     private obtened: number;
 
-    constructor(id:number, cardId:number, ownerId:number, create:number, obtened:number){
+    constructor(id:number, card:Card, owner:User, obtened:number){
         this.id = id;
-        this.cardId = cardId;
-        this.ownerId = ownerId;
-        this.create = create;
+        this.card = card;
+        this.owner = owner;
         this.obtened = obtened;
     }
 
@@ -17,18 +18,14 @@ export class CardHist {
         return this.id;
     }
 
-    public getCardId():number{
-        return this.cardId;
+    public getCard():Card{
+        return this.card;
     }
 
-    public getOwnerId():number{
-        return this.ownerId;
+    public getOwner():User{
+        return this.owner;
     }
 
-    public getCreate():number{
-        return this.create;
-    }
-    
     public getObtened():number{
         return this.obtened;
     }

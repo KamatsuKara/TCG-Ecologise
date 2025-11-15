@@ -5,7 +5,7 @@ export interface CardHistDAO {
     update(cardHist:CardHist):Promise<void>;
     delete(cardHist:CardHist):Promise<void>;
     findAll():Promise<CardHist[]>;
-    findById(id:number):Promise<CardHist|null>;
+    findById(id:number):Promise<CardHist|undefined>;
     findByCard(cardId:number):Promise<CardHist[]>;
     findByUser(userId:number):Promise<CardHist[]>;
 }

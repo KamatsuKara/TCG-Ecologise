@@ -5,7 +5,7 @@ export interface CardDAO {
     update(card:Card):Promise<void>;
     delete(card:Card):Promise<void>;
     findAll():Promise<Card[]>;
-    findById(id:number):Promise<Card|null>;
+    findById(id:number):Promise<Card|undefined>;
     findByUser(userId:number):Promise<Card[]>;
     findByCardModel(cardModelId:number):Promise<Card[]>;
     findByRarity(rarityId:number):Promise<Card[]>;

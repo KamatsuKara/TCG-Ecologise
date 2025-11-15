@@ -5,5 +5,5 @@ export interface UserDAO {
     update(user:User):Promise<void>;
     delete(user:User):Promise<void>;
     findAll():Promise<User[]>;
-    findById(id:number):Promise<User|null>;
+    findById(id:number):Promise<User|undefined>;
 }
