@@ -10,7 +10,7 @@ export class Card {
     private created: number;
     private obtened: number;
 
-    constructor(id:number, owner:User, cardModel:CardModel, rarity:Rarity, created:number = Date.now(), obtened:number = Date.now()){
+    constructor(id:number = 0, owner:User = new User(), cardModel:CardModel = new CardModel(), rarity:Rarity = new Rarity(), created:number = Date.now(), obtened:number = Date.now()){
         this.id = id;
         this.owner = owner;
         this.cardModel = cardModel;

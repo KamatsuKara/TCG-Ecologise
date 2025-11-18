@@ -3,7 +3,7 @@ export class User {
     private name: string;
     private create: number;
 
-    constructor(id:number, name:string, create:number = Date.now()){   
+    constructor(id:number = 0, name:string = "", create:number = Date.now()){   
         this.id = id;
         this.name = name;
         this.create = create;

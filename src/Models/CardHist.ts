@@ -7,7 +7,7 @@ export class CardHist {
     private owner: User;
     private obtened: number;
 
-    constructor(id:number, card:Card, owner:User, obtened:number){
+    constructor(id:number = 0, card:Card = new Card(), owner:User = new User(), obtened:number = Date.now()){
         this.id = id;
         this.card = card;
         this.owner = owner;

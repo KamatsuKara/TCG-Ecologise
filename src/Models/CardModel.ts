@@ -5,7 +5,7 @@ export class CardModel {
     private description: string;
     private effect: string;
 
-    constructor(id:number, name:string, image:string, description:string = "", effect:string = "") {
+    constructor(id:number = 0, name:string ="", image:string = "", description:string = "", effect:string = "") {
         this.id = id;
         this.name = name;
         this.image = image;
