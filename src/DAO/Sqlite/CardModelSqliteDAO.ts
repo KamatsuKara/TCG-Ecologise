@@ -38,10 +38,10 @@ export class CardModelSqliteDAO implements CardModelDAO {
     (await this.db).run(request, pattern);
   }
 
-  async delete(cardModel:CardModel):Promise<void>{
+  async delete(id:number):Promise<void>{
     const request:string = `DELETE FROM cardModel WHERE id = ?`;
     const pattern:string[] = [
-      cardModel.getId().toString()
+      id.toString()
     ];
 
     (await this.db).run(request, pattern);

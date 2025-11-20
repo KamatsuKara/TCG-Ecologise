@@ -40,10 +40,10 @@ export class CardSqliteDAO implements CardDAO {
     (await this.db).run(request, pattern);
   }
 
-  async delete(card:Card):Promise<void>{
+  async delete(id:number):Promise<void>{
     const request:string = `DELETE FROM card WHERE id = ?`;
     const pattern:string[] = [
-        card.getId().toString()
+        id.toString()
     ];
 
     (await this.db).run(request, pattern);

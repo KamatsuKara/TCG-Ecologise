@@ -35,10 +35,10 @@ export class CardHistSqliteDAO implements CardHistDAO {
     (await this.db).run(request, pattern);
   }
 
-  async delete(cardHist:CardHist):Promise<void>{
+  async delete(id:number):Promise<void>{
     const request:string = `DELETE FROM cardHist WHERE id = ?`;
     const pattern:string[] = [
-      cardHist.getId().toString()
+      id.toString()
     ];
 
     (await this.db).run(request, pattern);

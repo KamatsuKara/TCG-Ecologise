@@ -34,10 +34,10 @@ export class UserSqliteDAO implements UserDAO {
     (await this.db).run(request, pattern);
   }
 
-  async delete(user:User):Promise<void>{
+  async delete(id:number):Promise<void>{
     const request:string = `DELETE FROM user WHERE id = ?`;
     const pattern:string[] = [
-      user.getId().toString()
+      id.toString()
     ];
 
     (await this.db).run(request, pattern);

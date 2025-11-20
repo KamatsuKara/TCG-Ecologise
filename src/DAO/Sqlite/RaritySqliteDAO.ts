@@ -32,10 +32,10 @@ export class RaritySqliteDAO implements RarityDAO {
     (await this.db).run(request, pattern);
   }
 
-  async delete(rarity:Rarity):Promise<void>{
+  async delete(id:number):Promise<void>{
     const request:string = `DELETE FROM rarity WHERE id = ?`;
     const pattern:string[] = [
-      rarity.getId().toString()
+      id.toString()
     ];
 
     (await this.db).run(request, pattern);
