@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-import { FactoryDAO } from "../DAO/FactoryDAO";
-
 import { UserDAO } from "../DAO/UserDAO";
 import { UserService } from "../Services/UserService";
 import { UserController } from "../Controllers/UserController";
@@ -12,12 +10,12 @@ export function userRoutes(userDAO:UserDAO): Router {
     const userService = new UserService(userDAO);
     const userController = new UserController(userService);
 
-    router.get("/", userController.getAllUser);
-    router.get("/:id", userController.getUser);
-    router.post("/", userController.createUser);
-    router.delete("/0", userController.deleteUser);
-    router.put("/", userController.updateUser);
-    router.patch("/", userController.updateUser);
+    router.get("/", userController.getAll);
+    router.get("/:id", userController.get);
+    router.post("/", userController.create);
+    router.delete("/id", userController.delete);
+    router.put("/:id", userController.update);
+    router.patch("/:id", userController.update);
 
     return router;
 }

@@ -1,51 +1,50 @@
 import { Request, Response } from "express";
-import { CardHist } from "../Models/CardHist";
 import { CardHistService } from "../Services/CardHistService";
 
 export class CardHistController{
     constructor(private cardHistService:CardHistService){}
 
-    getAllCardHist = async (req:Request, res:Response):Promise<void> => {
+    getAll = async (req:Request, res:Response):Promise<void> => {
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
-            const cardHists = await this.cardHistService.getAllCardHist();
+            const cardHists = await this.cardHistService.getAll();
             res.json(cardHists);
         }catch(error:any){
             res.status(404).json({ error: error.message });
         }
     };
 
-    getCardHist = async (req:Request, res:Response):Promise<void> => {
+    get = async (req:Request, res:Response):Promise<void> => {
         try{
-            const cardHist = await this.cardHistService.getCardHist(Number(req.params.id));
+            const cardHist = await this.cardHistService.get(Number(req.params.id));
             res.json(cardHist);
         }catch(error:any){
             res.status(404).json({ error: error.message });
         }
     };
 
-    createCardHist = async (req:Request, res:Response):Promise<void> => {
+    create = async (req:Request, res:Response):Promise<void> => {
         try{
-            await this.cardHistService.createCardHist(req.body);
+            await this.cardHistService.create(req.body);
             res.json("CardHist created");
         }catch(error:any){
             res.status(400).json({ error: error.message });
         }
     };
 
-    deleteCardHist = async (req:Request, res:Response):Promise<void> => {
+    delete = async (req:Request, res:Response):Promise<void> => {
         try{
-            await this.cardHistService.deleteCardHist(Number(req.params.id));
+            await this.cardHistService.delete(Number(req.params.id));
             res.json("CardHist deleted");
         }catch(error:any){
             res.status(400).json({ error: error.message });
         }
     };
 
-    updateCardHist = async (req:Request, res:Response):Promise<void> => {
+    update = async (req:Request, res:Response):Promise<void> => {
         try{
-            await this.cardHistService.updateCardHist(req.body);
+            await this.cardHistService.update(req.body);
             res.json("CardHist updated");
         }catch(error:any){
             res.status(400).json({ error: error.message });

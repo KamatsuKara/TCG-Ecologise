@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-import { FactoryDAO } from "../DAO/FactoryDAO";
-
 import { RarityDAO } from "../DAO/RarityDAO";
 import { RarityService } from "../Services/RarityService";
 import { RarityController } from "../Controllers/RarityController";
@@ -12,12 +10,12 @@ export function rarityRoutes(rarityDAO:RarityDAO): Router {
     const rarityService = new RarityService(rarityDAO);
     const rarityController = new RarityController(rarityService);
 
-    router.get("/", rarityController.getAllRarity);
-    router.get("/:id", rarityController.getRarity);
-    router.post("/", rarityController.createRarity);
-    router.delete("/0", rarityController.deleteRarity);
-    router.put("/", rarityController.updateRarity);
-    router.patch("/", rarityController.updateRarity);
+    router.get("/", rarityController.getAll);
+    router.get("/:id", rarityController.get);
+    router.post("/", rarityController.create);
+    router.delete("/id", rarityController.delete);
+    router.put("/:id", rarityController.update);
+    router.patch("/:id", rarityController.update);
 
     return router;
 }

@@ -1,7 +1,5 @@
 import { Router } from "express";
 
-import { FactoryDAO } from "../DAO/FactoryDAO";
-
 import { CardHistDAO } from "../DAO/CardHistDAO";
 import { CardHistService } from "../Services/CardHistService";
 import { CardHistController } from "../Controllers/CardHistController";
@@ -12,12 +10,12 @@ export function cardHistRoutes(cardHistDAO:CardHistDAO): Router {
     const cardHistService = new CardHistService(cardHistDAO);
     const cardHistController = new CardHistController(cardHistService);
 
-    router.get("/", cardHistController.getAllCardHist);
-    router.get("/:id", cardHistController.getCardHist);
-    router.post("/", cardHistController.createCardHist);
-    router.delete("/0", cardHistController.deleteCardHist);
-    router.put("/", cardHistController.updateCardHist);
-    router.patch("/", cardHistController.updateCardHist);
+    router.get("/", cardHistController.getAll);
+    router.get("/:id", cardHistController.get);
+    router.post("/", cardHistController.create);
+    router.delete("/id", cardHistController.delete);
+    router.put("/:id", cardHistController.update);
+    router.patch("/:id", cardHistController.update);
 
     return router;
 }

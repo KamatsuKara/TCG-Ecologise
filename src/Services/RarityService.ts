@@ -4,11 +4,11 @@ import { RarityDAO } from "../DAO/RarityDAO";
 export class RarityService {
     constructor(private rarityDAO: RarityDAO){}
 
-    async getAllRarity():Promise<Rarity[]>{
+    async getAll():Promise<Rarity[]>{
         return await this.rarityDAO.findAll();
     }
 
-    async getRarity(id: number):Promise<Rarity>{
+    async get(id: number):Promise<Rarity>{
         const rarity = await this.rarityDAO.findById(id);
         if(!rarity){
             throw new Error("Rarity not found");
@@ -16,16 +16,16 @@ export class RarityService {
         return rarity;
     }
 
-    async createRarity(rarity:Rarity):Promise<void>{
+    async create(rarity:Rarity):Promise<void>{
         
         this.rarityDAO.insert(rarity);
     }
 
-    async deleteRarity(id:number):Promise<void>{
+    async delete(id:number):Promise<void>{
         await this.rarityDAO.delete(id);
     }
 
-    async updateRarity(data:Rarity):Promise<void>{
+    async update(data:Rarity):Promise<void>{
         await this.rarityDAO.update(data);
     }
 }
