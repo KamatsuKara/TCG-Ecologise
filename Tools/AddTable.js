@@ -7,7 +7,7 @@ if (args.length !== 1) {
     process.exit(1);
 }
 
-const tableName = args[0];
+const tableName = args[0].toLowerCase();
 const className = tableName.charAt(0).toUpperCase() + tableName.slice(1);
 const basePath = path.resolve(__dirname, '../src');
 
