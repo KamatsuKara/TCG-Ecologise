@@ -1,12 +1,15 @@
 import express from "express";
-import { Request, Response } from "express";
-import { UseCase } from "./UseCase";
+
+import { userRoutes } from "./Routes/UserRoutes";
+
+import { FactoryDAO } from "./DAO/FactoryDAO";
+import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
 const app = express()
 const port = 3000
 
-// Request
+const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
 
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
-})
+app.use("/users", userRoutes(factoryDAO.createUserDAO()));
+
+app.listen(port, () => console.log("API running on port " + port));
