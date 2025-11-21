@@ -3,11 +3,11 @@ const path = require('path');
 
 const args = process.argv.slice(2);
 if (args.length !== 1) {
-    console.error('Usage: node Tools/AddTable.js [NomDeLaTable]');
+    console.error('Usage: node Tools/AddTable.js [NameTable]');
     process.exit(1);
 }
 
-const tableName = args[0].toLowerCase();
+const tableName = args[0].charAt(0).toLowerCase() + args[0].slice(1);
 const className = tableName.charAt(0).toUpperCase() + tableName.slice(1);
 const basePath = path.resolve(__dirname, '../src');
 
@@ -193,7 +193,7 @@ import { FactoryDAO } from "../DAO/FactoryDAO";
 
 import { ${className}DAO } from "../DAO/${className}DAO";
 import { ${className}Service } from "../Services/${className}Service";
-import { ${className}Controller } from "../Controllers/${className}Controllers";
+import { ${className}Controller } from "../Controllers/${className}Controller";
 
 export function ${tableName}Routes(${tableName}DAO:${className}DAO): Router {
     const router = Router();
@@ -226,8 +226,8 @@ createFile(path.join(basePath, 'Models', `${className}.ts`), modelTemplate);
 createFile(path.join(basePath, 'DAO', `${className}DAO.ts`), DAOTemplate);
 createFile(path.join(basePath, 'DAO', 'Sqlite', `${className}SqliteDAO.ts`), SqliteDaoTemplate);
 
-createFile(path.join(basePath, 'Services', `${className}Services.ts`), ServicesTemplate);
-createFile(path.join(basePath, 'Controllers', `${className}Controllers.ts`), ControllersTemplate);
+createFile(path.join(basePath, 'Services', `${className}Service.ts`), ServicesTemplate);
+createFile(path.join(basePath, 'Controllers', `${className}Controller.ts`), ControllersTemplate);
 createFile(path.join(basePath, 'Routes', `${className}Routes.ts`), RoutesTemplate);
 
 // Regenerate FactoryDAO.ts
@@ -303,17 +303,17 @@ ${methods}
 
 // Regenerate index.ts
 const regenerateIndex = () => {
-    const modelsDir = path.join(basePath, 'Models');
-    const files = fs.readdirSync(modelsDir).filter(file => file.endsWith('.ts'));
+    const routesDir = path.join(basePath, 'Routes');
+    const files = fs.readdirSync(routesDir).filter(file => file.endsWith('.ts'));
 
     const imports = files.map(file => {
-        const name = file.replace('.ts', '');
-        return `import { ${name.toLowerCase()}Routes } from "./Routes/${name}Routes";`;
+        const name = file.replace('Routes.ts', '');
+        return `import { ${name.charAt(0).toLowerCase()+name.slice(1)}Routes } from "./Routes/${name}Routes";`;
     }).join('\n');
 
     const functions = files.map(file => {
-        const name = file.replace('.ts', '');
-        return `app.use("/${name.toLowerCase()}s", ${name.toLowerCase()}Routes(factoryDAO.create${name}DAO()));`;
+        const name = file.replace('Routes.ts', '');
+        return `app.use("/${name.charAt(0).toLowerCase()+name.slice(1)}s", ${name.charAt(0).toLowerCase()+name.slice(1)}Routes(factoryDAO.create${name}DAO()));`;
     }).join('\n');
 
     const content = `
@@ -334,8 +334,8 @@ ${functions}
 app.listen(port, () => console.log("API running on port " + port));
     `.trim();
 
-    fs.writeFileSync(path.join(daoDir, 'FactoryDAO.ts'), content);
-    console.log('Regenerated: FactoryDAO.ts');
+    fs.writeFileSync(path.join(basePath, 'index.ts'), content);
+    console.log('Regenerated: index.ts');
 };
 
 regenerateFactoryDAO();
