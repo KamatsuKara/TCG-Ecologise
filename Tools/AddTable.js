@@ -50,8 +50,8 @@ export class ${className}SqliteDAO implements ${className}DAO {
     });
   }
 
-  async insert(:${className}):Promise<void>{
-    const request:string = \`INSERT INTO  () VALUES ()\`;
+  async insert(${tableName}:${className}):Promise<void>{
+    const request:string = \`INSERT INTO ${tableName}() VALUES ()\`;
     const pattern:string[] = [
         
     ];
@@ -59,39 +59,156 @@ export class ${className}SqliteDAO implements ${className}DAO {
     (await this.db).run(request, pattern);
   }
 
-  async update(:${className}):Promise<void>{
-    const request:string = \`UPDATE  SET  WHERE id=?\`;
+  async update(${tableName}:${className}):Promise<void>{
+    const request:string = \`UPDATE ${tableName} SET  WHERE id=?\`;
     const pattern:string[] = [
 
-        .getId().toString()
+        ${tableName}.getId().toString()
     ];
 
     (await this.db).run(request, pattern);
   }
 
-  async delete(:${className}):Promise<void>{
-    const request:string = \`DELETE FROM  WHERE id = ?\`;
+  async delete(${tableName}:${className}):Promise<void>{
+    const request:string = \`DELETE FROM ${tableName} WHERE id = ?\`;
     const pattern:string[] = [
-        .getId().toString()
+        ${tableName}.getId().toString()
     ];
 
     (await this.db).run(request, pattern);
   }
 
   async findAll():Promise<${className}[]>{
-    const request:string = \`SELECT * FROM \`;
+    const request:string = \`SELECT * FROM ${tableName}\`;
 
     return (await this.db).all(request);
   }
 
   async findById(id:number):Promise<${className}|undefined>{
-    const request:string = \`SELECT * FROM  WHERE id = ?\`;
+    const request:string = \`SELECT * FROM ${tableName} WHERE id = ?\`;
     const pattern:string[] = [
         id.toString()
     ];
 
     return (await this.db).get(request, pattern);
   }
+}
+`;
+
+const ServicesTemplate = `
+import { ${className} } from "../Models/${className}";
+import { ${className}DAO } from "../DAO/${className}DAO";
+
+export class ${className}Service {
+    constructor(private ${tableName}DAO: ${className}DAO){}
+
+    async getAll${className}():Promise<${className}[]>{
+        return await this.${tableName}DAO.findAll();
+    }
+
+    async get${className}(id: number):Promise<${className}>{
+        const ${tableName} = await this.${tableName}DAO.findById(id);
+        if(!${tableName}){
+            throw new Error("${className} not found");
+        }
+        return ${tableName};
+    }
+
+    async create${className}(${tableName}:${className}):Promise<void>{
+        
+        this.${tableName}DAO.insert(${tableName});
+    }
+
+    async delete${className}(id:number):Promise<void>{
+        await this.${tableName}DAO.delete(id);
+    }
+
+    async update${className}(data:${className}):Promise<void>{
+        await this.${tableName}DAO.update(data);
+    }
+}
+`;
+
+const ControllersTemplate = `
+import { Request, Response } from "express";
+import { ${className} } from "../Models/${className}";
+import { ${className}Service } from "../Services/${className}Service";
+
+export class ${className}Controller{
+    constructor(private ${tableName}Service:${className}Service){}
+
+    getAll${className} = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const limit:number = Number(req.query.limit) || 10;
+            const page:number = Number(req.query.page) || 1;
+            const ${tableName}s = await this.${tableName}Service.getAll${className}();
+            res.json(${tableName}s);
+        }catch(error:any){
+            res.status(404).json({ error: error.message });
+        }
+    };
+
+    get${className} = async (req:Request, res:Response):Promise<void> => {
+        try{
+            const ${tableName} = await this.${tableName}Service.get${className}(Number(req.params.id));
+            res.json(${tableName});
+        }catch(error:any){
+            res.status(404).json({ error: error.message });
+        }
+    };
+
+    create${className} = async (req:Request, res:Response):Promise<void> => {
+        try{
+            await this.${tableName}Service.create${className}(req.body);
+            res.json("${className} created");
+        }catch(error:any){
+            res.status(400).json({ error: error.message });
+        }
+    };
+
+    delete${className} = async (req:Request, res:Response):Promise<void> => {
+        try{
+            await this.${tableName}Service.delete${className}(Number(req.params.id));
+            res.json("${className} deleted");
+        }catch(error:any){
+            res.status(400).json({ error: error.message });
+        }
+    };
+
+    update${className} = async (req:Request, res:Response):Promise<void> => {
+        try{
+            await this.${tableName}Service.update${className}(req.body);
+            res.json("${className} updated");
+        }catch(error:any){
+            res.status(400).json({ error: error.message });
+        }
+    };
+}
+`;
+
+const RoutesTemplate = `
+import { Router } from "express";
+
+import { FactoryDAO } from "../DAO/FactoryDAO";
+
+import { ${className}DAO } from "../DAO/${className}DAO";
+import { ${className}Service } from "../Services/${className}Service";
+import { ${className}Controller } from "../Controllers/${className}Controllers";
+
+export function ${tableName}Routes(${tableName}DAO:${className}DAO): Router {
+    const router = Router();
+
+    const ${tableName}Service = new ${className}Service(${tableName}DAO);
+    const ${tableName}Controller = new ${className}Controller(${tableName}Service);
+
+    router.get("/", ${tableName}Controller.getAll${className});
+    router.get("/:id", ${tableName}Controller.get${className});
+    router.post("/", ${tableName}Controller.create${className});
+    router.delete("/0", ${tableName}Controller.delete${className});
+    router.put("/", ${tableName}Controller.update${className});
+    router.patch("/", ${tableName}Controller.update${className});
+
+    return router;
 }
 `;
 
@@ -108,6 +225,10 @@ const createFile = (filePath, content) => {
 createFile(path.join(basePath, 'Models', `${className}.ts`), modelTemplate);
 createFile(path.join(basePath, 'DAO', `${className}DAO.ts`), DAOTemplate);
 createFile(path.join(basePath, 'DAO', 'Sqlite', `${className}SqliteDAO.ts`), SqliteDaoTemplate);
+
+createFile(path.join(basePath, 'Services', `${className}Services.ts`), ServicesTemplate);
+createFile(path.join(basePath, 'Controllers', `${className}Controllers.ts`), ControllersTemplate);
+createFile(path.join(basePath, 'Routes', `${className}Routes.ts`), RoutesTemplate);
 
 // Regenerate FactoryDAO.ts
 const regenerateFactoryDAO = () => {
@@ -180,7 +301,45 @@ ${methods}
     console.log('Regenerated: FactorySqliteDAO.ts');
 };
 
+// Regenerate index.ts
+const regenerateIndex = () => {
+    const modelsDir = path.join(basePath, 'Models');
+    const files = fs.readdirSync(modelsDir).filter(file => file.endsWith('.ts'));
+
+    const imports = files.map(file => {
+        const name = file.replace('.ts', '');
+        return `import { ${name.toLowerCase()}Routes } from "./Routes/${name}Routes";`;
+    }).join('\n');
+
+    const functions = files.map(file => {
+        const name = file.replace('.ts', '');
+        return `app.use("/${name.toLowerCase()}s", ${name.toLowerCase()}Routes(factoryDAO.create${name}DAO()));`;
+    }).join('\n');
+
+    const content = `
+import express from "express";
+
+${imports}
+
+import { FactoryDAO } from "./DAO/FactoryDAO";
+import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
+
+const app = express()
+const port = 3000
+
+const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
+
+${functions}
+
+app.listen(port, () => console.log("API running on port " + port));
+    `.trim();
+
+    fs.writeFileSync(path.join(daoDir, 'FactoryDAO.ts'), content);
+    console.log('Regenerated: FactoryDAO.ts');
+};
+
 regenerateFactoryDAO();
 regenerateFactorySqliteDAO();
+regenerateIndex();
 
 console.log('Table addition complete.');
