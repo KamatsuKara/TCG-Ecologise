@@ -1,27 +1,25 @@
-import { CardSqliteDAO } from "./CardSqliteDAO";
 import { CardHistSqliteDAO } from "./CardHistSqliteDAO";
 import { CardModelSqliteDAO } from "./CardModelSqliteDAO";
-import { UserSqliteDAO } from "./UserSqliteDAO";
+import { CardSqliteDAO } from "./CardSqliteDAO";
+import { HistSqliteDAO } from "./HistSqliteDAO";
 import { RaritySqliteDAO } from "./RaritySqliteDAO";
+import { UserSqliteDAO } from "./UserSqliteDAO";
 
 import { FactoryDAO } from "../FactoryDAO";
 
-import { CardDAO } from "../CardDAO";
 import { CardHistDAO } from "../CardHistDAO";
 import { CardModelDAO } from "../CardModelDAO";
-import { UserDAO } from "../UserDAO";
+import { CardDAO } from "../CardDAO";
+import { HistDAO } from "../HistDAO";
 import { RarityDAO } from "../RarityDAO";
+import { UserDAO } from "../UserDAO";
 
-export class FactorySqliteDAO extends FactoryDAO {
+export class FactorySqliteDAO extends FactoryDAO{
     private path:string;
 
     constructor(_path:string){
-        super()
+        super();
         this.path = _path;
-    }
-
-    createCardDAO():CardDAO{
-        return new CardSqliteDAO(this.path);
     }
 
     createCardHistDAO():CardHistDAO{
@@ -32,11 +30,19 @@ export class FactorySqliteDAO extends FactoryDAO {
         return new CardModelSqliteDAO(this.path);
     }
 
-    createUserDAO():UserDAO{
-        return new UserSqliteDAO(this.path);
+    createCardDAO():CardDAO{
+        return new CardSqliteDAO(this.path);
+    }
+
+    createHistDAO():HistDAO{
+        return new HistSqliteDAO(this.path);
     }
 
     createRarityDAO():RarityDAO{
         return new RaritySqliteDAO(this.path);
+    }
+
+    createUserDAO():UserDAO{
+        return new UserSqliteDAO(this.path);
     }
 }

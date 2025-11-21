@@ -4,7 +4,7 @@ import { FactoryDAO } from "../DAO/FactoryDAO";
 
 import { UserDAO } from "../DAO/UserDAO";
 import { UserService } from "../Services/UserService";
-import { UserController } from "../Controllers/UserControllers";
+import { UserController } from "../Controllers/UserController";
 
 export function userRoutes(userDAO:UserDAO): Router {
     const router = Router();
