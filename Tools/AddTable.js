@@ -102,11 +102,11 @@ import { ${className}DAO } from "../DAO/${className}DAO";
 export class ${className}Service {
     constructor(private ${tableName}DAO: ${className}DAO){}
 
-    async getAll${className}():Promise<${className}[]>{
+    async getAll():Promise<${className}[]>{
         return await this.${tableName}DAO.findAll();
     }
 
-    async get${className}(id: number):Promise<${className}>{
+    async get(id: number):Promise<${className}>{
         const ${tableName} = await this.${tableName}DAO.findById(id);
         if(!${tableName}){
             throw new Error("${className} not found");
@@ -114,16 +114,16 @@ export class ${className}Service {
         return ${tableName};
     }
 
-    async create${className}(${tableName}:${className}):Promise<void>{
+    async create(${tableName}:${className}):Promise<void>{
         
         this.${tableName}DAO.insert(${tableName});
     }
 
-    async delete${className}(id:number):Promise<void>{
+    async delete(id:number):Promise<void>{
         await this.${tableName}DAO.delete(id);
     }
 
-    async update${className}(data:${className}):Promise<void>{
+    async update(data:${className}):Promise<void>{
         await this.${tableName}DAO.update(data);
     }
 }
@@ -131,53 +131,52 @@ export class ${className}Service {
 
 const ControllersTemplate = `
 import { Request, Response } from "express";
-import { ${className} } from "../Models/${className}";
 import { ${className}Service } from "../Services/${className}Service";
 
 export class ${className}Controller{
     constructor(private ${tableName}Service:${className}Service){}
 
-    getAll${className} = async (req:Request, res:Response):Promise<void> => {
+    getAll = async (req:Request, res:Response):Promise<void> => {
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
-            const ${tableName}s = await this.${tableName}Service.getAll${className}();
+            const ${tableName}s = await this.${tableName}Service.getAll();
             res.json(${tableName}s);
         }catch(error:any){
             res.status(404).json({ error: error.message });
         }
     };
 
-    get${className} = async (req:Request, res:Response):Promise<void> => {
+    get = async (req:Request, res:Response):Promise<void> => {
         try{
-            const ${tableName} = await this.${tableName}Service.get${className}(Number(req.params.id));
+            const ${tableName} = await this.${tableName}Service.get(Number(req.params.id));
             res.json(${tableName});
         }catch(error:any){
             res.status(404).json({ error: error.message });
         }
     };
 
-    create${className} = async (req:Request, res:Response):Promise<void> => {
+    create = async (req:Request, res:Response):Promise<void> => {
         try{
-            await this.${tableName}Service.create${className}(req.body);
+            await this.${tableName}Service.create(req.body);
             res.json("${className} created");
         }catch(error:any){
             res.status(400).json({ error: error.message });
         }
     };
 
-    delete${className} = async (req:Request, res:Response):Promise<void> => {
+    delete = async (req:Request, res:Response):Promise<void> => {
         try{
-            await this.${tableName}Service.delete${className}(Number(req.params.id));
+            await this.${tableName}Service.delete(Number(req.params.id));
             res.json("${className} deleted");
         }catch(error:any){
             res.status(400).json({ error: error.message });
         }
     };
 
-    update${className} = async (req:Request, res:Response):Promise<void> => {
+    update = async (req:Request, res:Response):Promise<void> => {
         try{
-            await this.${tableName}Service.update${className}(req.body);
+            await this.${tableName}Service.update(req.body);
             res.json("${className} updated");
         }catch(error:any){
             res.status(400).json({ error: error.message });
@@ -189,8 +188,6 @@ export class ${className}Controller{
 const RoutesTemplate = `
 import { Router } from "express";
 
-import { FactoryDAO } from "../DAO/FactoryDAO";
-
 import { ${className}DAO } from "../DAO/${className}DAO";
 import { ${className}Service } from "../Services/${className}Service";
 import { ${className}Controller } from "../Controllers/${className}Controller";
@@ -201,12 +198,12 @@ export function ${tableName}Routes(${tableName}DAO:${className}DAO): Router {
     const ${tableName}Service = new ${className}Service(${tableName}DAO);
     const ${tableName}Controller = new ${className}Controller(${tableName}Service);
 
-    router.get("/", ${tableName}Controller.getAll${className});
-    router.get("/:id", ${tableName}Controller.get${className});
-    router.post("/", ${tableName}Controller.create${className});
-    router.delete("/0", ${tableName}Controller.delete${className});
-    router.put("/", ${tableName}Controller.update${className});
-    router.patch("/", ${tableName}Controller.update${className});
+    router.get("/", ${tableName}Controller.getAll);
+    router.get("/:id", ${tableName}Controller.get);
+    router.post("/", ${tableName}Controller.create);
+    router.delete("/id", ${tableName}Controller.delete);
+    router.put("/:id", ${tableName}Controller.update);
+    router.patch("/:id", ${tableName}Controller.update);
 
     return router;
 }
