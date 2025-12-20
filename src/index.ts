@@ -10,12 +10,12 @@ import { FactoryDAO } from "./DAO/FactoryDAO";
 import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
 const app = express()
-const port = 3000
+const port = 3001
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
 
-app.use("/cardHists", cardHistRoutes(factoryDAO.createCardHistDAO()));
-app.use("/cardModels", cardModelRoutes(factoryDAO.createCardModelDAO()));
+app.use("/cardhists", cardHistRoutes(factoryDAO.createCardHistDAO()));
+app.use("/cardmodels", cardModelRoutes(factoryDAO.createCardModelDAO()));
 app.use("/cards", cardRoutes(factoryDAO.createCardDAO()));
 app.use("/raritys", rarityRoutes(factoryDAO.createRarityDAO()));
 app.use("/users", userRoutes(factoryDAO.createUserDAO()));
