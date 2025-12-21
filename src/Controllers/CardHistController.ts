@@ -8,7 +8,7 @@ export class CardHistController{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
-            const cardHists = await this.cardHistService.getAll();
+            const cardHists = await this.cardHistService.getAll(limit, page);
             res.json(cardHists);
         }catch(error:any){
             res.status(404).json({ error: error.message });

@@ -4,8 +4,10 @@ import { UserDAO } from "../DAO/UserDAO";
 export class UserService {
     constructor(private userDAO: UserDAO){}
 
-    async getAll():Promise<User[]>{
-        return await this.userDAO.findAll();
+    async getAll(limit:number, page:number):Promise<User[]>{
+        var users:User[] = await this.userDAO.findAll();
+        users = users.slice((page-1)*limit, page*limit);
+        return users;
     }
 
     async get(id: number):Promise<User>{

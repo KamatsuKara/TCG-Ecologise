@@ -4,8 +4,10 @@ import { CardModelDAO } from "../DAO/CardModelDAO";
 export class CardModelService {
     constructor(private cardModelDAO: CardModelDAO){}
 
-    async getAll():Promise<CardModel[]>{
-        return await this.cardModelDAO.findAll();
+    async getAll(limit:number, page:number):Promise<CardModel[]>{
+        var cardModels:CardModel[] = await this.cardModelDAO.findAll();
+        cardModels = cardModels.slice((page-1)*limit, page*limit);
+        return cardModels;
     }
 
     async get(id: number):Promise<CardModel>{

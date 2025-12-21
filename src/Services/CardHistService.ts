@@ -4,8 +4,10 @@ import { CardHistDAO } from "../DAO/CardHistDAO";
 export class CardHistService {
     constructor(private cardHistDAO: CardHistDAO){}
 
-    async getAll():Promise<CardHist[]>{
-        return await this.cardHistDAO.findAll();
+    async getAll(limit:number, page:number):Promise<CardHist[]>{
+        var cardHists:CardHist[] = await this.cardHistDAO.findAll();
+        cardHists = cardHists.slice((page-1)*limit, page*limit);
+        return cardHists;
     }
 
     async get(id: number):Promise<CardHist>{

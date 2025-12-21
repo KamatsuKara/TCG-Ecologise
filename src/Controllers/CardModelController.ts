@@ -8,7 +8,7 @@ export class CardModelController{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
-            const cardModels = await this.cardModelService.getAll();
+            const cardModels = await this.cardModelService.getAll(limit, page);
             res.json(cardModels);
         }catch(error:any){
             res.status(404).json({ error: error.message });

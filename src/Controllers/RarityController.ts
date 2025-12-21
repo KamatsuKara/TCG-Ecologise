@@ -8,7 +8,7 @@ export class RarityController{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
-            const raritys = await this.rarityService.getAll();
+            const raritys = await this.rarityService.getAll(limit, page);
             res.json(raritys);
         }catch(error:any){
             res.status(404).json({ error: error.message });

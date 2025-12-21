@@ -4,8 +4,10 @@ import { RarityDAO } from "../DAO/RarityDAO";
 export class RarityService {
     constructor(private rarityDAO: RarityDAO){}
 
-    async getAll():Promise<Rarity[]>{
-        return await this.rarityDAO.findAll();
+    async getAll(limit:number, page:number):Promise<Rarity[]>{
+        var raritys:Rarity[] = await this.rarityDAO.findAll();
+        raritys = raritys.slice((page-1)*limit, page*limit);
+        return raritys;
     }
 
     async get(id: number):Promise<Rarity>{
