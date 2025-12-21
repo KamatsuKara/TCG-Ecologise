@@ -63,7 +63,7 @@ export class ${className}SqliteDAO implements ${className}DAO {
     const request:string = \`UPDATE ${tableName} SET  WHERE id=?\`;
     const pattern:string[] = [
 
-        ${tableName}.getId().toString()
+        ${tableName}.Id.toString()
     ];
 
     (await this.db).run(request, pattern);
@@ -72,7 +72,7 @@ export class ${className}SqliteDAO implements ${className}DAO {
   async delete(${tableName}:${className}):Promise<void>{
     const request:string = \`DELETE FROM ${tableName} WHERE id = ?\`;
     const pattern:string[] = [
-        ${tableName}.getId().toString()
+        ${tableName}.Id.toString()
     ];
 
     (await this.db).run(request, pattern);
@@ -102,8 +102,10 @@ import { ${className}DAO } from "../DAO/${className}DAO";
 export class ${className}Service {
     constructor(private ${tableName}DAO: ${className}DAO){}
 
-    async getAll():Promise<${className}[]>{
-        return await this.${tableName}DAO.findAll();
+    async All:Promise<${className}[]>{
+        var ${tableName}s:${className}[] = await this.${tableName}DAO.findAll();
+        ${tableName}s = ${tableName}s.slice((page-1)*limit, page*limit);
+        return ${tableName}s;
     }
 
     async get(id: number):Promise<${className}>{
@@ -140,7 +142,7 @@ export class ${className}Controller{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
-            const ${tableName}s = await this.${tableName}Service.getAll();
+            const ${tableName}s = await this.${tableName}Service.getAll(limit, page);
             res.json(${tableName}s);
         }catch(error:any){
             res.status(404).json({ error: error.message });
