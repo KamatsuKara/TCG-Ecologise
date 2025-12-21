@@ -14,19 +14,35 @@ export class CardHist {
         this.obtened = obtened;
     }
 
-    public getId():number{
+    // Id
+    public get Id(): number {
         return this.id;
     }
+    public set Id(id: number) {
+        this.id = id;
+    }
 
-    public getCard():Card{
+    // Card
+    public get Card(): Card {
         return this.card;
     }
-
-    public getOwner():User{
-        return this.owner;
+    public set Card(card: Card) {
+        this.card = card;
     }
 
-    public getObtened():number{
+    // Owner
+    public get Owner(): User {
+        return this.owner;
+    }
+    public set Owner(owner: User) {
+        this.owner = owner;
+    }
+
+    // Obtened
+    public get Obtened(): number {
         return this.obtened;
+    }
+    public set Obtened(obtened: number) {
+        this.obtened = obtened;
     }
 }

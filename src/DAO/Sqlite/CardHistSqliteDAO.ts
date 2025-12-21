@@ -16,9 +16,9 @@ export class CardHistSqliteDAO implements CardHistDAO {
   async insert(cardHist:CardHist):Promise<void>{
     const request:string = `INSERT INTO cardHist(id_card,id_user,obtened) VALUES (?,?,?)`;
     const pattern:string[] = [
-      cardHist.getCard().getId().toString(),
-      cardHist.getOwner().getId().toString(),
-      cardHist.getObtened().toString()
+      cardHist.Card.Id.toString(),
+      cardHist.Owner.Id.toString(),
+      cardHist.Obtened.toString()
     ];
 
     (await this.db).run(request, pattern);
@@ -27,9 +27,9 @@ export class CardHistSqliteDAO implements CardHistDAO {
   async update(cardHist:CardHist):Promise<void>{
     const request:string = `UPDATE cardHist SET id_card=?,id_user=?,obtened=? WHERE id = ?`;
     const pattern:string[] = [
-      cardHist.getCard().getId().toString(),
-      cardHist.getOwner().getId().toString(),
-      cardHist.getObtened().toString()
+      cardHist.Card.Id.toString(),
+      cardHist.Owner.Id.toString(),
+      cardHist.Obtened.toString()
     ];
 
     (await this.db).run(request, pattern);

@@ -13,23 +13,43 @@ export class CardModel {
         this.effect = effect;
     }
 
-    public getId(): number {
+    // Id
+    public get Id(): number {
         return this.id;
     }
+    public set Id(id: number) {
+        this.id = id;
+    }
 
-    public getName(): string {
+    // Name
+    public get Name(): string {
         return this.name;
     }
+    public set Name(name: string) {
+        this.name = name;
+    }
 
-    public getImage(): string {
+    // Image
+    public get Image(): string {
         return this.image;
     }
-
-    public getDescription(): string {
-        return this.description;
+    public set Image(image: string) {
+        this.image = image;
     }
 
-    public getEffect(): string {
+    // Description
+    public get Description(): string {
+        return this.description;
+    }
+    public set Description(description: string) {
+        this.description = description;
+    }
+
+    // Effect
+    public get Effect(): string {
         return this.effect;
+    }
+    public set Effect(effect: string) {
+        this.effect = effect;
     }
 }

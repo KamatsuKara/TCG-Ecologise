@@ -19,27 +19,51 @@ export class Card {
         this.obtened = obtened;
     }
 
-    public getId():number{
+    // Id
+    public get Id(): number {
         return this.id;
     }
+    public set Id(id: number) {
+        this.id = id;
+    }
 
-    public getOwner():User{
+    // Owner
+    public get Owner(): User {
         return this.owner;
     }
+    public set Owner(owner: User) {
+        this.owner = owner;
+    }
 
-    public getCardModel():CardModel{
+    // CardModel
+    public get CardModel(): CardModel {
         return this.cardModel;
     }
+    public set CardModel(cardModel: CardModel) {
+        this.cardModel = cardModel;
+    }
 
-    public getRarity():Rarity{
+    // Rarity
+    public get Rarity(): Rarity {
         return this.rarity;
     }
+    public set Rarity(rarity: Rarity) {
+        this.rarity = rarity;
+    }
 
-    public getCreated():number{
+    // Created
+    public get Created(): number {
         return this.created;
     }
-    
-    public getObtened():number{
+    public set Created(created: number) {
+        this.created = created;
+    }
+
+    // Obtened
+    public get Obtened(): number {
         return this.obtened;
+    }
+    public set Obtened(obtened: number) {
+        this.obtened = obtened;
     }
 }
