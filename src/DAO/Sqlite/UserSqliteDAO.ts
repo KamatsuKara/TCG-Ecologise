@@ -57,4 +57,13 @@ export class UserSqliteDAO implements UserDAO {
 
     return (await this.db).get(request, pattern);
   }
+
+  async findByEmail(email:string):Promise<User|undefined>{
+    const request:string = `SELECT * FROM user WHERE email = ?`;
+    const pattern:string[] = [
+      email
+    ];
+
+    return (await this.db).get(request, pattern);
+  }
 }

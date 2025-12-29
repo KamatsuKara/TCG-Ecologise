@@ -6,4 +6,5 @@ export interface UserDAO {
     delete(id:number):Promise<void>;
     findAll():Promise<User[]>;
     findById(id:number):Promise<User|undefined>;
+    findByEmail(email:string):Promise<User|undefined>;
 }
