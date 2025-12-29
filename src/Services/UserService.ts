@@ -1,5 +1,8 @@
 import { User } from "../Models/User";
 import { UserDAO } from "../DAO/UserDAO";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 12;
 
 export class UserService {
     constructor(private userDAO: UserDAO){}
@@ -19,7 +22,7 @@ export class UserService {
     }
 
     async create(user:User):Promise<void>{
-        
+        user.Password = await bcrypt.hash(user.Password, SALT_ROUNDS);
         this.userDAO.insert(user);
     }
 
