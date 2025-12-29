@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authJWT, requireRole } from "../authMiddleware"
 
 import { UserDAO } from "../DAO/UserDAO";
 import { UserService } from "../Services/UserService";
@@ -10,12 +11,12 @@ export function userRoutes(userDAO:UserDAO): Router {
     const userService = new UserService(userDAO);
     const userController = new UserController(userService);
 
-    router.get("/", userController.getAll);
-    router.get("/:id", userController.get);
-    router.post("/", userController.create);
-    router.delete("/id", userController.delete);
-    router.put("/:id", userController.update);
-    router.patch("/:id", userController.update);
+    router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll);
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.get);
+    router.post("/", authJWT, requireRole(["ADMIN","USER"]), userController.create);
+    router.delete("/id", authJWT, requireRole(["ADMIN","USER"]), userController.delete);
+    router.put("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.update);
+    router.patch("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.update);
 
     return router;
 }
