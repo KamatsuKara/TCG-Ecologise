@@ -38,7 +38,7 @@ export function requireRole(roles:string[]){
   return (req:Request, res:Response, next:NextFunction) => {
     const role = req.user?.role
     if(!role) return res.status(403).send("No Role");
-    if ( roles.includes(role)) {
+    if (!roles.includes(role)) {
       return res.status(403).send("Forbidden");
     }
     next();
