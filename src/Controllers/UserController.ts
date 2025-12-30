@@ -4,7 +4,7 @@ import { UserService } from "../Services/UserService";
 export class UserController{
     constructor(private userService:UserService){}
 
-    getAll = async (req:Request, res:Response):Promise<void> => {
+    async getAll(req:Request, res:Response):Promise<void>{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
@@ -15,7 +15,7 @@ export class UserController{
         }
     };
 
-    get = async (req:Request, res:Response):Promise<void> => {
+    async get(req:Request, res:Response):Promise<void>{
         try{
             const user = await this.userService.get(Number(req.params.id));
             res.json(user);
@@ -24,7 +24,16 @@ export class UserController{
         }
     };
 
-    create = async (req:Request, res:Response):Promise<void> => {
+    async getMe(req:Request, res:Response):Promise<void>{
+        try{
+            const user = await this.userService.get(Number(req.user?.sub));
+            res.json(user);
+        }catch(error:any){
+            res.status(404).json({ error: error.message });
+        }
+    }
+
+    async create(req:Request, res:Response):Promise<void>{
         try{
             await this.userService.create(req.body);
             res.json("User created");
@@ -33,7 +42,7 @@ export class UserController{
         }
     };
 
-    delete = async (req:Request, res:Response):Promise<void> => {
+    async delete(req:Request, res:Response):Promise<void>{
         try{
             await this.userService.delete(Number(req.params.id));
             res.json("User deleted");
@@ -42,7 +51,7 @@ export class UserController{
         }
     };
 
-    update = async (req:Request, res:Response):Promise<void> => {
+    async update(req:Request, res:Response):Promise<void>{
         try{
             await this.userService.update(req.body);
             res.json("User updated");

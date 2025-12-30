@@ -4,7 +4,7 @@ import { CardService } from "../Services/CardService";
 export class CardController{
     constructor(private cardService:CardService){}
 
-    getAll = async (req:Request, res:Response):Promise<void> => {
+    async getAll(req:Request, res:Response):Promise<void>{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
@@ -15,7 +15,7 @@ export class CardController{
         }
     };
 
-    get = async (req:Request, res:Response):Promise<void> => {
+    async get(req:Request, res:Response):Promise<void>{
         try{
             const card = await this.cardService.get(Number(req.params.id));
             res.json(card);
@@ -24,7 +24,7 @@ export class CardController{
         }
     };
 
-    create = async (req:Request, res:Response):Promise<void> => {
+    async create(req:Request, res:Response):Promise<void>{
         try{
             await this.cardService.create(req.body);
             res.json("Card created");
@@ -33,7 +33,7 @@ export class CardController{
         }
     };
 
-    delete = async (req:Request, res:Response):Promise<void> => {
+    async delete(req:Request, res:Response):Promise<void>{
         try{
             await this.cardService.delete(Number(req.params.id));
             res.json("Card deleted");
@@ -42,7 +42,7 @@ export class CardController{
         }
     };
 
-    update = async (req:Request, res:Response):Promise<void> => {
+    async update(req:Request, res:Response):Promise<void>{
         try{
             await this.cardService.update(req.body);
             res.json("Card updated");

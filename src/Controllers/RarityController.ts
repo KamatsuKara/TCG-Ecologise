@@ -4,7 +4,7 @@ import { RarityService } from "../Services/RarityService";
 export class RarityController{
     constructor(private rarityService:RarityService){}
 
-    getAll = async (req:Request, res:Response):Promise<void> => {
+    async getAll(req:Request, res:Response):Promise<void>{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
@@ -15,7 +15,7 @@ export class RarityController{
         }
     };
 
-    get = async (req:Request, res:Response):Promise<void> => {
+    async get(req:Request, res:Response):Promise<void>{
         try{
             const rarity = await this.rarityService.get(Number(req.params.id));
             res.json(rarity);
@@ -24,7 +24,7 @@ export class RarityController{
         }
     };
 
-    create = async (req:Request, res:Response):Promise<void> => {
+    async create(req:Request, res:Response):Promise<void>{
         try{
             await this.rarityService.create(req.body);
             res.json("Rarity created");
@@ -33,7 +33,7 @@ export class RarityController{
         }
     };
 
-    delete = async (req:Request, res:Response):Promise<void> => {
+    async delete(req:Request, res:Response):Promise<void>{
         try{
             await this.rarityService.delete(Number(req.params.id));
             res.json("Rarity deleted");
@@ -42,7 +42,7 @@ export class RarityController{
         }
     };
 
-    update = async (req:Request, res:Response):Promise<void> => {
+    async update(req:Request, res:Response):Promise<void>{
         try{
             await this.rarityService.update(req.body);
             res.json("Rarity updated");

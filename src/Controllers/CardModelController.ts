@@ -4,7 +4,7 @@ import { CardModelService } from "../Services/CardModelService";
 export class CardModelController{
     constructor(private cardModelService:CardModelService){}
 
-    getAll = async (req:Request, res:Response):Promise<void> => {
+    async getAll(req:Request, res:Response):Promise<void>{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
@@ -15,7 +15,7 @@ export class CardModelController{
         }
     };
 
-    get = async (req:Request, res:Response):Promise<void> => {
+    async get(req:Request, res:Response):Promise<void>{
         try{
             const cardModel = await this.cardModelService.get(Number(req.params.id));
             res.json(cardModel);
@@ -24,7 +24,7 @@ export class CardModelController{
         }
     };
 
-    create = async (req:Request, res:Response):Promise<void> => {
+    async create(req:Request, res:Response):Promise<void>{
         try{
             await this.cardModelService.create(req.body);
             res.json("CardModel created");
@@ -33,7 +33,7 @@ export class CardModelController{
         }
     };
 
-    delete = async (req:Request, res:Response):Promise<void> => {
+    async delete(req:Request, res:Response):Promise<void>{
         try{
             await this.cardModelService.delete(Number(req.params.id));
             res.json("CardModel deleted");
@@ -42,7 +42,7 @@ export class CardModelController{
         }
     };
 
-    update = async (req:Request, res:Response):Promise<void> => {
+    async update(req:Request, res:Response):Promise<void>{
         try{
             await this.cardModelService.update(req.body);
             res.json("CardModel updated");

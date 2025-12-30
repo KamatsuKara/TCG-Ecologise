@@ -4,7 +4,7 @@ import { CardHistService } from "../Services/CardHistService";
 export class CardHistController{
     constructor(private cardHistService:CardHistService){}
 
-    getAll = async (req:Request, res:Response):Promise<void> => {
+    async getAll(req:Request, res:Response):Promise<void>{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
@@ -15,7 +15,7 @@ export class CardHistController{
         }
     };
 
-    get = async (req:Request, res:Response):Promise<void> => {
+    async get(req:Request, res:Response):Promise<void>{
         try{
             const cardHist = await this.cardHistService.get(Number(req.params.id));
             res.json(cardHist);
@@ -24,7 +24,7 @@ export class CardHistController{
         }
     };
 
-    create = async (req:Request, res:Response):Promise<void> => {
+    async create(req:Request, res:Response):Promise<void>{
         try{
             await this.cardHistService.create(req.body);
             res.json("CardHist created");
@@ -33,7 +33,7 @@ export class CardHistController{
         }
     };
 
-    delete = async (req:Request, res:Response):Promise<void> => {
+    async delete(req:Request, res:Response):Promise<void>{
         try{
             await this.cardHistService.delete(Number(req.params.id));
             res.json("CardHist deleted");
@@ -42,7 +42,7 @@ export class CardHistController{
         }
     };
 
-    update = async (req:Request, res:Response):Promise<void> => {
+    async update(req:Request, res:Response):Promise<void>{
         try{
             await this.cardHistService.update(req.body);
             res.json("CardHist updated");

@@ -138,7 +138,7 @@ import { ${className}Service } from "../Services/${className}Service";
 export class ${className}Controller{
     constructor(private ${tableName}Service:${className}Service){}
 
-    getAll = async (req:Request, res:Response):Promise<void> => {
+    async getAll(req:Request, res:Response):Promise<void>{
         try{
             const limit:number = Number(req.query.limit) || 10;
             const page:number = Number(req.query.page) || 1;
@@ -149,7 +149,7 @@ export class ${className}Controller{
         }
     };
 
-    get = async (req:Request, res:Response):Promise<void> => {
+    async get(req:Request, res:Response):Promise<void>{
         try{
             const ${tableName} = await this.${tableName}Service.get(Number(req.params.id));
             res.json(${tableName});
@@ -158,7 +158,7 @@ export class ${className}Controller{
         }
     };
 
-    create = async (req:Request, res:Response):Promise<void> => {
+    async create(req:Request, res:Response):Promise<void>{
         try{
             await this.${tableName}Service.create(req.body);
             res.json("${className} created");
@@ -167,7 +167,7 @@ export class ${className}Controller{
         }
     };
 
-    delete = async (req:Request, res:Response):Promise<void> => {
+    async delete(req:Request, res:Response):Promise<void>{
         try{
             await this.${tableName}Service.delete(Number(req.params.id));
             res.json("${className} deleted");
@@ -176,7 +176,7 @@ export class ${className}Controller{
         }
     };
 
-    update = async (req:Request, res:Response):Promise<void> => {
+    async update(req:Request, res:Response):Promise<void>{
         try{
             await this.${tableName}Service.update(req.body);
             res.json("${className} updated");
