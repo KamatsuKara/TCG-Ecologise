@@ -1,0 +1,22 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register?name=admin&email=admin@example.com&password=admin123
+  body: none
+  auth: inherit
+}
+
+params:query {
+  name: admin
+  email: admin@example.com
+  password: admin123
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

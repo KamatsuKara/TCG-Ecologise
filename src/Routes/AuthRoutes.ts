@@ -11,6 +11,7 @@ export function authRoutes(UserDAO:UserDAO): Router {
     const authController = new AuthController(authService);
 
     router.post("/login", authController.login);
+    router.post("/register", authController.register)
 
     return router;
 }

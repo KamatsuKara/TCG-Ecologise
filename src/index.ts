@@ -1,4 +1,7 @@
 import express from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";

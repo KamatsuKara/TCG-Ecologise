@@ -12,7 +12,15 @@ export class AuthController{
             res.json({ token });
         }catch(error:any){
             res.status(404).json({ error: error.message });
-        }
-        
+        }   
+    }
+
+    async register(req:Request, res:Response):Promise<void>{
+        try{
+            this.authService.register(req.body);
+            res.json("Register done");
+        }catch(error:any){
+            res.status(404).json({ error: error.message });
+        } 
     }
 }

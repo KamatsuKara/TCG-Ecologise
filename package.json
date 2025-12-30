@@ -12,6 +12,7 @@
     "@types/express": "^5.0.3",
     "@types/node": "^7.0.5",
     "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.3",
     "sqlite": "^5.1.1",
