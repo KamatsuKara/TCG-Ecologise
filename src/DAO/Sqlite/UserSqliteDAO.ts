@@ -14,9 +14,12 @@ export class UserSqliteDAO implements UserDAO {
   }
 
   async insert(user:User):Promise<void>{
-    const request:string = `INSERT INTO user(name,creation) VALUES (?,?)`;
+    const request:string = `INSERT INTO user(name,email,password,role,creation) VALUES (?,?,?,?,?)`;
     const pattern:string[] = [
       user.Name,
+      user.Email,
+      user.Password,
+      user.Role,
       user.Create.toString()
     ];
 
@@ -24,9 +27,12 @@ export class UserSqliteDAO implements UserDAO {
   }
 
   async update(user:User):Promise<void>{
-    const request:string = `UPDATE user SET name=?,creation=? WHERE id=?`;
+    const request:string = `UPDATE user SET name=?,email=?,password=?,role=?,creation=? WHERE id=?`;
     const pattern:string[] = [
       user.Name,
+      user.Email,
+      user.Password,
+      user.Role,
       user.Create.toString(),
       user.Id.toString()
     ];
