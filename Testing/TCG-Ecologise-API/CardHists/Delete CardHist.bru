@@ -1,0 +1,15 @@
+meta {
+  name: Delete CardHist
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/cardhists/id
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

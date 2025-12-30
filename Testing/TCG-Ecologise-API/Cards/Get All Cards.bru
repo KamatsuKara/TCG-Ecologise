@@ -1,0 +1,20 @@
+meta {
+  name: Get All Cards
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/cards?limit=10&page=1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+query {
+  limit: 10
+  page: 1
+}

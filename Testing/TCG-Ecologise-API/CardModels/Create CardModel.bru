@@ -1,0 +1,24 @@
+meta {
+  name: Create CardModel
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/cardmodels
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Forêt Ancienne",
+    "image": "forest_ancient.png",
+    "description": "Une forêt millénaire pleine de vie",
+    "effect": "Régénère 2 points de vie par tour"
+  }
+}
