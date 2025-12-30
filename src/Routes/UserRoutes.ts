@@ -12,6 +12,7 @@ export function userRoutes(userDAO:UserDAO): Router {
     const userController = new UserController(userService);
 
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll);
+    router.get("/me", authJWT, requireRole(["ADMIN","USER"]), userController.getMe);
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.get);
     router.post("/", authJWT, requireRole(["ADMIN","USER"]), userController.create);
     router.delete("/id", authJWT, requireRole(["ADMIN","USER"]), userController.delete);
