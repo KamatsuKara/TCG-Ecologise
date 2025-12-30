@@ -13,11 +13,11 @@ export function userRoutes(userDAO:UserDAO): Router {
 
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll);
     router.get("/me", authJWT, requireRole(["ADMIN","USER"]), userController.getMe);
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.get);
-    router.post("/", authJWT, requireRole(["ADMIN","USER"]), userController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN","USER"]), userController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN","USER"]), userController.update);
+    router.get("/:id", authJWT, requireRole(["ADMIN"]), userController.get);
+    router.post("/", authJWT, requireRole(["ADMIN"]), userController.create);
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), userController.delete);
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), userController.update);
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), userController.update);
 
     return router;
 }

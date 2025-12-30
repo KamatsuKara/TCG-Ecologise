@@ -13,10 +13,10 @@ export function cardModelRoutes(cardModelDAO:CardModelDAO): Router {
 
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardModelController.getAll);
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.get);
-    router.post("/", authJWT, requireRole(["ADMIN","USER"]), cardModelController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.update);
+    router.post("/", authJWT, requireRole(["ADMIN"]), cardModelController.create);
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardModelController.delete);
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update);
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update);
 
     return router;
 }

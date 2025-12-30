@@ -14,9 +14,9 @@ export function cardHistRoutes(cardHistDAO:CardHistDAO): Router {
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.getAll);
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.get);
     router.post("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.update);
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardHistController.delete);
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update);
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update);
 
     return router;
 }
