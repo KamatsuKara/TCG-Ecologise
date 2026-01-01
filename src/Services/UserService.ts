@@ -22,7 +22,8 @@ export class UserService {
     }
 
     async create(user:User):Promise<void>{
-        user.Password = await bcrypt.hash(user.Password, SALT_ROUNDS);
+        user.password = await bcrypt.hash(user.password, SALT_ROUNDS);
+        user.create = Date.now();
         this.userDAO.insert(user);
     }
 

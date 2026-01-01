@@ -1,55 +1,55 @@
 export class CardModel {
-    private id: number;
-    private name: string;
-    private image: string;
-    private description: string;
-    private effect: string;
+    private _id: number;
+    private _name: string;
+    private _image: string;
+    private _description: string;
+    private _effect: string;
 
     constructor(id:number = 0, name:string ="", image:string = "", description:string = "", effect:string = "") {
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.effect = effect;
+        this._id = id;
+        this._name = name;
+        this._image = image;
+        this._description = description;
+        this._effect = effect;
     }
 
     // Id
-    public get Id(): number {
-        return this.id;
+    public get id(): number {
+        return this._id;
     }
-    public set Id(id: number) {
-        this.id = id;
+    public set id(id: number) {
+        this._id = id;
     }
 
     // Name
-    public get Name(): string {
-        return this.name;
+    public get name(): string {
+        return this._name;
     }
-    public set Name(name: string) {
-        this.name = name;
+    public set name(name: string) {
+        this._name = name;
     }
 
     // Image
-    public get Image(): string {
-        return this.image;
+    public get image(): string {
+        return this._image;
     }
-    public set Image(image: string) {
-        this.image = image;
+    public set image(image: string) {
+        this._image = image;
     }
 
     // Description
-    public get Description(): string {
-        return this.description;
+    public get description(): string {
+        return this._description;
     }
-    public set Description(description: string) {
-        this.description = description;
+    public set description(description: string) {
+        this._description = description;
     }
 
     // Effect
-    public get Effect(): string {
-        return this.effect;
+    public get effect(): string {
+        return this._effect;
     }
-    public set Effect(effect: string) {
-        this.effect = effect;
+    public set effect(effect: string) {
+        this._effect = effect;
     }
 }

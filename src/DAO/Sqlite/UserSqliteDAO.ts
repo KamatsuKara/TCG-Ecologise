@@ -16,11 +16,11 @@ export class UserSqliteDAO implements UserDAO {
   async insert(user:User):Promise<void>{
     const request:string = `INSERT INTO user(name,email,password,role,creation) VALUES (?,?,?,?,?)`;
     const pattern:string[] = [
-      user.Name,
-      user.Email,
-      user.Password,
-      user.Role,
-      user.Create.toString()
+      user.name,
+      user.email,
+      user.password,
+      user.role,
+      user.create.toString()
     ];
 
     (await this.db).run(request, pattern);
@@ -29,12 +29,12 @@ export class UserSqliteDAO implements UserDAO {
   async update(user:User):Promise<void>{
     const request:string = `UPDATE user SET name=?,email=?,password=?,role=?,creation=? WHERE id=?`;
     const pattern:string[] = [
-      user.Name,
-      user.Email,
-      user.Password,
-      user.Role,
-      user.Create.toString(),
-      user.Id.toString()
+      user.name,
+      user.email,
+      user.password,
+      user.role,
+      user.create.toString(),
+      user.id.toString()
     ];
 
     (await this.db).run(request, pattern);

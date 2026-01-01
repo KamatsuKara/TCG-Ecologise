@@ -11,12 +11,12 @@ export function cardHistRoutes(cardHistDAO:CardHistDAO): Router {
     const cardHistService = new CardHistService(cardHistDAO);
     const cardHistController = new CardHistController(cardHistService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.getAll);
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.get);
-    router.post("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardHistController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update);
+    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.getAll.bind(cardHistController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.get.bind(cardHistController));
+    router.post("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.create.bind(cardHistController));
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardHistController.delete.bind(cardHistController));
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update.bind(cardHistController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update.bind(cardHistController));
 
     return router;
 }

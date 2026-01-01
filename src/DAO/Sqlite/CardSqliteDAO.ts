@@ -16,11 +16,11 @@ export class CardSqliteDAO implements CardDAO {
   async insert(card:Card):Promise<void>{
     const request:string = `INSERT INTO card(id_user,id_cardmodel,id_rarity,obtened,created) VALUES (?,?,?,?,?)`;
     const pattern:string[] = [
-        card.Owner.Id.toString(),
-        card.CardModel.Id.toString(),
-        card.Rarity.Id.toString(),
-        card.Obtened.toString(),
-        card.Created.toString()
+        card.owner.id.toString(),
+        card.cardModel.id.toString(),
+        card.rarity.id.toString(),
+        card.obtened.toString(),
+        card.created.toString()
     ];
 
     (await this.db).run(request, pattern);
@@ -29,12 +29,12 @@ export class CardSqliteDAO implements CardDAO {
   async update(card:Card):Promise<void>{
     const request:string = `UPDATE card SET id_user=?,id_cardmodel=?,id_rarity=?,obtened=?,created=? WHERE id=?`;
     const pattern:string[] = [
-        card.Owner.Id.toString(),
-        card.CardModel.Id.toString(),
-        card.Rarity.Id.toString(),
-        card.Obtened.toString(),
-        card.Created.toString(),
-        card.Id.toString(),
+        card.owner.id.toString(),
+        card.cardModel.id.toString(),
+        card.rarity.id.toString(),
+        card.obtened.toString(),
+        card.created.toString(),
+        card.id.toString(),
     ];
 
     (await this.db).run(request, pattern);

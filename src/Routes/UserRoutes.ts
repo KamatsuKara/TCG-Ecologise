@@ -11,13 +11,13 @@ export function userRoutes(userDAO:UserDAO): Router {
     const userService = new UserService(userDAO);
     const userController = new UserController(userService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll);
-    router.get("/me", authJWT, requireRole(["ADMIN","USER"]), userController.getMe);
-    router.get("/:id", authJWT, requireRole(["ADMIN"]), userController.get);
-    router.post("/", authJWT, requireRole(["ADMIN"]), userController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), userController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), userController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), userController.update);
+    router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll.bind(userController));
+    router.get("/me", authJWT, requireRole(["ADMIN","USER"]), userController.getMe.bind(userController));
+    router.get("/:id", authJWT, requireRole(["ADMIN"]), userController.get.bind(userController));
+    router.post("/", authJWT, requireRole(["ADMIN"]), userController.create.bind(userController));
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
 
     return router;
 }

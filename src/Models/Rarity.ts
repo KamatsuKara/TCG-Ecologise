@@ -1,25 +1,25 @@
 export class Rarity {
-    private id: number;
-    private name: string;
+    private _id: number;
+    private _name: string;
 
     constructor(id:number = 0, name:string = ""){
-        this.id = id;
-        this.name = name;
+        this._id = id;
+        this._name = name;
     }
     
     // Id
-    public get Id(): number {
-        return this.id;
+    public get id(): number {
+        return this._id;
     }
-    public set Id(id: number) {
-        this.id = id;
+    public set id(id: number) {
+        this._id = id;
     }
 
     // Name
-    public get Name(): string {
-        return this.name;
+    public get name(): string {
+        return this._name;
     }
-    public set Name(name: string) {
-        this.name = name;
+    public set name(name: string) {
+        this._name = name;
     }
 }

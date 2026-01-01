@@ -3,67 +3,67 @@ import { CardModel } from "./CardModel";
 import { Rarity } from "./Rarity";
 
 export class Card {
-    private id: number;
-    private owner: User;
-    private cardModel: CardModel;
-    private rarity: Rarity;
-    private created: number;
-    private obtened: number;
+    private _id: number;
+    private _owner: User;
+    private _cardModel: CardModel;
+    private _rarity: Rarity;
+    private _created: number;
+    private _obtened: number;
 
     constructor(id:number = 0, owner:User = new User(), cardModel:CardModel = new CardModel(), rarity:Rarity = new Rarity(), created:number = Date.now(), obtened:number = Date.now()){
-        this.id = id;
-        this.owner = owner;
-        this.cardModel = cardModel;
-        this.rarity = rarity;
-        this.created = created;
-        this.obtened = obtened;
+        this._id = id;
+        this._owner = owner;
+        this._cardModel = cardModel;
+        this._rarity = rarity;
+        this._created = created;
+        this._obtened = obtened;
     }
 
     // Id
-    public get Id(): number {
-        return this.id;
+    public get id(): number {
+        return this._id;
     }
-    public set Id(id: number) {
-        this.id = id;
+    public set id(id: number) {
+        this._id = id;
     }
 
     // Owner
-    public get Owner(): User {
-        return this.owner;
+    public get owner(): User {
+        return this._owner;
     }
-    public set Owner(owner: User) {
-        this.owner = owner;
+    public set owner(owner: User) {
+        this._owner = owner;
     }
 
     // CardModel
-    public get CardModel(): CardModel {
-        return this.cardModel;
+    public get cardModel(): CardModel {
+        return this._cardModel;
     }
-    public set CardModel(cardModel: CardModel) {
-        this.cardModel = cardModel;
+    public set cardModel(cardModel: CardModel) {
+        this._cardModel = cardModel;
     }
 
     // Rarity
-    public get Rarity(): Rarity {
-        return this.rarity;
+    public get rarity(): Rarity {
+        return this._rarity;
     }
-    public set Rarity(rarity: Rarity) {
-        this.rarity = rarity;
+    public set rarity(rarity: Rarity) {
+        this._rarity = rarity;
     }
 
     // Created
-    public get Created(): number {
-        return this.created;
+    public get created(): number {
+        return this._created;
     }
-    public set Created(created: number) {
-        this.created = created;
+    public set created(created: number) {
+        this._created = created;
     }
 
     // Obtened
-    public get Obtened(): number {
-        return this.obtened;
+    public get obtened(): number {
+        return this._obtened;
     }
-    public set Obtened(obtened: number) {
-        this.obtened = obtened;
+    public set obtened(obtened: number) {
+        this._obtened = obtened;
     }
 }

@@ -11,12 +11,12 @@ export function cardModelRoutes(cardModelDAO:CardModelDAO): Router {
     const cardModelService = new CardModelService(cardModelDAO);
     const cardModelController = new CardModelController(cardModelService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardModelController.getAll);
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.get);
-    router.post("/", authJWT, requireRole(["ADMIN"]), cardModelController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardModelController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update);
+    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardModelController.getAll.bind(cardModelController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.get.bind(cardModelController));
+    router.post("/", authJWT, requireRole(["ADMIN"]), cardModelController.create.bind(cardModelController));
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardModelController.delete.bind(cardModelController));
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update.bind(cardModelController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update.bind(cardModelController));
 
     return router;
 }

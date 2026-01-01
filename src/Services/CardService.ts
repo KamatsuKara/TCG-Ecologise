@@ -19,7 +19,8 @@ export class CardService {
     }
 
     async create(card:Card):Promise<void>{
-        
+        card.created = Date.now();
+        card.obtened = Date.now();
         this.cardDAO.insert(card);
     }
 

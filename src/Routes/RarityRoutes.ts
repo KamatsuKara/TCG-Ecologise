@@ -11,12 +11,12 @@ export function rarityRoutes(rarityDAO:RarityDAO): Router {
     const rarityService = new RarityService(rarityDAO);
     const rarityController = new RarityController(rarityService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), rarityController.getAll);
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), rarityController.get);
-    router.post("/", authJWT, requireRole(["ADMIN"]), rarityController.create);
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), rarityController.delete);
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update);
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update);
+    router.get("/", authJWT, requireRole(["ADMIN","USER"]), rarityController.getAll.bind(rarityController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), rarityController.get.bind(rarityController));
+    router.post("/", authJWT, requireRole(["ADMIN"]), rarityController.create.bind(rarityController));
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), rarityController.delete.bind(rarityController));
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update.bind(rarityController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update.bind(rarityController));
 
     return router;
 }

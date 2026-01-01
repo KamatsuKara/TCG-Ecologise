@@ -2,47 +2,47 @@ import { Card } from "./Card";
 import { User } from "./User";
 
 export class CardHist {
-    private id: number;
-    private card: Card;
-    private owner: User;
-    private obtened: number;
+    private _id: number;
+    private _card: Card;
+    private _owner: User;
+    private _obtened: number;
 
     constructor(id:number = 0, card:Card = new Card(), owner:User = new User(), obtened:number = Date.now()){
-        this.id = id;
-        this.card = card;
-        this.owner = owner;
-        this.obtened = obtened;
+        this._id = id;
+        this._card = card;
+        this._owner = owner;
+        this._obtened = obtened;
     }
 
     // Id
-    public get Id(): number {
-        return this.id;
+    public get id(): number {
+        return this._id;
     }
-    public set Id(id: number) {
-        this.id = id;
+    public set id(id: number) {
+        this._id = id;
     }
 
     // Card
-    public get Card(): Card {
-        return this.card;
+    public get card(): Card {
+        return this._card;
     }
-    public set Card(card: Card) {
-        this.card = card;
+    public set card(card: Card) {
+        this._card = card;
     }
 
     // Owner
-    public get Owner(): User {
-        return this.owner;
+    public get owner(): User {
+        return this._owner;
     }
-    public set Owner(owner: User) {
-        this.owner = owner;
+    public set owner(owner: User) {
+        this._owner = owner;
     }
 
     // Obtened
-    public get Obtened(): number {
-        return this.obtened;
+    public get obtened(): number {
+        return this._obtened;
     }
-    public set Obtened(obtened: number) {
-        this.obtened = obtened;
+    public set obtened(obtened: number) {
+        this._obtened = obtened;
     }
 }

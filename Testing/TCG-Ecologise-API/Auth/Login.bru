@@ -5,14 +5,16 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/auth/login?email=admin@example.com&password=admin123
-  body: none
+  url: {{baseUrl}}/auth/login
+  body: json
   auth: none
 }
 
-query {
-  email: admin@example.com
-  password: admin123
+body:json {
+  {
+    "email": "admin@example.com",
+    "password": "admin123"
+  }
 }
 
 script:post-response {

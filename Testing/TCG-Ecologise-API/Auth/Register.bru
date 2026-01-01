@@ -5,15 +5,17 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/auth/register?name=admin&email=admin@example.com&password=admin123
-  body: none
+  url: {{baseUrl}}/auth/register
+  body: json
   auth: inherit
 }
 
-params:query {
-  name: admin
-  email: admin@example.com
-  password: admin123
+body:json {
+  {
+    "name": "admin",
+    "email": "admin@example.com",
+    "password": "admin123"
+  }
 }
 
 settings {

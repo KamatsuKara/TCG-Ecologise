@@ -6,8 +6,8 @@ export class AuthController{
 
     async login(req:Request, res:Response):Promise<void>{
         try{
-            const email:string = req.query.email?.toString() || "Error";
-            const password:string = req.query.password?.toString()  || "Error";
+            const email:string = req.body.email?.toString() || "Error";
+            const password:string = req.body.password?.toString()  || "Error";
             const token:string = await this.authService.login(email, password);
             res.json({ token });
         }catch(error:any){

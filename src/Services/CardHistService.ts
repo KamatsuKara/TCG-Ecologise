@@ -19,7 +19,7 @@ export class CardHistService {
     }
 
     async create(cardHist:CardHist):Promise<void>{
-        
+        cardHist.obtened = Date.now();
         this.cardHistDAO.insert(cardHist);
     }
 

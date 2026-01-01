@@ -14,6 +14,7 @@ import { FactoryDAO } from "./DAO/FactoryDAO";
 import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
 const app = express()
+app.use(express.json());
 const port = 3001
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');

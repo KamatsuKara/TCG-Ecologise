@@ -1,65 +1,65 @@
 export class User {
-    private id: number;
-    private name: string;
-    private email: string;
-    private password: string;
-    private role: string;
-    private create: number;
+    private _id: number;
+    private _name: string;
+    private _email: string;
+    private _password: string;
+    private _role: string;
+    private _create: number;
 
     constructor(id:number = 0, name:string = "", email:string = "", password:string = "", role:string = "USER", create:number = Date.now()){   
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.create = create;
+        this._id = id;
+        this._name = name;
+        this._email = email;
+        this._password = password;
+        this._role = role;
+        this._create = create;
     }
 
     // Id
-    public get Id(): number {
-        return this.id;
+    public get id(): number {
+        return this._id;
     }
-    public set Id(id: number) {
-        this.id = id;
+    public set id(id: number) {
+        this._id = id;
     }
 
     // Name
-    public get Name(): string {
-        return this.name;
+    public get name(): string {
+        return this._name;
     }
-    public set Name(name: string) {
-        this.name = name;
+    public set name(name: string) {
+        this._name = name;
     }
 
     // Email
-    public get Email(): string {
-        return this.email;
+    public get email(): string {
+        return this._email;
     }
-    public set Email(email: string) {
-        this.email = email;
+    public set email(email: string) {
+        this._email = email;
     }
 
     // Password
-    public get Password(): string {
-        return this.password;
+    public get password(): string {
+        return this._password;
     }
-    public set Password(password: string) {
-        this.password = password;
+    public set password(password: string) {
+        this._password = password;
     }
 
     // Role
-    public get Role(): string {
-        return this.role;
+    public get role(): string {
+        return this._role;
     }
-    public set Role(role: string) {
-        this.role = role;
+    public set role(role: string) {
+        this._role = role;
     }
 
     // Create
-    public get Create(): number {
-        return this.create;
+    public get create(): number {
+        return this._create;
     }
-    public set Create(create: number) {
-        this.create = create;
+    public set create(create: number) {
+        this._create = create;
     }
 }

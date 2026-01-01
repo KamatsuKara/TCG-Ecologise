@@ -16,7 +16,7 @@ export class RaritySqliteDAO implements RarityDAO {
   async insert(rarity:Rarity):Promise<void>{
     const request:string = `INSERT INTO rarity(name) VALUES (?)`;
     const pattern:string[] = [
-      rarity.Name
+      rarity.name
     ];
 
     (await this.db).run(request, pattern);
@@ -25,8 +25,8 @@ export class RaritySqliteDAO implements RarityDAO {
   async update(rarity:Rarity):Promise<void>{
     const request:string = `UPDATE rarity SET name=? WHERE id=?`;
     const pattern:string[] = [
-      rarity.Name,
-      rarity.Id.toString()
+      rarity.name,
+      rarity.id.toString()
     ];
 
     (await this.db).run(request, pattern);
