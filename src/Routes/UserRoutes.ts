@@ -17,7 +17,9 @@ export function userRoutes(userDAO:UserDAO): Router {
     router.post("/", authJWT, requireRole(["ADMIN"]), userController.create.bind(userController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
+    //router.put("/me", authJWT, requireRole(["ADMIN"]), userController.updateMe.bind(userController));
     router.patch("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
+    //router.patch("/me", authJWT, requireRole(["ADMIN"]), userController.updateMe.bind(userController));
 
     return router;
 }
