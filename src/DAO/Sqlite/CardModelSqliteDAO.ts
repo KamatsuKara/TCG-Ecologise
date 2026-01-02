@@ -4,61 +4,86 @@ import { CardModel } from "../../Models/CardModel";
 import { CardModelDAO } from "../CardModelDAO";
 
 export class CardModelSqliteDAO implements CardModelDAO {
-  private db:Promise<Database>;
+	private db:Promise<Database>;
 
-  constructor(dbFilePath: string){
-    this.db = open({
-      filename: dbFilePath,
-      driver: sqlite3.Database
-    });
-  }
+	constructor(dbFilePath: string){
+		this.db = open({
+			filename: dbFilePath,
+			driver: sqlite3.Database
+		});
+	}
 
-  async insert(cardModel:CardModel):Promise<void>{
-    const request:string = `INSERT INTO cardModel(name,image,description,effect) VALUES (?,?,?,?)`;
-    const pattern:string[] = [
-      cardModel.name,
-      cardModel.image,
-      cardModel.description,
-      cardModel.effect
-    ];
+	async insert(cardModel:CardModel):Promise<void>{
+		const patterns: string[] = ["name"];
+		const values: string[] = [cardModel.name];
 
-    (await this.db).run(request, pattern);
-  }
+		if(cardModel.image!=null){
+			patterns.push("image");
+			values.push(cardModel.image);
+		}
+		if(cardModel.description!=null){
+			patterns.push("description");
+			values.push(cardModel.description);
+		}
+		if(cardModel.effect!=null){
+			patterns.push("effect");
+			values.push(cardModel.effect);
+		}
 
-  async update(cardModel:CardModel):Promise<void>{
-    const request:string = `UPDATE cardModel SET name=?,image=?,description=?,effect=? WHERE id=?`;
-    const pattern:string[] = [
-      cardModel.name,
-      cardModel.image,
-      cardModel.description,
-      cardModel.effect,
-      cardModel.id.toString()
-    ];
+		const request:string = `INSERT INTO cardModel(${patterns.join(",")}) VALUES (${Array(values.length).fill("?").join(",")})`;
 
-    (await this.db).run(request, pattern);
-  }
+		(await this.db).run(request, values);
+	}
 
-  async delete(id:number):Promise<void>{
-    const request:string = `DELETE FROM cardModel WHERE id = ?`;
-    const pattern:string[] = [
-      id.toString()
-    ];
+	async update(cardModel: CardModel): Promise<void> {
+		const patterns: string[] = [];
+		const values: string[] = [];
 
-    (await this.db).run(request, pattern);
-  }
+		if(cardModel.name != null) {
+			patterns.push("name=?");
+			values.push(cardModel.name);
+		}
+		if(cardModel.image != null) {
+			patterns.push("image=?");
+			values.push(cardModel.image);
+		}
+		if(cardModel.description != null) {
+			patterns.push("description=?");
+			values.push(cardModel.description);
+		}
+		if(cardModel.effect != null) {
+			patterns.push("effect=?");
+			values.push(cardModel.effect);
+		}
 
-  async findAll():Promise<CardModel[]>{
-    const request:string = `SELECT * FROM cardModel`;
+		const request: string = `UPDATE cardModel SET ${patterns.join(", ")} WHERE id=?`;
+		values.push(cardModel.id.toString());
 
-    return (await this.db).all(request);
-  }
+		(await this.db).run(request, values);
+	}
 
-  async findById(id:number):Promise<CardModel|undefined>{
-    const request:string = `SELECT * FROM cardModel WHERE id = ?`;
-    const pattern:string[] = [
-      id.toString()
-    ];
 
-    return (await this.db).get(request, pattern);
-  }
+	async delete(id:number):Promise<void>{
+		const request:string = `DELETE FROM cardModel WHERE id = ?`;
+		const values:string[] = [
+		id.toString()
+		];
+
+		(await this.db).run(request, values);
+	}
+
+	async findAll():Promise<CardModel[]>{
+		const request:string = `SELECT * FROM cardModel`;
+
+		return (await this.db).all(request);
+	}
+
+	async findById(id:number):Promise<CardModel|undefined>{
+		const request:string = `SELECT * FROM cardModel WHERE id = ?`;
+		const values:string[] = [
+		id.toString()
+		];
+
+		return (await this.db).get(request, values);
+	}
 }

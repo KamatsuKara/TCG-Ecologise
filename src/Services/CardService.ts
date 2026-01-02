@@ -10,8 +10,16 @@ export class CardService {
         return cards;
     }
 
-    async get(id: number):Promise<Card>{
+    async get(id:number):Promise<Card>{
         const card = await this.cardDAO.findById(id);
+        if(!card){
+            throw new Error("Card not found");
+        }
+        return card;
+    }
+
+    async getByUser(id:number):Promise<Card[]>{
+        const card = await this.cardDAO.findByUser(id);
         if(!card){
             throw new Error("Card not found");
         }

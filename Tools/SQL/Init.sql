@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS User (
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
     role VARCHAR(15) NOT NULL CHECK (role IN ('USER', 'ADMIN')) DEFAULT 'USER',
-    creation DATETIME
+    creation DATETIME NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Card (
@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS Card (
     id_user INT NOT NULL,
     id_cardmodel INT NOT NULL,
     id_rarity INT NOT NULL,
-    obtened DATETIME,
-    created DATETIME,
+    obtened DATETIME NOT NULL,
+    created DATETIME NOT NULL,
     CONSTRAINT fk_cards_owner FOREIGN KEY (id_user) REFERENCES User(id),
     CONSTRAINT fk_cards_model FOREIGN KEY (id_cardmodel) REFERENCES CardModel(id),
     CONSTRAINT fk_cards_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS CardHist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_card INT NOT NULL,
     id_user INT NOT NULL,
-    obtened DATETIME,
+    obtened DATETIME NOT NULL,
     CONSTRAINT fk_cardshist_card FOREIGN KEY (id_card) REFERENCES Card(id),
     CONSTRAINT fk_cardshist_user FOREIGN KEY (id_user) REFERENCES User(id)
 );

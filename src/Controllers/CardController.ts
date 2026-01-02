@@ -26,6 +26,26 @@ export class CardController{
         }
     };
 
+    async getByUser(req:Request, res:Response):Promise<void>{
+        try{
+            const card = await this.cardService.getByUser(Number(req.params.id));
+            res.json(card);
+        }catch(error:any){
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    };
+
+    async getByMe(req:Request, res:Response):Promise<void>{
+        try{
+            const card = await this.cardService.getByUser(Number(req.user?.sub));
+            res.json(card);
+        }catch(error:any){
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    };
+
     async create(req:Request, res:Response):Promise<void>{
         try{
             await this.cardService.create(req.body);

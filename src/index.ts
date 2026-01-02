@@ -22,12 +22,12 @@ const port = process.env.port;
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
 
-app.use("/cardhists", cardHistRoutes(factoryDAO.createCardHistDAO()));
-app.use("/cardmodels", cardModelRoutes(factoryDAO.createCardModelDAO()));
-app.use("/cards", cardRoutes(factoryDAO.createCardDAO()));
-app.use("/raritys", rarityRoutes(factoryDAO.createRarityDAO()));
-app.use("/users", userRoutes(factoryDAO.createUserDAO()));
+app.use("/cardhists", cardHistRoutes(factoryDAO));
+app.use("/cardmodels", cardModelRoutes(factoryDAO));
+app.use("/cards", cardRoutes(factoryDAO));
+app.use("/raritys", rarityRoutes(factoryDAO));
+app.use("/users", userRoutes(factoryDAO));
 
-app.use("/auth", authRoutes(factoryDAO.createUserDAO()));
+app.use("/auth", authRoutes(factoryDAO));
 
 app.listen(port, () => console.log("API running on port " + port));

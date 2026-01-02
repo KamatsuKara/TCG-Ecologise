@@ -18,6 +18,7 @@ export class UserService {
         if(!user){
             throw new Error("User not found");
         }
+        user.password = "";
         return user;
     }
 

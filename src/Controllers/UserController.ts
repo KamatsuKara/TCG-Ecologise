@@ -65,4 +65,15 @@ export class UserController{
             res.status(500).json({ error: error.message });
         }
     };
+
+    async updateMe(req:Request, res:Response):Promise<void>{
+        try{
+            req.body.id = req.user?.sub;
+            await this.userService.update(req.body);
+            res.json("User updated");
+        }catch(error:any){
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    };
 }

@@ -1,13 +1,16 @@
 import { Router } from "express";
 import { authJWT, requireRole } from "../authMiddleware"
 
+import { FactoryDAO } from "../DAO/FactoryDAO";
+
 import { RarityDAO } from "../DAO/RarityDAO";
 import { RarityService } from "../Services/RarityService";
 import { RarityController } from "../Controllers/RarityController";
 
-export function rarityRoutes(rarityDAO:RarityDAO): Router {
+export function rarityRoutes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
+    const rarityDAO = factoryDAO.createRarityDAO();
     const rarityService = new RarityService(rarityDAO);
     const rarityController = new RarityController(rarityService);
 

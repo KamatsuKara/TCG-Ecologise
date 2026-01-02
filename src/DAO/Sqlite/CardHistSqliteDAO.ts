@@ -4,76 +4,88 @@ import { CardHist } from "../../Models/CardHist";
 import { CardHistDAO } from "../CardHistDAO";
 
 export class CardHistSqliteDAO implements CardHistDAO {
-  private db:Promise<Database>;
+private db:Promise<Database>;
 
-  constructor(dbFilePath: string){
-    this.db = open({
-      filename: dbFilePath,
-      driver: sqlite3.Database
-    });
-  }
+	constructor(dbFilePath: string){
+		this.db = open({
+			filename: dbFilePath,
+			driver: sqlite3.Database
+		});
+	}
 
-  async insert(cardHist:CardHist):Promise<void>{
-    const request:string = `INSERT INTO cardHist(id_card,id_user,obtened) VALUES (?,?,?)`;
-    const pattern:string[] = [
-      cardHist.card.id.toString(),
-      cardHist.owner.id.toString(),
-      cardHist.obtened.toString()
-    ];
+	async insert(cardHist:CardHist):Promise<void>{
+		const request:string = `INSERT INTO cardHist(id_card,id_user,obtened) VALUES (?,?,?)`;
+		const values:string[] = [
+			cardHist.card.id.toString(),
+			cardHist.owner.id.toString(),
+			cardHist.obtened.toString()
+		];
 
-    (await this.db).run(request, pattern);
-  }
+		(await this.db).run(request, values);
+	}
 
-  async update(cardHist:CardHist):Promise<void>{
-    const request:string = `UPDATE cardHist SET id_card=?,id_user=?,obtened=? WHERE id = ?`;
-    const pattern:string[] = [
-      cardHist.card.id.toString(),
-      cardHist.owner.id.toString(),
-      cardHist.obtened.toString()
-    ];
+	async update(cardHist:CardHist):Promise<void>{
+		const patterns:string[] = [];
+		const values:string[] = [];
 
-    (await this.db).run(request, pattern);
-  }
+		if(cardHist.card!=null){
+			patterns.push("id_card=?");
+			values.push(cardHist.card.id.toString());
+		}
+		if(cardHist.owner!=null){
+			patterns.push("id_user=?");
+			values.push(cardHist.owner.id.toString());
+		}
+		if(cardHist.obtened!=null){
+			patterns.push("obtened=?");
+			values.push(cardHist.obtened.toString());
+		}
+		
+		const request:string = `UPDATE cardHist SET ${patterns.join(", ")} WHERE id = ?`;
+		values.push(cardHist.id.toString());
 
-  async delete(id:number):Promise<void>{
-    const request:string = `DELETE FROM cardHist WHERE id = ?`;
-    const pattern:string[] = [
-      id.toString()
-    ];
+		(await this.db).run(request, values);
+	}
 
-    (await this.db).run(request, pattern);
-  }
+	async delete(id:number):Promise<void>{
+		const request:string = `DELETE FROM cardHist WHERE id = ?`;
+		const values:string[] = [
+			id.toString()
+		];
 
-  async findAll():Promise<CardHist[]>{
-    const request:string = `SELECT * FROM cardHist`;
+		(await this.db).run(request, values);
+	}
 
-    return (await this.db).all(request);
-  }
+	async findAll():Promise<CardHist[]>{
+		const request:string = `SELECT * FROM cardHist`;
 
-  async findById(id:number):Promise<CardHist|undefined>{
-    const request:string = `SELECT * FROM cardHist WHERE id = ?`;
-    const pattern:string[] = [
-      id.toString()
-    ];
+		return (await this.db).all(request);
+	}
 
-    return (await this.db).get(request, pattern);
-  }
+	async findById(id:number):Promise<CardHist|undefined>{
+		const request:string = `SELECT * FROM cardHist WHERE id = ?`;
+		const values:string[] = [
+			id.toString()
+		];
 
-  async findByCard(cardId:number):Promise<CardHist[]>{
-    const request:string = `SELECT * FROM cardHist WHERE id_card = ?`;
-    const pattern:string[] = [
-      cardId.toString()
-    ];
+		return (await this.db).get(request, values);
+	}
 
-    return (await this.db).all(request, pattern);
-  }
+	async findByCard(cardId:number):Promise<CardHist[]>{
+		const request:string = `SELECT * FROM cardHist WHERE id_card = ?`;
+		const values:string[] = [
+			cardId.toString()
+		];
 
-  async findByUser(userId:number):Promise<CardHist[]>{
-    const request:string = `SELECT * FROM cardHist WHERE id_user = ?`;
-    const pattern:string[] = [
-      userId.toString()
-    ];
+		return (await this.db).all(request, values);
+	}
 
-    return (await this.db).all(request, pattern);
-  }
+	async findByUser(userId:number):Promise<CardHist[]>{
+		const request:string = `SELECT * FROM cardHist WHERE id_user = ?`;
+		const values:string[] = [
+			userId.toString()
+		];
+
+		return (await this.db).all(request, values);
+	}
 }

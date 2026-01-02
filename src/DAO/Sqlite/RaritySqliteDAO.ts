@@ -4,55 +4,61 @@ import { Rarity } from "../../Models/Rarity";
 import { RarityDAO } from "../RarityDAO";
 
 export class RaritySqliteDAO implements RarityDAO {
-  private db:Promise<Database>;
+	private db:Promise<Database>;
 
-  constructor(dbFilePath: string){
-    this.db = open({
-      filename: dbFilePath,
-      driver: sqlite3.Database
-    });
-  }
+	constructor(dbFilePath: string){
+		this.db = open({
+			filename: dbFilePath,
+			driver: sqlite3.Database
+		});
+	}
 
-  async insert(rarity:Rarity):Promise<void>{
-    const request:string = `INSERT INTO rarity(name) VALUES (?)`;
-    const pattern:string[] = [
-      rarity.name
-    ];
+	async insert(rarity:Rarity):Promise<void>{
+		const request:string = `INSERT INTO rarity(name) VALUES (?)`;
+		const values:string[] = [
+			rarity.name
+		];
 
-    (await this.db).run(request, pattern);
-  }
+		(await this.db).run(request, values);
+	}
 
-  async update(rarity:Rarity):Promise<void>{
-    const request:string = `UPDATE rarity SET name=? WHERE id=?`;
-    const pattern:string[] = [
-      rarity.name,
-      rarity.id.toString()
-    ];
+	async update(rarity: Rarity): Promise<void> {
+		const patterns: string[] = [];
+		const values: string[] = [];
 
-    (await this.db).run(request, pattern);
-  }
+		if(rarity.name != null) {
+			patterns.push("name=?");
+			values.push(rarity.name);
+		}
 
-  async delete(id:number):Promise<void>{
-    const request:string = `DELETE FROM rarity WHERE id = ?`;
-    const pattern:string[] = [
-      id.toString()
-    ];
+		const request: string = `UPDATE rarity SET ${patterns.join(", ")} WHERE id=?`;
+		values.push(rarity.id.toString());
 
-    (await this.db).run(request, pattern);
-  }
+		(await this.db).run(request, values);
+	}
 
-  async findAll():Promise<Rarity[]>{
-    const request:string = `SELECT * FROM rarity`;
 
-    return (await this.db).all(request);
-  }
+	async delete(id:number):Promise<void>{
+		const request:string = `DELETE FROM rarity WHERE id = ?`;
+		const values:string[] = [
+			id.toString()
+		];
 
-  async findById(id:number):Promise<Rarity|undefined>{
-    const request:string = `SELECT * FROM rarity WHERE id = ?`;
-    const pattern:string[] = [
-      id.toString()
-    ];
+		(await this.db).run(request, values);
+	}
 
-    return (await this.db).get(request, pattern);
-  }
+	async findAll():Promise<Rarity[]>{
+		const request:string = `SELECT * FROM rarity`;
+
+		return (await this.db).all(request);
+	}
+
+	async findById(id:number):Promise<Rarity|undefined>{
+		const request:string = `SELECT * FROM rarity WHERE id = ?`;
+		const values:string[] = [
+			id.toString()
+		];
+
+		return (await this.db).get(request, values);
+	}
 }

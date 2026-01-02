@@ -1,13 +1,16 @@
 import { Router } from "express";
 import { authJWT, requireRole } from "../authMiddleware"
 
+import { FactoryDAO } from "../DAO/FactoryDAO";
+
 import { CardModelDAO } from "../DAO/CardModelDAO";
 import { CardModelService } from "../Services/CardModelService";
 import { CardModelController } from "../Controllers/CardModelController";
 
-export function cardModelRoutes(cardModelDAO:CardModelDAO): Router {
+export function cardModelRoutes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
+    const cardModelDAO = factoryDAO.createCardModelDAO();
     const cardModelService = new CardModelService(cardModelDAO);
     const cardModelController = new CardModelController(cardModelService);
 
