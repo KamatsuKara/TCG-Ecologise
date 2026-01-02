@@ -5,7 +5,11 @@
 [X] changer les insert pour reussir si var vide
 [] filtre dans le get de card
 [X] changer update pour reussir si var vide
-[] possibiliter d'interegir avec c'est carte pour un user
 [] ajouter booster
 [] ajouter echange
 [] mieux gere mdp du user
+[] test unitaire
+[] test d'integration
+[] doc intercode
+[] oc OpenAPI
+[] refaire bruno
