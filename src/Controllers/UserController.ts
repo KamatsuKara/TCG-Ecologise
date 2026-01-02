@@ -11,7 +11,8 @@ export class UserController{
             const users = await this.userService.getAll(limit, page);
             res.json(users);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -20,7 +21,8 @@ export class UserController{
             const user = await this.userService.get(Number(req.params.id));
             res.json(user);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -29,7 +31,8 @@ export class UserController{
             const user = await this.userService.get(Number(req.user?.sub));
             res.json(user);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     }
 
@@ -38,7 +41,8 @@ export class UserController{
             await this.userService.create(req.body);
             res.json("User created");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -47,7 +51,8 @@ export class UserController{
             await this.userService.delete(Number(req.params.id));
             res.json("User deleted");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -56,7 +61,8 @@ export class UserController{
             await this.userService.update(req.body);
             res.json("User updated");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 }

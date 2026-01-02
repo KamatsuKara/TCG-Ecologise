@@ -11,7 +11,8 @@ export class CardHistController{
             const cardHists = await this.cardHistService.getAll(limit, page);
             res.json(cardHists);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -20,7 +21,8 @@ export class CardHistController{
             const cardHist = await this.cardHistService.get(Number(req.params.id));
             res.json(cardHist);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -29,7 +31,8 @@ export class CardHistController{
             await this.cardHistService.create(req.body);
             res.json("CardHist created");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -38,7 +41,8 @@ export class CardHistController{
             await this.cardHistService.delete(Number(req.params.id));
             res.json("CardHist deleted");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -47,7 +51,8 @@ export class CardHistController{
             await this.cardHistService.update(req.body);
             res.json("CardHist updated");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 }

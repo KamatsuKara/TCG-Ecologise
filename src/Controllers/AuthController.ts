@@ -11,7 +11,8 @@ export class AuthController{
             const token:string = await this.authService.login(email, password);
             res.json({ token });
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }   
     }
 
@@ -20,7 +21,8 @@ export class AuthController{
             this.authService.register(req.body);
             res.json("Register done");
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         } 
     }
 }

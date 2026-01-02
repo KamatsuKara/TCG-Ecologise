@@ -11,7 +11,8 @@ export class RarityController{
             const raritys = await this.rarityService.getAll(limit, page);
             res.json(raritys);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -20,7 +21,8 @@ export class RarityController{
             const rarity = await this.rarityService.get(Number(req.params.id));
             res.json(rarity);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -29,7 +31,8 @@ export class RarityController{
             await this.rarityService.create(req.body);
             res.json("Rarity created");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -38,7 +41,8 @@ export class RarityController{
             await this.rarityService.delete(Number(req.params.id));
             res.json("Rarity deleted");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -47,7 +51,8 @@ export class RarityController{
             await this.rarityService.update(req.body);
             res.json("Rarity updated");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 }
