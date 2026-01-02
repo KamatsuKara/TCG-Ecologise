@@ -14,7 +14,6 @@ export class AuthService {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             throw new Error("User incorrect");
         }
-
         return jwt.sign({sub: user.id,role: user.role},process.env.JWT_SECRET!,{ expiresIn: "1h" });
     }
 

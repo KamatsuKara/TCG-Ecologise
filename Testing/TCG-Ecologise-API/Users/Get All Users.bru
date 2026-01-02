@@ -10,11 +10,11 @@ get {
   auth: bearer
 }
 
-auth:bearer {
-  token: {{token}}
-}
-
-query {
+params:query {
   limit: 10
   page: 1
+}
+
+auth:bearer {
+  token: {{token}}
 }

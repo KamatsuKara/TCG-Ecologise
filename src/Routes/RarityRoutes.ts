@@ -14,7 +14,7 @@ export function rarityRoutes(rarityDAO:RarityDAO): Router {
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), rarityController.getAll.bind(rarityController));
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), rarityController.get.bind(rarityController));
     router.post("/", authJWT, requireRole(["ADMIN"]), rarityController.create.bind(rarityController));
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), rarityController.delete.bind(rarityController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), rarityController.delete.bind(rarityController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update.bind(rarityController));
     router.patch("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update.bind(rarityController));
 

@@ -14,7 +14,7 @@ export function cardRoutes(cardDAO:CardDAO): Router {
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardController.getAll.bind(cardController));
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardController.get.bind(cardController));
     router.post("/", authJWT, requireRole(["ADMIN"]), cardController.create.bind(cardController));
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), cardController.delete.bind(cardController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), cardController.delete.bind(cardController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), cardController.update.bind(cardController));
     router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardController.update.bind(cardController));
 

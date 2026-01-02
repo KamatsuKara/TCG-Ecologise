@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+if (!process.env.JWT_SECRET) throw new Error("Missing JWT_SECRET");
+if (!process.env.port) throw new Error("Missing port");
+
 import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";
 import { cardRoutes } from "./Routes/CardRoutes";
@@ -13,9 +16,9 @@ import { authRoutes } from "./Routes/AuthRoutes";
 import { FactoryDAO } from "./DAO/FactoryDAO";
 import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
-const app = express()
+const app = express();
 app.use(express.json());
-const port = 3001
+const port = process.env.port;
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
 
