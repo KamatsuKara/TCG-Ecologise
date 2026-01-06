@@ -1,0 +1,669 @@
+openapi: 3.0.3
+info:
+  title: TCG-Ecologise API
+  version: "1.0.0"
+  description: Documentation OpenAPI pour l'API TCG-Ecologise (routes basées sur `src/Routes`).
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:3000
+    description: Serveur local (ajuster le port selon `process.env.port`).
+security:
+  - bearerAuth: []
+paths:
+  /auth/login:
+    post:
+      security: []
+      summary: Authentification (login)
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required: [email, password]
+      responses:
+        '200':
+          description: Token JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /auth/register:
+    post:
+      security: []
+      summary: Créer un utilisateur (register)
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+
+  /users:
+    get:
+      summary: Récupère la liste des utilisateurs
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste d'utilisateurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPublic'
+    post:
+      summary: Créer un utilisateur (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+
+  /users/me:
+    get:
+      summary: Récupère l'utilisateur connecté
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Profil de l'utilisateur connecté
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+    put:
+      summary: Mettre à jour le profil de l'utilisateur connecté
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '200':
+          description: Profil mis à jour
+    patch:
+      summary: Mise à jour partielle du profil connecté
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Profil mis à jour
+
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère un utilisateur par id (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Utilisateur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+    put:
+      summary: Remplace un utilisateur (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '200':
+          description: Utilisateur mis à jour
+    patch:
+      summary: Mise à jour partielle (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Utilisateur mis à jour
+    delete:
+      summary: Supprime un utilisateur (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Utilisateur supprimé
+
+  /users/{id}/cards:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère les cartes d'un utilisateur (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de cartes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+
+  /users/me/cards:
+    get:
+      summary: Récupère les cartes du profil connecté
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de cartes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+
+  /cards:
+    get:
+      summary: Récupère toutes les cartes
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de cartes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Card'
+    post:
+      summary: Créer une carte (admin)
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCreate'
+      responses:
+        '201':
+          description: Carte créée
+
+  /cards/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère une carte par id
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Carte
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
+    put:
+      summary: Remplace une carte (admin)
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardCreate'
+      responses:
+        '200':
+          description: Carte mise à jour
+    patch:
+      summary: Mise à jour partielle (admin)
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Carte mise à jour
+    delete:
+      summary: Supprime une carte (admin)
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Carte supprimée
+
+  /cardmodels:
+    get:
+      summary: Récupère tous les modèles de carte
+      tags: [CardModels]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de modèles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CardModel'
+    post:
+      summary: Créer un modèle de carte (admin)
+      tags: [CardModels]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardModel'
+      responses:
+        '201':
+          description: Modèle créé
+
+  /cardmodels/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère un modèle par id
+      tags: [CardModels]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Modèle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardModel'
+    put:
+      summary: Remplace un modèle (admin)
+      tags: [CardModels]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardModel'
+      responses:
+        '200':
+          description: Modèle mis à jour
+    patch:
+      summary: Mise à jour partielle (admin)
+      tags: [CardModels]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Modèle mis à jour
+    delete:
+      summary: Supprime un modèle (admin)
+      tags: [CardModels]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Modèle supprimé
+
+  /cardhists:
+    get:
+      summary: Récupère l'historique des cartes
+      tags: [CardHists]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste d'historique
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CardHist'
+    post:
+      summary: Créer un enregistrement d'historique
+      tags: [CardHists]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardHistCreate'
+      responses:
+        '201':
+          description: Historique créé
+
+  /cardhists/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère un historique par id
+      tags: [CardHists]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Historique
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardHist'
+    put:
+      summary: Remplace un historique (admin)
+      tags: [CardHists]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardHistCreate'
+      responses:
+        '200':
+          description: Historique mis à jour
+    patch:
+      summary: Mise à jour partielle (admin)
+      tags: [CardHists]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Historique mis à jour
+    delete:
+      summary: Supprime un historique (admin)
+      tags: [CardHists]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Historique supprimé
+
+  /raritys:
+    get:
+      summary: Récupère toutes les raretés
+      tags: [Rarity]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de raretés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rarity'
+    post:
+      summary: Créer une rareté (admin)
+      tags: [Rarity]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rarity'
+      responses:
+        '201':
+          description: Rareté créée
+
+  /raritys/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère une rareté par id
+      tags: [Rarity]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Rareté
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rarity'
+    put:
+      summary: Remplace une rareté (admin)
+      tags: [Rarity]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rarity'
+      responses:
+        '200':
+          description: Rareté mise à jour
+    patch:
+      summary: Mise à jour partielle (admin)
+      tags: [Rarity]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Rareté mise à jour
+    delete:
+      summary: Supprime une rareté (admin)
+      tags: [Rarity]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Rareté supprimée
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+        create:
+          type: integer
+    UserPublic:
+      allOf:
+        - $ref: '#/components/schemas/User'
+      required: [id, name, email]
+      properties:
+        password:
+          type: string
+          description: 'Champ présent côté modèle mais non renvoyé habituellement (cachez-le)'
+    UserCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+      required: [name, email, password]
+    Rarity:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    CardModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        effect:
+          type: string
+    Card:
+      type: object
+      properties:
+        id:
+          type: integer
+        owner:
+          $ref: '#/components/schemas/UserPublic'
+        cardModel:
+          $ref: '#/components/schemas/CardModel'
+        rarity:
+          $ref: '#/components/schemas/Rarity'
+        created:
+          type: integer
+        obtened:
+          type: integer
+    CardCreate:
+      type: object
+      properties:
+        ownerId:
+          type: integer
+        cardModelId:
+          type: integer
+        rarityId:
+          type: integer
+    CardHist:
+      type: object
+      properties:
+        id:
+          type: integer
+        card:
+          $ref: '#/components/schemas/Card'
+        owner:
+          $ref: '#/components/schemas/UserPublic'
+        obtened:
+          type: integer
+    CardHistCreate:
+      type: object
+      properties:
+        cardId:
+          type: integer
+        ownerId:
+          type: integer
+        obtened:
+          type: integer

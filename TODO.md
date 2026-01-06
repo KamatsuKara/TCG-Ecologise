@@ -5,13 +5,14 @@
 [X] changer les insert pour reussir si var vide
 [] filtre dans le get de card
 [X] changer update pour reussir si var vide
+[] faire les test unitaire si erreur
 [] ajouter booster
 [] ajouter echange
 [] mieux gere mdp du user
-[] test unitaire
+[X] test unitaire
 [] test d'integration
 [] doc intercode
-[] doc OpenAPI
+[X] doc OpenAPI
 [] refaire bruno
 
 [] Documentation : Votre projet devra posséder un fichier README.md présentant l’ensemble des informations nécessaires tels que sa configuration, son déploiement, ou encore son utilisation. Pensez entre autres à décrire précisément l’ensemble des endpoints et leur usage.
