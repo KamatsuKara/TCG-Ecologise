@@ -1,0 +1,29 @@
+meta {
+  name: Create Card
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/cards
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "owner": {
+      "id": 1
+    },
+    "cardModel": {
+      "id": 1
+    },
+    "rarity": {
+      "id": 1
+    }
+  }
+}

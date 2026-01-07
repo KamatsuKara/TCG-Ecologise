@@ -1,0 +1,30 @@
+meta {
+  name: Update Card
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/cards/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "id": 1,
+    "owner": {
+      "id": 1
+    },
+    "cardModel": {
+      "id": 1
+    },
+    "rarity": {
+      "id": 2
+    }
+  }
+}

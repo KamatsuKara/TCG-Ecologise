@@ -1914,7 +1914,7 @@ const config: Config = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	roots: ['<rootDir>/Testing/unit'],
-	testMatch: ['**/*.test.ts'],
+<>	testMatch: ['**/*.test.ts'],
 	collectCoverageFrom: [
 		'src/**/*.ts',
 		'!src/**/*.d.ts',
