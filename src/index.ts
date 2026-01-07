@@ -5,6 +5,7 @@ dotenv.config();
 
 if (!process.env.JWT_SECRET) throw new Error("Missing JWT_SECRET");
 if (!process.env.port) throw new Error("Missing port");
+if (!process.env.LogDir) throw new Error("Missing LogDir");
 
 import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";
@@ -16,8 +17,11 @@ import { authRoutes } from "./Routes/AuthRoutes";
 import { FactoryDAO } from "./DAO/FactoryDAO";
 import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
+import { audit } from "./Middleware/auditMiddleware";
+
 const app = express();
 app.use(express.json());
+app.use(audit);
 const port = process.env.port;
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');

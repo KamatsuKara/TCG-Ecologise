@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authJWT, requireRole } from "../authMiddleware"
+import { authJWT, requireRole } from "../Middleware/authMiddleware"
 
 import { FactoryDAO } from "../DAO/FactoryDAO";
 

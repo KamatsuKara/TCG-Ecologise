@@ -19,7 +19,7 @@
 [] Utilisation du patron de conception Repository.
 [] Utilisation des DTO avec un Mapper responsable du passage entre DTO et objet du domaine.
 [] Mise en œuvre des tests d’intégration.
-[] Implémentation de système d’audit qui trace les actions de l’utilisateur.
+[X] Implémentation de système d’audit qui trace les actions de l’utilisateur.
 [] Implémentation du Refresh Token pour la gestion de l’authentification.
 [] Mise en place complète la gestion des autorisations en s’inspirant des modèles vus en cours (RBAC, ABAC, etc.).
 [] Utilisation de docsify ou JSDoc pour créer la documentation. (Dans ce cas la description des endpoints peut être omise dans le fichier README.md)
