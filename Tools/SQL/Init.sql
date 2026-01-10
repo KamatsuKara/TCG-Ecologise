@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS RefreshToken (
     id_user INT NOT NULL,
     expiration_date DATETIME NOT NULL,
     revoked BOOLEAN DEFAULT True,
-    CONSTRAINT fk_RefreshToken_User FOREIGN KEY (id_user) REFERENCES User(id)
+    CONSTRAINT fk_refreshToken_user FOREIGN KEY (id_user) REFERENCES User(id)
 );
 
 CREATE TABLE IF NOT EXISTS Card (
@@ -25,15 +25,16 @@ CREATE TABLE IF NOT EXISTS Card (
     id_rarity INT NOT NULL,
     obtened DATETIME NOT NULL,
     created DATETIME NOT NULL,
-    CONSTRAINT fk_cards_owner FOREIGN KEY (id_user) REFERENCES User(id),
-    CONSTRAINT fk_cards_model FOREIGN KEY (id_cardmodel) REFERENCES CardModel(id),
-    CONSTRAINT fk_cards_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
+    CONSTRAINT fk_card_user FOREIGN KEY (id_user) REFERENCES User(id),
+    CONSTRAINT fk_card_cardmodel FOREIGN KEY (id_cardmodel) REFERENCES CardModel(id),
+    CONSTRAINT fk_card_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
 );
 
 CREATE TABLE IF NOT EXISTS CardModel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) NOT NULL,
     image VARCHAR(100) DEFAULT NULL,
+    category SET('insect', 'plant') NOT NULL,
     description TEXT DEFAULT NULL,
     effect TEXT DEFAULT NULL
 );
@@ -48,6 +49,55 @@ CREATE TABLE IF NOT EXISTS CardHist (
     id_card INT NOT NULL,
     id_user INT NOT NULL,
     obtened DATETIME NOT NULL,
-    CONSTRAINT fk_cardshist_card FOREIGN KEY (id_card) REFERENCES Card(id),
-    CONSTRAINT fk_cardshist_user FOREIGN KEY (id_user) REFERENCES User(id)
+    CONSTRAINT fk_cardhist_card FOREIGN KEY (id_card) REFERENCES Card(id),
+    CONSTRAINT fk_cardhist_user FOREIGN KEY (id_user) REFERENCES User(id)
+);
+
+CREATE TABLE IF NOT EXISTS Booster (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    seed INT NOT NULL,
+    id_boostermodel INT NOT NULL,
+    id_user INT NOT NULL,
+    obtened DATETIME NOT NULL,
+    created DATETIME NOT NULL,
+    CONSTRAINT fk_booster_user FOREIGN KEY (id_user) REFERENCES User(id),
+    CONSTRAINT fk_booster_boostermodel FOREIGN KEY (id_boostermodel) REFERENCES BoosterModel(id)
+);
+
+CREATE TABLE IF NOT EXISTS BoosterModel (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(50) DEFAULT 'NO NAME',
+    nmbCard INT DEFAULT 5,
+    category SET('insect', 'plant') DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS BoosterDropRate (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_rarity INT NOT NULL,
+    id_type INT NOT NULL,
+    guarantee INT DEFAULT 0,
+    drop_rate DECIMAL(5,2) DEFAULT 20,
+    CONSTRAINT fk_boosterdroprate_boostermodel FOREIGN KEY (id_type) REFERENCES BoosterModel(id),
+    CONSTRAINT fk_boosterdroprate_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
+);
+
+CREATE TABLE IF NOT EXISTS Trade (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_sender INT NOT NULL,
+    id_receiver INT NOT NULL,
+    status VARCHAR(15) NOT NULL CHECK (status IN ('PENDING', 'ACCEPTED', 'DECLINED', 'CANCELLED')) DEFAULT 'PENDING',
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME DEFAULT NULL,
+    CONSTRAINT fk_trade_user_sender FOREIGN KEY (id_sender) REFERENCES User(id),
+    CONSTRAINT fk_trade_user_receiver FOREIGN KEY (id_receiver) REFERENCES User(id)
+);
+
+CREATE TABLE IF NOT EXISTS TradeItem (
+    id_trade INT NOT NULL,
+    id_card INT NOT NULL,
+    id_owner INT NOT NULL,
+    PRIMARY KEY (id_trade, id_card),
+    CONSTRAINT fk_cardtrade_trade FOREIGN KEY (id_trade) REFERENCES Trade(id),
+    CONSTRAINT fk_cardtrade_card FOREIGN KEY (id_card) REFERENCES Card(id),
+    CONSTRAINT fk_cardtrade_user FOREIGN KEY (id_owner) REFERENCES User(id)
 );

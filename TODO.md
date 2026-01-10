@@ -6,7 +6,7 @@
 [] filtre dans le get de card
 [X] changer update pour reussir si var vide
 [] faire les test unitaire si erreur
-[] ajouter booster
+[X] ajouter booster
 [] ajouter echange
 [X] test unitaire
 [] test d'integration

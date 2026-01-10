@@ -1,0 +1,70 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>330</x><y>140</y><w>210</w><h>120</h></coordinates><panel_attributes>User
+--
+id: int
+name: varchar(50)
+email: varchar(50)
+password: text
+role: enum
+creation: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>330</x><y>770</y><w>210</w><h>120</h></coordinates><panel_attributes>Cards Model
+--
+id: int
+name: varchar(50)
+image: varchar(100)
+category: set
+description: text
+effect: text</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>330</x><y>610</y><w>210</w><h>70</h></coordinates><panel_attributes>Cards
+--
+id: int
+created: date
+obtened: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>0</y><w>210</w><h>90</h></coordinates><panel_attributes>Booster Hist
+--
+id: int
+id_user; int
+id_booster: int
+obtened: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>250</y><w>50</w><h>380</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;10;360</additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>670</y><w>50</w><h>120</h></coordinates><panel_attributes>m1=0..n
+m2=1..1</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>610</y><w>210</w><h>70</h></coordinates><panel_attributes>Rarity
+--
+id: int
+name: varchar(50)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>530</x><y>640</y><w>160</w><h>40</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>140;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>150</y><w>210</w><h>90</h></coordinates><panel_attributes>RefreshToken
+--
+id: int
+token_hash: UUID
+expiration_date: date
+revoked: bool</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>190</y><w>140</w><h>40</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>170</y><w>210</w><h>90</h></coordinates><panel_attributes>Booster
+--
+id: int
+seed: int
+created: date
+obtened: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>530</x><y>190</y><w>160</w><h>40</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>330</y><w>210</w><h>80</h></coordinates><panel_attributes>BoosterType
+--
+id: int
+nmbCard: int
+category: set
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>250</y><w>50</w><h>100</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>480</y><w>210</w><h>50</h></coordinates><panel_attributes>RarityGuarantee
+--
+nmb: int</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>400</y><w>50</w><h>100</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>760</x><y>520</y><w>50</w><h>110</h></coordinates><panel_attributes>m1=1..1
+m2=1..1</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>10</x><y>310</y><w>210</w><h>120</h></coordinates><panel_attributes>Exchange
+--
+id: int
+step_user_a: int
+step_user_b: int
+state: enum
+creation: date
+closed: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>330</x><y>0</y><w>210</w><h>90</h></coordinates><panel_attributes>Cards Hist
+--
+id: int
+id_user; int
+id_cards: int
+obtened: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>610</y><w>210</w><h>70</h></coordinates><panel_attributes>Group
+--
+id: int
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>640</y><w>150</w><h>40</h></coordinates><panel_attributes>m1=1..1
+m2=0..n</panel_attributes><additional_attributes>10;10;130;10</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>250</y><w>180</w><h>140</h></coordinates><panel_attributes>m1=1..2
+m2=0..n</panel_attributes><additional_attributes>160;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>420</y><w>50</w><h>210</h></coordinates><panel_attributes>m1=1..1
+m2=1..2</panel_attributes><additional_attributes>10;10;10;190</additional_attributes></element></diagram>
