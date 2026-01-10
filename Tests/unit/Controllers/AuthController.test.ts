@@ -17,8 +17,8 @@ describe("AuthController", () => {
 
   test("login responds with token on success", async () => {
     const req: any = { body: { email: "a@a.com", password: "pw" } };
-    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    mockAuthService.login.mockResolvedValue("tokenXYZ");
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis(), cookie: jest.fn() };
+    mockAuthService.login.mockResolvedValue(["tokenXYZ", "refreshTokenABC"]);
 
     await controller.login(req, res);
 

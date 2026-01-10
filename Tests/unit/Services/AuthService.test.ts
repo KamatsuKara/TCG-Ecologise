@@ -6,13 +6,18 @@ const mockUserDAO: any = {
   findByEmail: jest.fn(),
   insert: jest.fn(),
 };
+const mockRefreshTokenDAO: any = {
+  insert: jest.fn(),
+  findAll: jest.fn(),
+  update: jest.fn(),
+};
 
 describe("AuthService", () => {
   let service: AuthService;
 
   beforeEach(() => {
     jest.restoreAllMocks();
-    service = new AuthService(mockUserDAO);
+    service = new AuthService(mockUserDAO, mockRefreshTokenDAO);
     mockUserDAO.findByEmail.mockReset();
     mockUserDAO.insert.mockReset();
   });
@@ -24,7 +29,7 @@ describe("AuthService", () => {
     jest.spyOn(jwt, "sign").mockReturnValue("token123" as any);
     process.env.JWT_SECRET = "test_secret";
 
-    const token = await service.login("alice@example.com", "password");
+    const [token] = await service.login("alice@example.com", "password");
 
     expect(token).toBe("token123");
     expect(mockUserDAO.findByEmail).toHaveBeenCalledWith("alice@example.com");

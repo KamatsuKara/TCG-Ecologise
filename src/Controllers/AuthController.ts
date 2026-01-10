@@ -8,16 +8,18 @@ export class AuthController{
         try{
             const email:string = req.body.email?.toString() || "Error";
             const password:string = req.body.password?.toString()  || "Error";
-            const security:string[] = await this.authService.login(email, password);
-            const jwt:string = security[0];
-            const refreshToken:string = security[1];
-            res.cookie('refreshToken', refreshToken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
-                maxAge: 24 * 60 * 60 * 1000
-            });
-            res.json({ jwt });
+            const security: any = await this.authService.login(email, password);
+            const jwtToken: string = Array.isArray(security) ? security[0] : security;
+            const refreshToken: string | undefined = Array.isArray(security) ? security[1] : undefined;
+            if (refreshToken && typeof (res as any).cookie === 'function') {
+                res.cookie('refreshToken', refreshToken, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: 24 * 60 * 60 * 1000
+                });
+            }
+            res.json({ token: jwtToken });
         }catch(error:any){
             console.log(error.message);
             res.status(500).json({ error: error.message });
