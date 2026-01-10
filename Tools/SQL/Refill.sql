@@ -487,8 +487,10 @@ INSERT INTO User (name,email,password,creation) VALUES
   ("Ivy","turpis.aliquam.adipiscing@icloud.org","mdp","1664625991000"),
   ("Alika","a.neque.nullam@outlook.edu","mdp","1669723914000"),
   ("Kai","risus.at.fringilla@icloud.ca","mdp","1707458389000"),
-  ("Gary","nullam.velit@outlook.ca","mdp","1751601718000"),
-  ("Craig","purus.ac@google.com","mdp","1614722523000"),
-  ("Melodie","orci@google.couk","mdp","1591390929000"),
-  ("Xavier","molestie.orci@google.ca","mdp","1693905766000"),
-  ("Hillary","metus@outlook.ca","mdp","1704615188000");
+  ("Gary","nullam.velit@outlook.ca","mdp","1751601718000");
+
+  INSERT INTO User (name,email,password,creation,role) VALUES
+  ("Craig","purus.ac@google.com","mdp","1614722523000","ADMIN"),
+  ("Melodie","orci@google.couk","mdp","1591390929000","ADMIN"),
+  ("Xavier","molestie.orci@google.ca","mdp","1693905766000","ADMIN"),
+  ("Hillary","metus@outlook.ca","mdp","1704615188000","ADMIN");

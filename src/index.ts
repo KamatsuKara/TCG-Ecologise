@@ -1,11 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 if (!process.env.JWT_SECRET) throw new Error("Missing JWT_SECRET");
 if (!process.env.port) throw new Error("Missing port");
 if (!process.env.LogDir) throw new Error("Missing LogDir");
+if (!process.env.BDDSqliteDir) throw new Error("Missing BDDSqliteDir");
 
 import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";
@@ -22,9 +24,10 @@ import { audit } from "./Middleware/auditMiddleware";
 const app = express();
 app.use(express.json());
 app.use(audit);
+app.use(cookieParser());
 const port = process.env.port;
 
-const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
+const factoryDAO:FactoryDAO = new FactorySqliteDAO(process.env.BDDSqliteDir);
 
 app.use("/cardhists", cardHistRoutes(factoryDAO));
 app.use("/cardmodels", cardModelRoutes(factoryDAO));

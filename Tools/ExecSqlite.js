@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3';
 import fs from 'fs';
 
-var dbPath = "./dist/db/database.db"
+var dbPath = "./db/database.db"
 var requestPath = "./Tools/SQL/Request.sql"
 
 const args = process.argv.slice(2);

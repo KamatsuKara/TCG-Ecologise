@@ -23,4 +23,4 @@
 [] Implémentation du Refresh Token pour la gestion de l’authentification.
 [] Mise en place complète la gestion des autorisations en s’inspirant des modèles vus en cours (RBAC, ABAC, etc.).
 [] Utilisation de docsify ou JSDoc pour créer la documentation. (Dans ce cas la description des endpoints peut être omise dans le fichier README.md)
-[] Mise en œuvre de la spécification OpenAPI pour générer la documentation. (Dans ce cas la description des endpoints peut être omise dans le fichier README.md)
+[X] Mise en œuvre de la spécification OpenAPI pour générer la documentation. (Dans ce cas la description des endpoints peut être omise dans le fichier README.md)

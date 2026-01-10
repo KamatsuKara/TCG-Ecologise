@@ -2,6 +2,7 @@ import { CardHistSqliteDAO } from "./CardHistSqliteDAO";
 import { CardModelSqliteDAO } from "./CardModelSqliteDAO";
 import { CardSqliteDAO } from "./CardSqliteDAO";
 import { RaritySqliteDAO } from "./RaritySqliteDAO";
+import { RefreshTokenSqliteDAO } from "./RefreshTokenSqliteDAO";
 import { UserSqliteDAO } from "./UserSqliteDAO";
 
 import { FactoryDAO } from "../FactoryDAO";
@@ -10,6 +11,7 @@ import { CardHistDAO } from "../CardHistDAO";
 import { CardModelDAO } from "../CardModelDAO";
 import { CardDAO } from "../CardDAO";
 import { RarityDAO } from "../RarityDAO";
+import { RefreshTokenDAO } from "../RefreshTokenDAO";
 import { UserDAO } from "../UserDAO";
 
 export class FactorySqliteDAO extends FactoryDAO{
@@ -34,6 +36,10 @@ export class FactorySqliteDAO extends FactoryDAO{
 
     createRarityDAO():RarityDAO{
         return new RaritySqliteDAO(this.path);
+    }
+
+    createRefreshTokenDAO():RefreshTokenDAO{
+        return new RefreshTokenSqliteDAO(this.path);
     }
 
     createUserDAO():UserDAO{

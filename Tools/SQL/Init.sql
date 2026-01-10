@@ -9,6 +9,15 @@ CREATE TABLE IF NOT EXISTS User (
     creation DATETIME NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS RefreshToken (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    token_hash UUID UNIQUE NOT NULL,
+    id_user INT NOT NULL,
+    expiration_date DATETIME NOT NULL,
+    revoked BOOLEAN DEFAULT True,
+    CONSTRAINT fk_RefreshToken_User FOREIGN KEY (id_user) REFERENCES User(id)
+);
+
 CREATE TABLE IF NOT EXISTS Card (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_user INT NOT NULL,

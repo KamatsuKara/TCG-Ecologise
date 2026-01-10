@@ -1,0 +1,1 @@
+UPDATE user SET Role="ADMIN" WHERE id>41;

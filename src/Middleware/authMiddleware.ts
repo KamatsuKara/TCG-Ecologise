@@ -23,14 +23,23 @@ export function authJWT(req:Request, res:Response, next:NextFunction){
   const token = tokenString.split(" ")[1];
 
   try {
+    /*const decoded = jwt.decode(token) as (JwtPayload & { sub?: string; role?: string }) | null;
+    if (decoded) {
+      const exp = decoded.exp;
+      console.log('Decoded token exp:', exp, '->', exp ? new Date(exp * 1000).toISOString() : 'no-exp');
+      console.log('Decoded token payload:', { sub: decoded.sub, role: decoded.role });
+    } else {
+      console.log('Could not decode token (may be malformed)');
+    }*/
+
     const payload = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload & { sub:string; role:string; };
     req.user = {
       sub: payload.sub,
       role: payload.role
     };
     next();
-  } catch {
-    res.status(401).send("Invalid token");
+  } catch(error:any){
+    res.status(401).send("Invalid token: " + error.message);
   }
 }
 
