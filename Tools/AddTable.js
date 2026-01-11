@@ -194,7 +194,9 @@ export class ${className}Controller{
 
 const RoutesTemplate = `
 import { Router } from "express";
-import { authJWT, requireRole } from "../Middleware/authMiddleware"
+import { authJWT, requireRole } from "../Middleware/authMiddleware";
+
+import { FactoryDAO } from "../DAO/FactoryDAO";
 
 import { ${className}DAO } from "../DAO/${className}DAO";
 import { ${className}Service } from "../Services/${className}Service";
@@ -349,7 +351,6 @@ app.use(cookieParser());
 const port = process.env.port;
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO(process.env.BDDSqliteDir);
-
 ${functions}
 
 app.use("/auth", authRoutes(factoryDAO));
