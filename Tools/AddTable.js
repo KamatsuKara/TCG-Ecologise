@@ -102,7 +102,7 @@ import { ${className}DAO } from "../DAO/${className}DAO";
 export class ${className}Service {
     constructor(private ${tableName}DAO: ${className}DAO){}
 
-    async All:Promise<${className}[]>{
+    async getAll(limit:number, page:number):Promise<${className}[]>{
         var ${tableName}s:${className}[] = await this.${tableName}DAO.findAll();
         ${tableName}s = ${tableName}s.slice((page-1)*limit, page*limit);
         return ${tableName}s;
@@ -145,7 +145,8 @@ export class ${className}Controller{
             const ${tableName}s = await this.${tableName}Service.getAll(limit, page);
             res.json(${tableName}s);
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -154,7 +155,8 @@ export class ${className}Controller{
             const ${tableName} = await this.${tableName}Service.get(Number(req.params.id));
             res.json(${tableName});
         }catch(error:any){
-            res.status(404).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -163,7 +165,8 @@ export class ${className}Controller{
             await this.${tableName}Service.create(req.body);
             res.json("${className} created");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -172,7 +175,8 @@ export class ${className}Controller{
             await this.${tableName}Service.delete(Number(req.params.id));
             res.json("${className} deleted");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 
@@ -181,7 +185,8 @@ export class ${className}Controller{
             await this.${tableName}Service.update(req.body);
             res.json("${className} updated");
         }catch(error:any){
-            res.status(400).json({ error: error.message });
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
         }
     };
 }
@@ -189,23 +194,25 @@ export class ${className}Controller{
 
 const RoutesTemplate = `
 import { Router } from "express";
+import { authJWT, requireRole } from "../Middleware/authMiddleware"
 
 import { ${className}DAO } from "../DAO/${className}DAO";
 import { ${className}Service } from "../Services/${className}Service";
 import { ${className}Controller } from "../Controllers/${className}Controller";
 
-export function ${tableName}Routes(${tableName}DAO:${className}DAO): Router {
+export function ${tableName}Routes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
+    const ${tableName}DAO = factoryDAO.create${className}DAO();
     const ${tableName}Service = new ${className}Service(${tableName}DAO);
     const ${tableName}Controller = new ${className}Controller(${tableName}Service);
 
-    router.get("/", ${tableName}Controller.getAll);
-    router.get("/:id", ${tableName}Controller.get);
-    router.post("/", ${tableName}Controller.create);
-    router.delete("/id", ${tableName}Controller.delete);
-    router.put("/:id", ${tableName}Controller.update);
-    router.patch("/:id", ${tableName}Controller.update);
+    router.get("/", authJWT, requireRole(["ADMIN","USER"]), ${tableName}Controller.getAll.bind(${tableName}Controller));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), ${tableName}Controller.get.bind(${tableName}Controller));
+    router.post("/", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.create.bind(${tableName}Controller));
+    router.delete("/id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.delete.bind(${tableName}Controller));
+    router.put("/:id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.update.bind(${tableName}Controller));
+    router.patch("/:id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.update.bind(${tableName}Controller));
 
     return router;
 }
@@ -312,7 +319,8 @@ const regenerateIndex = () => {
 
     const functions = files.map(file => {
         const name = file.replace('Routes.ts', '');
-        return `app.use("/${name.charAt(0).toLowerCase()+name.slice(1)}s", ${name.charAt(0).toLowerCase()+name.slice(1)}Routes(factoryDAO.create${name}DAO()));`;
+        if(name == "Auth") return;
+        return `app.use("/${name.toLowerCase()}s", ${name.charAt(0).toLowerCase()+name.slice(1)}Routes(factoryDAO));`;
     }).join('\n');
 
     const content = `

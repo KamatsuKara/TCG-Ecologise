@@ -9,12 +9,12 @@ if (!process.env.port) throw new Error("Missing port");
 if (!process.env.LogDir) throw new Error("Missing LogDir");
 if (!process.env.BDDSqliteDir) throw new Error("Missing BDDSqliteDir");
 
+import { authRoutes } from "./Routes/AuthRoutes";
 import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";
 import { cardRoutes } from "./Routes/CardRoutes";
 import { rarityRoutes } from "./Routes/RarityRoutes";
 import { userRoutes } from "./Routes/UserRoutes";
-import { authRoutes } from "./Routes/AuthRoutes";
 
 import { FactoryDAO } from "./DAO/FactoryDAO";
 import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";

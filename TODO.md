@@ -14,3 +14,4 @@
 [X] modif cardmodel -> category -> DAO (update, get)
 [X] construction d'object apres les requete send
 [] dans tous les model mettre par defaut le valeur non def a null
+[] construction d'object avant les requete update
