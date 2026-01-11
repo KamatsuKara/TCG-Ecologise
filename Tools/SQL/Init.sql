@@ -3,6 +3,7 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS User (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) NOT NULL,
+    discord_username VARCHAR(100) DEFAULT NULL,
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
     role VARCHAR(15) NOT NULL CHECK (role IN ('USER', 'ADMIN')) DEFAULT 'USER',
@@ -34,7 +35,7 @@ CREATE TABLE IF NOT EXISTS CardModel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) NOT NULL,
     image VARCHAR(100) DEFAULT NULL,
-    category SET('insect', 'plant') NOT NULL,
+    category TEXT DEFAULT '[]' NOT NULL,
     description TEXT DEFAULT NULL,
     effect TEXT DEFAULT NULL
 );
@@ -68,16 +69,16 @@ CREATE TABLE IF NOT EXISTS BoosterModel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) DEFAULT 'NO NAME',
     nmbCard INT DEFAULT 5,
-    category SET('insect', 'plant') DEFAULT NULL
+    category TEXT DEFAULT '[]' NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS BoosterDropRate (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_rarity INT NOT NULL,
-    id_type INT NOT NULL,
+    id_boostermodel INT NOT NULL,
     guarantee INT DEFAULT 0,
     drop_rate DECIMAL(5,2) DEFAULT 20,
-    CONSTRAINT fk_boosterdroprate_boostermodel FOREIGN KEY (id_type) REFERENCES BoosterModel(id),
+    CONSTRAINT fk_boosterdroprate_boostermodel FOREIGN KEY (id_boostermodel) REFERENCES BoosterModel(id),
     CONSTRAINT fk_boosterdroprate_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
 );
 
@@ -92,7 +93,8 @@ CREATE TABLE IF NOT EXISTS Trade (
     CONSTRAINT fk_trade_user_receiver FOREIGN KEY (id_receiver) REFERENCES User(id)
 );
 
-CREATE TABLE IF NOT EXISTS TradeItem (
+CREATE TABLE IF NOT EXISTS CardTrade (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_trade INT NOT NULL,
     id_card INT NOT NULL,
     id_owner INT NOT NULL,

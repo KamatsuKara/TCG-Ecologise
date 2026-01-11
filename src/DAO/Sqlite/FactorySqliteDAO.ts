@@ -1,17 +1,27 @@
+import { BoosterDropRateSqliteDAO } from "./BoosterDropRateSqliteDAO";
+import { BoosterModelSqliteDAO } from "./BoosterModelSqliteDAO";
+import { BoosterSqliteDAO } from "./BoosterSqliteDAO";
 import { CardHistSqliteDAO } from "./CardHistSqliteDAO";
 import { CardModelSqliteDAO } from "./CardModelSqliteDAO";
 import { CardSqliteDAO } from "./CardSqliteDAO";
+import { CardTradeSqliteDAO } from "./CardTradeSqliteDAO";
 import { RaritySqliteDAO } from "./RaritySqliteDAO";
 import { RefreshTokenSqliteDAO } from "./RefreshTokenSqliteDAO";
+import { TradeSqliteDAO } from "./TradeSqliteDAO";
 import { UserSqliteDAO } from "./UserSqliteDAO";
 
 import { FactoryDAO } from "../FactoryDAO";
 
+import { BoosterDropRateDAO } from "../BoosterDropRateDAO";
+import { BoosterModelDAO } from "../BoosterModelDAO";
+import { BoosterDAO } from "../BoosterDAO";
 import { CardHistDAO } from "../CardHistDAO";
 import { CardModelDAO } from "../CardModelDAO";
 import { CardDAO } from "../CardDAO";
+import { CardTradeDAO } from "../CardTradeDAO";
 import { RarityDAO } from "../RarityDAO";
 import { RefreshTokenDAO } from "../RefreshTokenDAO";
+import { TradeDAO } from "../TradeDAO";
 import { UserDAO } from "../UserDAO";
 
 export class FactorySqliteDAO extends FactoryDAO{
@@ -20,6 +30,18 @@ export class FactorySqliteDAO extends FactoryDAO{
     constructor(_path:string){
         super();
         this.path = _path;
+    }
+
+    createBoosterDropRateDAO():BoosterDropRateDAO{
+        return new BoosterDropRateSqliteDAO(this.path);
+    }
+
+    createBoosterModelDAO():BoosterModelDAO{
+        return new BoosterModelSqliteDAO(this.path);
+    }
+
+    createBoosterDAO():BoosterDAO{
+        return new BoosterSqliteDAO(this.path);
     }
 
     createCardHistDAO():CardHistDAO{
@@ -34,12 +56,20 @@ export class FactorySqliteDAO extends FactoryDAO{
         return new CardSqliteDAO(this.path);
     }
 
+    createCardTradeDAO():CardTradeDAO{
+        return new CardTradeSqliteDAO(this.path);
+    }
+
     createRarityDAO():RarityDAO{
         return new RaritySqliteDAO(this.path);
     }
 
     createRefreshTokenDAO():RefreshTokenDAO{
         return new RefreshTokenSqliteDAO(this.path);
+    }
+
+    createTradeDAO():TradeDAO{
+        return new TradeSqliteDAO(this.path);
     }
 
     createUserDAO():UserDAO{

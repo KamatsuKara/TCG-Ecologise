@@ -2,13 +2,15 @@ export class CardModel {
     private _id: number;
     private _name: string;
     private _image: string;
+    private _category: string;
     private _description: string;
     private _effect: string;
 
-    constructor(id:number = 0, name:string ="", image:string = "", description:string = "", effect:string = "") {
+    constructor(id:number = 0, name:string ="", image:string = "", category:string = "", description:string = "", effect:string = "") {
         this._id = id;
         this._name = name;
         this._image = image;
+        this._category = category;
         this._description = description;
         this._effect = effect;
     }
@@ -51,5 +53,13 @@ export class CardModel {
     }
     public set effect(effect: string) {
         this._effect = effect;
+    }
+
+    // Category
+    public get category(): string {
+        return this._category;
+    }
+    public set category(category: string) {
+        this._category = category;
     }
 }

@@ -1,15 +1,14 @@
 # TODO
 
-[X] ajouter password et role dans le DAO de User
-[X] ajouter la func findByEmail du DAO de User
-[X] changer les insert pour reussir si var vide
-[] filtre dans le get de card
-[X] changer update pour reussir si var vide
 [] faire les test unitaire si erreur
-[X] ajouter booster
-[] ajouter echange
-[X] test unitaire
 [] test d'integration
 [] doc intercode
-[X] doc OpenAPI
-[] refaire bruno
+[] doc OpenAPI
+[] bruno
+
+[] finir les route de booster et trade
+[] finir les controller de booster et trade
+[] finir les services de booster et trade
+[] modif user -> discord username -> DAO (update, get)
+[] modif cardmodel -> category -> DAO (update, get)
+[] construction d'object apres les requete send

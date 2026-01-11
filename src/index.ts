@@ -1,40 +1,35 @@
 import express from "express";
-import dotenv from "dotenv";
-import cookieParser from 'cookie-parser';
 
-dotenv.config();
-
-if (!process.env.JWT_SECRET) throw new Error("Missing JWT_SECRET");
-if (!process.env.port) throw new Error("Missing port");
-if (!process.env.LogDir) throw new Error("Missing LogDir");
-if (!process.env.BDDSqliteDir) throw new Error("Missing BDDSqliteDir");
-
+import { authRoutes } from "./Routes/AuthRoutes";
+import { boosterDropRateRoutes } from "./Routes/BoosterDropRateRoutes";
+import { boosterModelRoutes } from "./Routes/BoosterModelRoutes";
+import { boosterRoutes } from "./Routes/BoosterRoutes";
 import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";
 import { cardRoutes } from "./Routes/CardRoutes";
+import { cardTradeRoutes } from "./Routes/CardTradeRoutes";
 import { rarityRoutes } from "./Routes/RarityRoutes";
+import { tradeRoutes } from "./Routes/TradeRoutes";
 import { userRoutes } from "./Routes/UserRoutes";
-import { authRoutes } from "./Routes/AuthRoutes";
 
 import { FactoryDAO } from "./DAO/FactoryDAO";
 import { FactorySqliteDAO } from "./DAO/Sqlite/FactorySqliteDAO";
 
-import { audit } from "./Middleware/auditMiddleware";
+const app = express()
+const port = 3000
 
-const app = express();
-app.use(express.json());
-app.use(audit);
-app.use(cookieParser());
-const port = process.env.port;
+const factoryDAO:FactoryDAO = new FactorySqliteDAO('./dist/db/database.db');
 
-const factoryDAO:FactoryDAO = new FactorySqliteDAO(process.env.BDDSqliteDir);
-
-app.use("/cardhists", cardHistRoutes(factoryDAO));
-app.use("/cardmodels", cardModelRoutes(factoryDAO));
-app.use("/cards", cardRoutes(factoryDAO));
-app.use("/raritys", rarityRoutes(factoryDAO));
-app.use("/users", userRoutes(factoryDAO));
-
-app.use("/auth", authRoutes(factoryDAO));
+app.use("/auths", authRoutes(factoryDAO.createAuthDAO()));
+app.use("/boosterDropRates", boosterDropRateRoutes(factoryDAO.createBoosterDropRateDAO()));
+app.use("/boosterModels", boosterModelRoutes(factoryDAO.createBoosterModelDAO()));
+app.use("/boosters", boosterRoutes(factoryDAO.createBoosterDAO()));
+app.use("/cardHists", cardHistRoutes(factoryDAO.createCardHistDAO()));
+app.use("/cardModels", cardModelRoutes(factoryDAO.createCardModelDAO()));
+app.use("/cards", cardRoutes(factoryDAO.createCardDAO()));
+app.use("/cardTrades", cardTradeRoutes(factoryDAO.createCardTradeDAO()));
+app.use("/raritys", rarityRoutes(factoryDAO.createRarityDAO()));
+app.use("/trades", tradeRoutes(factoryDAO.createTradeDAO()));
+app.use("/users", userRoutes(factoryDAO.createUserDAO()));
 
 app.listen(port, () => console.log("API running on port " + port));
