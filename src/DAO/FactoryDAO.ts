@@ -9,6 +9,9 @@ import { RarityDAO } from "./RarityDAO";
 import { RefreshTokenDAO } from "./RefreshTokenDAO";
 import { TradeDAO } from "./TradeDAO";
 import { UserDAO } from "./UserDAO";
+import { CurrencyDAO } from "./CurrencyDAO";
+import { WalletDAO } from "./WalletDAO";
+import { CardMarketDAO } from "./CardMarketDAO";
 
 export abstract class FactoryDAO{
     abstract createBoosterDAO():BoosterDAO;
@@ -22,4 +25,7 @@ export abstract class FactoryDAO{
     abstract createRefreshTokenDAO():RefreshTokenDAO;
     abstract createTradeDAO():TradeDAO;
     abstract createUserDAO():UserDAO;
+    abstract createCurrencyDAO():CurrencyDAO;
+    abstract createWalletDAO():WalletDAO;
+    abstract createCardMarketDAO():CardMarketDAO;
 }

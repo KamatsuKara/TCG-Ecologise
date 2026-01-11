@@ -9,6 +9,9 @@ import { RaritySqliteDAO } from "./RaritySqliteDAO";
 import { RefreshTokenSqliteDAO } from "./RefreshTokenSqliteDAO";
 import { TradeSqliteDAO } from "./TradeSqliteDAO";
 import { UserSqliteDAO } from "./UserSqliteDAO";
+import { CurrencySqliteDAO } from "./CurrencySqliteDAO";
+import { WalletSqliteDAO } from "./WalletSqliteDAO";
+import { CardMarketSqliteDAO } from "./CardMarketSqliteDAO";
 
 import { FactoryDAO } from "../FactoryDAO";
 
@@ -23,6 +26,9 @@ import { RarityDAO } from "../RarityDAO";
 import { RefreshTokenDAO } from "../RefreshTokenDAO";
 import { TradeDAO } from "../TradeDAO";
 import { UserDAO } from "../UserDAO";
+import { CurrencyDAO } from "../CurrencyDAO";
+import { WalletDAO } from "../WalletDAO";
+import { CardMarketDAO } from "../CardMarketDAO";
 
 export class FactorySqliteDAO extends FactoryDAO{
     private path:string;
@@ -74,5 +80,17 @@ export class FactorySqliteDAO extends FactoryDAO{
 
     createUserDAO():UserDAO{
         return new UserSqliteDAO(this.path);
+    }
+
+    createCurrencyDAO(): CurrencyDAO {
+        return new CurrencySqliteDAO(this.path);
+    }
+
+    createWalletDAO(): WalletDAO {
+        return new WalletSqliteDAO(this.path);
+    }
+
+    createCardMarketDAO(): CardMarketDAO {
+        return new CardMarketSqliteDAO(this.path);
     }
 }
