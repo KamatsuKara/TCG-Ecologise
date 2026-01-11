@@ -212,7 +212,7 @@ export function ${tableName}Routes(factoryDAO:FactoryDAO): Router {
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), ${tableName}Controller.getAll.bind(${tableName}Controller));
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), ${tableName}Controller.get.bind(${tableName}Controller));
     router.post("/", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.create.bind(${tableName}Controller));
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.delete.bind(${tableName}Controller));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.delete.bind(${tableName}Controller));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.update.bind(${tableName}Controller));
     router.patch("/:id", authJWT, requireRole(["ADMIN"]), ${tableName}Controller.update.bind(${tableName}Controller));
 
