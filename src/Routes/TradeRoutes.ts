@@ -17,7 +17,7 @@ export function tradeRoutes(factoryDAO:FactoryDAO): Router {
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), tradeController.getAll.bind(tradeController));
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), tradeController.get.bind(tradeController));
     router.post("/", authJWT, requireRole(["ADMIN"]), tradeController.create.bind(tradeController));
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), tradeController.delete.bind(tradeController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), tradeController.delete.bind(tradeController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), tradeController.update.bind(tradeController));
     router.patch("/:id", authJWT, requireRole(["ADMIN"]), tradeController.update.bind(tradeController));
 

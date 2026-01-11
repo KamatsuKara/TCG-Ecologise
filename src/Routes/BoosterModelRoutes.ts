@@ -17,7 +17,7 @@ export function boosterModelRoutes(factoryDAO:FactoryDAO): Router {
     router.get("/", authJWT, requireRole(["ADMIN","USER"]), boosterModelController.getAll.bind(boosterModelController));
     router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), boosterModelController.get.bind(boosterModelController));
     router.post("/", authJWT, requireRole(["ADMIN"]), boosterModelController.create.bind(boosterModelController));
-    router.delete("/id", authJWT, requireRole(["ADMIN"]), boosterModelController.delete.bind(boosterModelController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), boosterModelController.delete.bind(boosterModelController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), boosterModelController.update.bind(boosterModelController));
     router.patch("/:id", authJWT, requireRole(["ADMIN"]), boosterModelController.update.bind(boosterModelController));
 
