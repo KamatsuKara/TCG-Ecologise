@@ -14,45 +14,70 @@ export class BoosterModelSqliteDAO implements BoosterModelDAO {
   }
 
   async insert(boosterModel:BoosterModel):Promise<void>{
-    const request:string = `INSERT INTO boosterModel() VALUES ()`;
-    const pattern:string[] = [
-        
+    const patterns: string[] = ["name", "nmbCard", "category"];
+    const values: string[] = [
+      boosterModel.name,
+      boosterModel.nmbCard.toString(),
+      boosterModel.category
     ];
 
-    (await this.db).run(request, pattern);
+    const request: string = `INSERT INTO boosterModel(${patterns.join(",")}) VALUES (${Array(values.length).fill("?").join(",")})`;
+
+    (await this.db).run(request, values);
   }
 
   async update(boosterModel:BoosterModel):Promise<void>{
-    const request:string = `UPDATE boosterModel SET  WHERE id=?`;
-    const pattern:string[] = [
+    const patterns: string[] = [];
+    const values: string[] = [];
 
-        boosterModel.id.toString()
-    ];
+    if (boosterModel.name != null) {
+      patterns.push("name=?");
+      values.push(boosterModel.name);
+    }
+    if (boosterModel.nmbCard != null) {
+      patterns.push("nmbCard=?");
+      values.push(boosterModel.nmbCard.toString());
+    }
+    if (boosterModel.category != null) {
+      patterns.push("category=?");
+      values.push(boosterModel.category);
+    }
 
-    (await this.db).run(request, pattern);
+    const request: string = `UPDATE boosterModel SET ${patterns.join(", ")} WHERE id=?`;
+    values.push(boosterModel.id.toString());
+
+    (await this.db).run(request, values);
   }
 
   async delete(id:number):Promise<void>{
-    const request:string = `DELETE FROM boosterModel WHERE id = ?`;
-    const pattern:string[] = [
-        id.toString()
-    ];
+    const request: string = `DELETE FROM boosterModel WHERE id = ?`;
+    const pattern: string[] = [id.toString()];
 
     (await this.db).run(request, pattern);
   }
 
   async findAll():Promise<BoosterModel[]>{
-    const request:string = `SELECT * FROM boosterModel`;
-
-    return (await this.db).all(request);
+    const request: string = `SELECT * FROM boosterModel`;
+    const rows = await (await this.db).all(request);
+    
+    return rows.map(row => new BoosterModel(
+      row.id,
+      row.name,
+      row.nmbCard,
+      row.category
+    ));
   }
 
   async findById(id:number):Promise<BoosterModel|undefined>{
-    const request:string = `SELECT * FROM boosterModel WHERE id = ?`;
-    const pattern:string[] = [
-        id.toString()
-    ];
+    const request: string = `SELECT * FROM boosterModel WHERE id = ?`;
+    const pattern: string[] = [id.toString()];
 
-    return (await this.db).get(request, pattern);
+    const row = await (await this.db).get(request, pattern);
+    return row ? new BoosterModel(
+      row.id,
+      row.name,
+      row.nmbCard,
+      row.category
+    ):undefined;
   }
 }

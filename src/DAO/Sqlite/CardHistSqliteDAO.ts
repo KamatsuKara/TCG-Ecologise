@@ -2,6 +2,8 @@ import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import { CardHist } from "../../Models/CardHist";
 import { CardHistDAO } from "../CardHistDAO";
+import { Card } from "../../Models/Card";
+import { User } from "../../Models/User";
 
 export class CardHistSqliteDAO implements CardHistDAO {
 private db:Promise<Database>;
@@ -57,35 +59,53 @@ private db:Promise<Database>;
 	}
 
 	async findAll():Promise<CardHist[]>{
-		const request:string = `SELECT * FROM cardHist`;
+		const request: string = `SELECT * FROM cardHist`;
+		const rows = await (await this.db).all(request);
 
-		return (await this.db).all(request);
+		return rows.map(row => new CardHist(
+			row.id,
+			new Card(row.id_card),
+			new User(row.id_user),
+			row.obtened
+		));
 	}
 
 	async findById(id:number):Promise<CardHist|undefined>{
-		const request:string = `SELECT * FROM cardHist WHERE id = ?`;
-		const values:string[] = [
-			id.toString()
-		];
+		const request: string = `SELECT * FROM cardHist WHERE id = ?`;
+		const values: string[] = [id.toString()];
 
-		return (await this.db).get(request, values);
+		const row = await (await this.db).get(request, values);
+		return row ? new CardHist(
+			row.id,
+			new Card(row.id_card),
+			new User(row.id_user),
+			row.obtened
+		) : undefined;
 	}
 
 	async findByCard(cardId:number):Promise<CardHist[]>{
-		const request:string = `SELECT * FROM cardHist WHERE id_card = ?`;
-		const values:string[] = [
-			cardId.toString()
-		];
+		const request: string = `SELECT * FROM cardHist WHERE id_card = ?`;
+		const values: string[] = [cardId.toString()];
 
-		return (await this.db).all(request, values);
+		const rows = await (await this.db).all(request, values);
+		return rows.map(row => new CardHist(
+			row.id,
+			new Card(row.id_card),
+			new User(row.id_user),
+			row.obtened
+		));
 	}
 
 	async findByUser(userId:number):Promise<CardHist[]>{
-		const request:string = `SELECT * FROM cardHist WHERE id_user = ?`;
-		const values:string[] = [
-			userId.toString()
-		];
+		const request: string = `SELECT * FROM cardHist WHERE id_user = ?`;
+		const values: string[] = [userId.toString()];
 
-		return (await this.db).all(request, values);
+		const rows = await (await this.db).all(request, values);
+		return rows.map(row => new CardHist(
+			row.id,
+			new Card(row.id_card),
+			new User(row.id_user),
+			row.obtened
+		));
 	}
 }

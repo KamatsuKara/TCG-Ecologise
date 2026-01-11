@@ -2,6 +2,9 @@ import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import { Card } from "../../Models/Card";
 import { CardDAO } from "../CardDAO";
+import { User } from "../../Models/User";
+import { CardModel } from "../../Models/CardModel";
+import { Rarity } from "../../Models/Rarity";
 
 export class CardSqliteDAO implements CardDAO {
 	private db:Promise<Database>;
@@ -70,7 +73,16 @@ export class CardSqliteDAO implements CardDAO {
 	async findAll():Promise<Card[]>{
 		const request:string = `SELECT * FROM card`;
 
-		return (await this.db).all(request);
+		const rows = await (await this.db).all(request);
+
+		return rows.map(row => new Card(
+			row.id,
+			new User(row.id_user),
+			new CardModel(row.id_cardmodel),
+			new Rarity(row.id_rarity),
+			row.obtened,
+			row.created
+		));
 	}
 
 	async findById(id:number):Promise<Card|undefined>{
@@ -79,7 +91,15 @@ export class CardSqliteDAO implements CardDAO {
 			id.toString()
 		];
 
-		return (await this.db).get(request, values);
+		const row = await (await this.db).get(request, values);
+		return row ? new Card(
+			row.id,
+			new User(row.id_user),
+			new CardModel(row.id_cardmodel),
+			new Rarity(row.id_rarity),
+			row.obtened,
+			row.created
+		) : undefined;
 	}
 
 	async findByUser(userId:number):Promise<Card[]>{
@@ -88,7 +108,15 @@ export class CardSqliteDAO implements CardDAO {
 			userId.toString()
 		];
 
-		return (await this.db).all(request, values);
+		const rows = await (await this.db).all(request, values);
+		return rows.map(row => new Card(
+			row.id,
+			new User(row.id_user),
+			new CardModel(row.id_cardmodel),
+			new Rarity(row.id_rarity),
+			row.obtened,
+			row.created
+		));
 	}
 
 	async findByCardModel(cardId:number):Promise<Card[]>{
@@ -97,7 +125,15 @@ export class CardSqliteDAO implements CardDAO {
 			cardId.toString()
 		];
 
-		return (await this.db).all(request, values);
+		const rows = await (await this.db).all(request, values);
+		return rows.map(row => new Card(
+			row.id,
+			new User(row.id_user),
+			new CardModel(row.id_cardmodel),
+			new Rarity(row.id_rarity),
+			row.obtened,
+			row.created
+		));
 	}
 
 	async findByRarity(rarityId:number):Promise<Card[]>{
@@ -106,6 +142,14 @@ export class CardSqliteDAO implements CardDAO {
 			rarityId.toString()
 		];
 
-		return (await this.db).all(request, values);
+		const rows = await (await this.db).all(request, values);
+		return rows.map(row => new Card(
+			row.id,
+			new User(row.id_user),
+			new CardModel(row.id_cardmodel),
+			new Rarity(row.id_rarity),
+			row.obtened,
+			row.created
+		));
 	}
 }

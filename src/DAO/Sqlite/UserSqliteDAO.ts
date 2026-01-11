@@ -4,18 +4,18 @@ import { User } from "../../Models/User";
 import { UserDAO } from "../UserDAO";
 
 export class UserSqliteDAO implements UserDAO {
-	private db:Promise<Database>;
+	private db: Promise<Database>;
 
-	constructor(dbFilePath: string){
+	constructor(dbFilePath: string) {
 		this.db = open({
 			filename: dbFilePath,
 			driver: sqlite3.Database
 		});
 	}
 
-	async insert(user:User):Promise<void>{
-		const request:string = `INSERT INTO user(name,email,password,role,creation) VALUES (?,?,?,?,?)`;
-		const values:string[] = [
+	async insert(user: User): Promise<void> {
+		const request: string = `INSERT INTO user(name,email,password,role,creation) VALUES (?,?,?,?,?)`;
+		const values: string[] = [
 			user.name,
 			user.email,
 			user.password,
@@ -30,23 +30,23 @@ export class UserSqliteDAO implements UserDAO {
 		const patterns: string[] = [];
 		const values: string[] = [];
 
-		if(user.name != null) {
+		if (user.name != null) {
 			patterns.push("name=?");
 			values.push(user.name);
 		}
-		if(user.email != null) {
+		if (user.email != null) {
 			patterns.push("email=?");
 			values.push(user.email);
 		}
-		if(user.password != null) {
+		if (user.password != null) {
 			patterns.push("password=?");
 			values.push(user.password);
 		}
-		if(user.role != null) {
+		if (user.role != null) {
 			patterns.push("role=?");
 			values.push(user.role);
 		}
-		if(user.create != null) {
+		if (user.create != null) {
 			patterns.push("creation=?");
 			values.push(user.create.toString());
 		}
@@ -57,37 +57,57 @@ export class UserSqliteDAO implements UserDAO {
 		(await this.db).run(request, values);
 	}
 
-
-	async delete(id:number):Promise<void>{
-		const request:string = `DELETE FROM user WHERE id = ?`;
-		const values:string[] = [
-			id.toString()
-		];
+	async delete(id: number): Promise<void> {
+		const request: string = `DELETE FROM user WHERE id = ?`;
+		const values: string[] = [id.toString()];
 
 		(await this.db).run(request, values);
 	}
 
-	async findAll():Promise<User[]>{
-		const request:string = `SELECT * FROM user`;
+	async findAll(): Promise<User[]> {
+		const request: string = `SELECT * FROM user`;
+		const rows = await (await this.db).all(request);
 
-		return (await this.db).all(request);
+		return rows.map(row => new User(
+			row.id,
+			row.name,
+			row.discord_id,
+			row.email,
+			row.password,
+			row.role,
+			row.creation
+		));
 	}
 
-	async findById(id:number):Promise<User|undefined>{
-		const request:string = `SELECT * FROM user WHERE id = ?`;
-		const values:string[] = [
-			id.toString()
-		];
+	async findById(id: number): Promise<User | undefined> {
+		const request: string = `SELECT * FROM user WHERE id = ?`;
+		const values: string[] = [id.toString()];
 
-		return (await this.db).get(request, values);
+		const row = await (await this.db).get(request, values);
+		return row ? new User(
+			row.id,
+			row.name,
+			row.discord_id,
+			row.email,
+			row.password,
+			row.role,
+			row.creation
+		) : undefined;
 	}
 
-	async findByEmail(email:string):Promise<User|undefined>{
-		const request:string = `SELECT * FROM user WHERE email = ?`;
-		const values:string[] = [
-			email
-		];
+	async findByEmail(email: string): Promise<User | undefined> {
+		const request: string = `SELECT * FROM user WHERE email = ?`;
+		const values: string[] = [email];
 
-		return (await this.db).get(request, values);
+		const row = await (await this.db).get(request, values);
+		return row ? new User(
+			row.id,
+			row.name,
+			row.discord_id,
+			row.email,
+			row.password,
+			row.role,
+			row.creation
+		) : undefined;
 	}
 }

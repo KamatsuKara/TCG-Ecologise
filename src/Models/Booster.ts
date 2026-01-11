@@ -6,10 +6,10 @@ export class Booster {
     private _seed: number;
     private _boosterModel: BoosterModel;
     private _user: User;
-    private _obtened: Date;
-    private _created: Date;
+    private _obtened: number;
+    private _created: number;
 
-    constructor(id: number, seed: number, boosterModel: BoosterModel, user: User, obtened: Date, created: Date) {
+    constructor(id: number = 0, seed: number = 0, boosterModel: BoosterModel = new BoosterModel(), user: User = new User(), obtened: number = Date.now(), created: number = Date.now()) {
         this._id = id;
         this._seed = seed;
         this._boosterModel = boosterModel;
@@ -51,18 +51,18 @@ export class Booster {
     }
 
     // Obtened
-    public get obtened(): Date {
+    public get obtened(): number {
         return this._obtened;
     }
-    public set obtened(obtened: Date) {
+    public set obtened(obtened: number) {
         this._obtened = obtened;
     }
 
     // Created
-    public get created(): Date {
+    public get created(): number {
         return this._created;
     }
-    public set created(created: Date) {
+    public set created(created: number) {
         this._created = created;
     }
 }

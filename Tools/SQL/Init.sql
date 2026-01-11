@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS Booster (
 
 CREATE TABLE IF NOT EXISTS BoosterModel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(50) DEFAULT 'NO NAME',
-    nmbCard INT DEFAULT 5,
+    name VARCHAR(50) DEFAULT 'NO NAME' NOT NULL,
+    nmbCard INT DEFAULT 5 NOT NULL,
     category TEXT DEFAULT '[]' NOT NULL
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS BoosterDropRate (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_rarity INT NOT NULL,
     id_boostermodel INT NOT NULL,
-    guarantee INT DEFAULT 0,
+    guarantee INT DEFAULT 0 NOT NULL,
     drop_rate DECIMAL(5,2) DEFAULT 20,
     CONSTRAINT fk_boosterdroprate_boostermodel FOREIGN KEY (id_boostermodel) REFERENCES BoosterModel(id),
     CONSTRAINT fk_boosterdroprate_rarity FOREIGN KEY (id_rarity) REFERENCES Rarity(id)
@@ -87,14 +87,13 @@ CREATE TABLE IF NOT EXISTS Trade (
     id_sender INT NOT NULL,
     id_receiver INT NOT NULL,
     status VARCHAR(15) NOT NULL CHECK (status IN ('PENDING', 'ACCEPTED', 'DECLINED', 'CANCELLED')) DEFAULT 'PENDING',
-    created_at DATETIME NOT NULL,
-    updated_at DATETIME DEFAULT NULL,
+    created DATETIME NOT NULL,
+    updated DATETIME DEFAULT NULL,
     CONSTRAINT fk_trade_user_sender FOREIGN KEY (id_sender) REFERENCES User(id),
     CONSTRAINT fk_trade_user_receiver FOREIGN KEY (id_receiver) REFERENCES User(id)
 );
 
 CREATE TABLE IF NOT EXISTS CardTrade (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_trade INT NOT NULL,
     id_card INT NOT NULL,
     id_owner INT NOT NULL,

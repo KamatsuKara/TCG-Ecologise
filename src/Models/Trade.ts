@@ -8,7 +8,7 @@ export class Trade {
     private _created:number;
     private _updated: number|null;
 
-    constructor(id: number, sender:User, receiver:User, status: string, created:number, updated: number|null) {
+    constructor(id: number = 0, sender:User = new User(), receiver:User = new User(), status: string = "PENDING", created:number = Date.now(), updated: number|null = null) {
         this._id = id;
         this._sender = sender;
         this._receiver = receiver;

@@ -3,24 +3,14 @@ import { Trade } from "./Trade";
 import { User } from "./User";
 
 export class CardTrade {
-    private _id:number;
     private _trade:Trade;
     private _card:Card;
     private _owner:User;
 
-    constructor(id:number, trade:Trade, card:Card, owner:User) {
-        this._id = id;
+    constructor(trade:Trade = new Trade(), card:Card = new Card(), owner:User = new User()) {
         this._trade = trade;
         this._card = card;
         this._owner = owner;
-    }
-
-    // Id
-    public get id(): number {
-        return this._id;
-    }
-    public set id(id: number) {
-        this._id = id;
     }
 
     // Trade

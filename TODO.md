@@ -9,7 +9,8 @@
 [] finir les route de booster et trade
 [] finir les controller de booster et trade
 [] finir les services de booster et trade
-[] finir les DAO de booster et trade
-[] modif user -> discord username -> DAO (update, get)
-[] modif cardmodel -> category -> DAO (update, get)
-[] construction d'object apres les requete send
+[X] finir les DAO de booster et trade
+[X] modif user -> discord username -> DAO (update, get)
+[X] modif cardmodel -> category -> DAO (update, get)
+[X] construction d'object apres les requete send
+[] dans tous les model mettre par defaut le valeur non def a null

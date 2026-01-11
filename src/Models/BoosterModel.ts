@@ -4,7 +4,7 @@ export class BoosterModel {
     private _nmbCard: number;
     private _category: string;
 
-    constructor(id: number, name: string, nmbCard: number, category: string) {
+    constructor(id: number = 0, name: string = "", nmbCard: number = 1, category: string = "[]") {
         this._id = id;
         this._name = name;
         this._nmbCard = nmbCard;

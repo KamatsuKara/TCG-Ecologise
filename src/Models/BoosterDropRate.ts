@@ -6,14 +6,14 @@ export class BoosterDropRate {
     private _rarity: Rarity;
     private _boosterModel: BoosterModel;
     private _guarantee: number;
-    private _drop_rate: number;
+    private _dropRate: number;
 
-    constructor(id: number, rarity: Rarity, boosterModel: BoosterModel, guarantee: number, drop_rate: number) {
+    constructor(id: number = 0, rarity: Rarity = new Rarity(), boosterModel: BoosterModel = new BoosterModel(), guarantee: number = 0, dropRate: number = 0.2) {
         this._id = id;
         this._rarity = rarity;
         this._boosterModel = boosterModel;
         this._guarantee = guarantee;
-        this._drop_rate = drop_rate;
+        this._dropRate = dropRate;
     }
     
     // Id
@@ -48,11 +48,11 @@ export class BoosterDropRate {
         this._guarantee = guarantee;
     }
 
-    // Drop_rate
-    public get drop_rate(): number {
-        return this._drop_rate;
+    // DropRate
+    public get dropRate(): number {
+        return this._dropRate;
     }
-    public set drop_rate(drop_rate: number) {
-        this._drop_rate = drop_rate;
+    public set dropRate(dropRate: number) {
+        this._dropRate = dropRate;
     }
 }

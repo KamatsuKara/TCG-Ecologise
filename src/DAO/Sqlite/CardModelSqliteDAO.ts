@@ -14,8 +14,8 @@ export class CardModelSqliteDAO implements CardModelDAO {
 	}
 
 	async insert(cardModel:CardModel):Promise<void>{
-		const patterns: string[] = ["name"];
-		const values: string[] = [cardModel.name];
+		const patterns: string[] = ["name", "category"];
+		const values: string[] = [cardModel.name,cardModel.category];
 
 		if(cardModel.image!=null){
 			patterns.push("image");
@@ -47,6 +47,10 @@ export class CardModelSqliteDAO implements CardModelDAO {
 			patterns.push("image=?");
 			values.push(cardModel.image);
 		}
+		if (cardModel.category != null) {
+			patterns.push("category=?");
+			values.push(cardModel.category);
+		}
 		if(cardModel.description != null) {
 			patterns.push("description=?");
 			values.push(cardModel.description);
@@ -66,24 +70,38 @@ export class CardModelSqliteDAO implements CardModelDAO {
 	async delete(id:number):Promise<void>{
 		const request:string = `DELETE FROM cardModel WHERE id = ?`;
 		const values:string[] = [
-		id.toString()
+			id.toString()
 		];
 
 		(await this.db).run(request, values);
 	}
 
 	async findAll():Promise<CardModel[]>{
-		const request:string = `SELECT * FROM cardModel`;
+		const request: string = `SELECT * FROM cardModel`;
+		const rows = await (await this.db).all(request);
 
-		return (await this.db).all(request);
+		return rows.map(row => new CardModel(
+			row.id,
+			row.name,
+			row.image,
+			row.category,
+			row.description,
+			row.effect
+		));
 	}
 
 	async findById(id:number):Promise<CardModel|undefined>{
-		const request:string = `SELECT * FROM cardModel WHERE id = ?`;
-		const values:string[] = [
-		id.toString()
-		];
+		const request: string = `SELECT * FROM cardModel WHERE id = ?`;
+		const values: string[] = [id.toString()];
 
-		return (await this.db).get(request, values);
+		const row = await (await this.db).get(request, values);
+		return row ? new CardModel(
+			row.id,
+			row.name,
+			row.image,
+			row.category,
+			row.description,
+			row.effect
+		) : undefined;
 	}
 }
