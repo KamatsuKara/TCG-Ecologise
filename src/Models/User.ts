@@ -1,16 +1,16 @@
 export class User {
     private _id: number;
     private _name: string;
-    private _discordUsername: string;
+    private _discordId: string;
     private _email: string;
     private _password: string;
     private _role: string;
     private _create: number;
 
-    constructor(id:number = 0, name:string = "", discordUsername:string = "", email:string = "", password:string = "", role:string = "USER", create:number = Date.now()){   
+    constructor(id:number = 0, name:string = "", discordId:string = "", email:string = "", password:string = "", role:string = "USER", create:number = Date.now()){   
         this._id = id;
         this._name = name;
-        this._discordUsername = discordUsername;
+        this._discordId = discordId;
         this._email = email;
         this._password = password;
         this._role = role;
@@ -34,11 +34,11 @@ export class User {
     }
 
     // DiscordUsername
-    public get discordUsername(): string {
-        return this._discordUsername;
+    public get discordId(): string {
+        return this._discordId;
     }
-    public set discordUsername(discordUsername: string) {
-        this._discordUsername = discordUsername;
+    public set discordId(discordId: string) {
+        this._discordId = discordId;
     }
 
     // Email
