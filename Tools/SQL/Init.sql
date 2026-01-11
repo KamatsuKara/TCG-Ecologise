@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS User (
     discord_id VARCHAR(100) DEFAULT NULL,
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
-    role VARCHAR(15) NOT NULL CHECK (role IN ('USER', 'ADMIN')) DEFAULT 'USER',
+    role VARCHAR(15) NOT NULL CHECK (role IN ('USER', 'ADMIN', 'BOT')) DEFAULT 'USER',
     creation DATETIME NOT NULL
 );
 
@@ -101,4 +101,26 @@ CREATE TABLE IF NOT EXISTS CardTrade (
     CONSTRAINT fk_cardtrade_trade FOREIGN KEY (id_trade) REFERENCES Trade(id),
     CONSTRAINT fk_cardtrade_card FOREIGN KEY (id_card) REFERENCES Card(id),
     CONSTRAINT fk_cardtrade_user FOREIGN KEY (id_owner) REFERENCES User(id)
+);
+
+CREATE TABLE IF NOT EXISTS Currency (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    ration DECIMAL(5,2) DEFAULT 1 NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Wallet (
+    amount INT NOT NULL,
+    id_user NOT NULL,
+    id_currency NOT NULL,
+    CONSTRAINT fk_wallet_user FOREIGN KEY (id_user) REFERENCES User(id),
+    CONSTRAINT fk_wallet_currency FOREIGN KEY (id_currency) REFERENCES Currency(id)
+);
+
+CREATE TABLE IF NOT EXISTS CardMarket (
+    price INT NOT NULL,
+    id_card NOT NULL,
+    id_currency NOT NULL,
+    CONSTRAINT fk_cardmarket_card FOREIGN KEY (id_card) REFERENCES Card(id),
+    CONSTRAINT fk_cardmarket_currency FOREIGN KEY (id_currency) REFERENCES Currency(id)
 );
