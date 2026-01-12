@@ -11,6 +11,10 @@ import { CardDAO } from "../DAO/CardDAO";
 import { CardService } from "../Services/CardService";
 import { CardController } from "../Controllers/CardController";
 
+import { BoosterDAO } from "../DAO/BoosterDAO";
+import { BoosterService } from "../Services/BoosterService";
+import { BoosterController } from "../Controllers/BoosterController";
+
 export function userRoutes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
@@ -22,14 +26,19 @@ export function userRoutes(factoryDAO:FactoryDAO): Router {
     const cardService = new CardService(cardDAO);
     const cardController = new CardController(cardService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll.bind(userController));
-    router.get("/:id", authJWT, requireRole(["ADMIN"]), userController.get.bind(userController));
-    router.post("/", authJWT, requireRole(["ADMIN"]), userController.create.bind(userController));
-    router.delete("/:id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
+    const boosterDAO = factoryDAO.createBoosterDAO();
+    const boosterService = new BoosterService(boosterDAO);
+    const boosterController = new BoosterController(boosterService);
 
-    router.get("/:id/cards", authJWT, requireRole(["ADMIN"]), cardController.getByUser.bind(cardController));
+    router.get("/", authJWT, requireRole(["ADMIN", "BOT"]), userController.getAll.bind(userController));
+    router.get("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.get.bind(userController));
+    router.post("/", authJWT, requireRole(["ADMIN", "BOT"]), userController.create.bind(userController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
+    router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.update.bind(userController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.update.bind(userController));
+
+    router.get("/:id/cards", authJWT, requireRole(["ADMIN", "BOT"]), cardController.getByUser.bind(cardController));
+    router.get("/:id/boosters", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.getByUser.bind(boosterController));
 
     router.get("/me", authJWT, requireRole(["ADMIN","USER"]), userController.getMe.bind(userController));
     router.put("/me", authJWT, requireRole(["ADMIN","USER"]), userController.updateMe.bind(userController));

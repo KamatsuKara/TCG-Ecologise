@@ -14,8 +14,8 @@ export function rarityRoutes(factoryDAO:FactoryDAO): Router {
     const rarityService = new RarityService(rarityDAO);
     const rarityController = new RarityController(rarityService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), rarityController.getAll.bind(rarityController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), rarityController.get.bind(rarityController));
+    router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), rarityController.getAll.bind(rarityController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER", "BOT"]), rarityController.get.bind(rarityController));
     router.post("/", authJWT, requireRole(["ADMIN"]), rarityController.create.bind(rarityController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), rarityController.delete.bind(rarityController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update.bind(rarityController));

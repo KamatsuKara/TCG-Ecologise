@@ -18,6 +18,11 @@ export class BoosterService {
         return booster;
     }
 
+    async getByUser(idUser: number):Promise<Booster[]>{
+        const booster = await this.boosterDAO.findByUser(idUser);
+        return booster;
+    }
+
     async create(booster:Booster):Promise<void>{
         
         this.boosterDAO.insert(booster);
