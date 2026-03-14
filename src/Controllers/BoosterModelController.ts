@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { BoosterModelService } from "../Services/BoosterModelService";
+import { BoosterModel } from "../Models/BoosterModel";
 
 export class BoosterModelController{
     constructor(private boosterModelService:BoosterModelService){}
@@ -28,7 +29,13 @@ export class BoosterModelController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.boosterModelService.create(req.body);
+            const obj = new BoosterModel(
+                0,
+                req.body.name,
+                req.body.nmbCard,
+                req.body.category,
+            );
+            await this.boosterModelService.create(obj);
             res.json("BoosterModel created");
         }catch(error:any){
             console.log(error.message);
@@ -48,7 +55,13 @@ export class BoosterModelController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.boosterModelService.update(req.body);
+            const obj = new BoosterModel(
+                req.body.id,
+                req.body.name,
+                req.body.nmbCard,
+                req.body.category,
+            );
+            await this.boosterModelService.update(obj);
             res.json("BoosterModel updated");
         }catch(error:any){
             console.log(error.message);

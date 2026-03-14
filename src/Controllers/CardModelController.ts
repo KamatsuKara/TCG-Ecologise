@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { CardModelService } from "../Services/CardModelService";
+import { CardModel } from "../Models/CardModel";
 
 export class CardModelController{
     constructor(private cardModelService:CardModelService){}
@@ -28,7 +29,15 @@ export class CardModelController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.cardModelService.create(req.body);
+            const obj = new CardModel(
+                req.body.id,
+                req.body.name,
+                req.body.image,
+                req.body.category,
+                req.body.description,
+                req.body.effect,
+            );
+            await this.cardModelService.create(obj);
             res.json("CardModel created");
         }catch(error:any){
             console.log(error.message);
@@ -48,7 +57,15 @@ export class CardModelController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.cardModelService.update(req.body);
+            const obj = new CardModel(
+                req.body.id,
+                req.body.name,
+                req.body.image,
+                req.body.category,
+                req.body.description,
+                req.body.effect,
+            );
+            await this.cardModelService.update(obj);
             res.json("CardModel updated");
         }catch(error:any){
             console.log(error.message);

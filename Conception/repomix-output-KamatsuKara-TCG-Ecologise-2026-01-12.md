@@ -1,4 +1,4 @@
-This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+This file is a merged representation of a subset of the codebase, containing specifically included files and files not matching ignore patterns, combined into a single document by Repomix.
 The content has been processed where security check has been disabled.
 
 # File Summary
@@ -29,7 +29,8 @@ The content is organized as follows:
 ## Notes
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Only files matching these patterns are included: src/**, Tools/SQL/Init.sql
+- Only files matching these patterns are included: src/**, Tools/SQL/Init.sql, Test/**
+- Files matching these patterns are excluded: .gitingore, TODO.md
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Security check has been disabled - content may contain sensitive information
@@ -41,10 +42,8 @@ src/
   Controllers/
     AuthController.ts
     BoosterController.ts
-    BoosterDropRateController.ts
     BoosterModelController.ts
     CardController.ts
-    CardHistController.ts
     CardModelController.ts
     RarityController.ts
     RefreshTokenController.ts
@@ -56,26 +55,32 @@ src/
       BoosterModelSqliteDAO.ts
       BoosterSqliteDAO.ts
       CardHistSqliteDAO.ts
+      CardMarketSqliteDAO.ts
       CardModelSqliteDAO.ts
       CardSqliteDAO.ts
       CardTradeSqliteDAO.ts
+      CurrencySqliteDAO.ts
       FactorySqliteDAO.ts
       RaritySqliteDAO.ts
       RefreshTokenSqliteDAO.ts
       TradeSqliteDAO.ts
       UserSqliteDAO.ts
+      WalletSqliteDAO.ts
     BoosterDAO.ts
     BoosterDropRateDAO.ts
     BoosterModelDAO.ts
     CardDAO.ts
     CardHistDAO.ts
+    CardMarketDAO.ts
     CardModelDAO.ts
     CardTradeDAO.ts
+    CurrencyDAO.ts
     FactoryDAO.ts
     RarityDAO.ts
     RefreshTokenDAO.ts
     TradeDAO.ts
     UserDAO.ts
+    WalletDAO.ts
   Middleware/
     auditMiddleware.ts
     authMiddleware.ts
@@ -85,18 +90,19 @@ src/
     BoosterModel.ts
     Card.ts
     CardHist.ts
+    CardMarket.ts
     CardModel.ts
     CardTrade.ts
+    Currency.ts
     Rarity.ts
     RefreshToken.ts
     Trade.ts
     User.ts
+    Wallet.ts
   Routes/
     AuthRoutes.ts
-    BoosterDropRateRoutes.ts
     BoosterModelRoutes.ts
     BoosterRoutes.ts
-    CardHistRoutes.ts
     CardModelRoutes.ts
     CardRoutes.ts
     RarityRoutes.ts
@@ -104,10 +110,8 @@ src/
     UserRoutes.ts
   Services/
     AuthService.ts
-    BoosterDropRateService.ts
     BoosterModelService.ts
     BoosterService.ts
-    CardHistService.ts
     CardModelService.ts
     CardService.ts
     RarityService.ts
@@ -213,6 +217,16 @@ export class BoosterController{
         }
     };
 
+    async getByUser(req:Request, res:Response):Promise<void>{
+        try{
+            const booster = await this.boosterService.getByUser(Number(req.params.id));
+            res.json(booster);
+        }catch(error:any){
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    };
+
     async create(req:Request, res:Response):Promise<void>{
         try{
             await this.boosterService.create(req.body);
@@ -237,68 +251,6 @@ export class BoosterController{
         try{
             await this.boosterService.update(req.body);
             res.json("Booster updated");
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-}
-```
-
-## File: src/Controllers/BoosterDropRateController.ts
-```typescript
-import { Request, Response } from "express";
-import { BoosterDropRateService } from "../Services/BoosterDropRateService";
-
-export class BoosterDropRateController{
-    constructor(private boosterDropRateService:BoosterDropRateService){}
-
-    async getAll(req:Request, res:Response):Promise<void>{
-        try{
-            const limit:number = Number(req.query.limit) || 10;
-            const page:number = Number(req.query.page) || 1;
-            const boosterDropRates = await this.boosterDropRateService.getAll(limit, page);
-            res.json(boosterDropRates);
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async get(req:Request, res:Response):Promise<void>{
-        try{
-            const boosterDropRate = await this.boosterDropRateService.get(Number(req.params.id));
-            res.json(boosterDropRate);
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async create(req:Request, res:Response):Promise<void>{
-        try{
-            await this.boosterDropRateService.create(req.body);
-            res.json("BoosterDropRate created");
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async delete(req:Request, res:Response):Promise<void>{
-        try{
-            await this.boosterDropRateService.delete(Number(req.params.id));
-            res.json("BoosterDropRate deleted");
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async update(req:Request, res:Response):Promise<void>{
-        try{
-            await this.boosterDropRateService.update(req.body);
-            res.json("BoosterDropRate updated");
         }catch(error:any){
             console.log(error.message);
             res.status(500).json({ error: error.message });
@@ -443,68 +395,6 @@ export class CardController{
         try{
             await this.cardService.update(req.body);
             res.json("Card updated");
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-}
-```
-
-## File: src/Controllers/CardHistController.ts
-```typescript
-import { Request, Response } from "express";
-import { CardHistService } from "../Services/CardHistService";
-
-export class CardHistController{
-    constructor(private cardHistService:CardHistService){}
-
-    async getAll(req:Request, res:Response):Promise<void>{
-        try{
-            const limit:number = Number(req.query.limit) || 10;
-            const page:number = Number(req.query.page) || 1;
-            const cardHists = await this.cardHistService.getAll(limit, page);
-            res.json(cardHists);
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async get(req:Request, res:Response):Promise<void>{
-        try{
-            const cardHist = await this.cardHistService.get(Number(req.params.id));
-            res.json(cardHist);
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async create(req:Request, res:Response):Promise<void>{
-        try{
-            await this.cardHistService.create(req.body);
-            res.json("CardHist created");
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async delete(req:Request, res:Response):Promise<void>{
-        try{
-            await this.cardHistService.delete(Number(req.params.id));
-            res.json("CardHist deleted");
-        }catch(error:any){
-            console.log(error.message);
-            res.status(500).json({ error: error.message });
-        }
-    };
-
-    async update(req:Request, res:Response):Promise<void>{
-        try{
-            await this.cardHistService.update(req.body);
-            res.json("CardHist updated");
         }catch(error:any){
             console.log(error.message);
             res.status(500).json({ error: error.message });
@@ -1267,6 +1157,99 @@ private db:Promise<Database>;
 }
 ```
 
+## File: src/DAO/Sqlite/CardMarketSqliteDAO.ts
+```typescript
+import sqlite3 from "sqlite3";
+import { open, Database } from "sqlite";
+import { CardMarket } from "../../Models/CardMarket";
+import { CardMarketDAO } from "../CardMarketDAO";
+import { Card } from "../../Models/Card";
+import { Currency } from "../../Models/Currency";
+
+export class CardMarketSqliteDAO implements CardMarketDAO {
+  private db: Promise<Database>;
+
+  constructor(dbFilePath: string) {
+    this.db = open({
+      filename: dbFilePath,
+      driver: sqlite3.Database
+    });
+  }
+
+  async insert(cardMarket: CardMarket): Promise<void> {
+    const request: string = `INSERT INTO cardMarket(price, id_card, id_currency) VALUES (?, ?, ?)`;
+    const values: string[] = [
+      cardMarket.price.toString(),
+      cardMarket.card.id.toString(),
+      cardMarket.currency.id.toString()
+    ];
+
+    (await this.db).run(request, values);
+  }
+
+  async update(cardMarket: CardMarket): Promise<void> {
+    const patterns: string[] = [];
+    const values: string[] = [];
+
+    if (cardMarket.price != null) {
+      patterns.push("price=?");
+      values.push(cardMarket.price.toString());
+    }
+    if (cardMarket.currency != null) {
+      patterns.push("id_currency=?");
+      values.push(cardMarket.currency.id.toString());
+    }
+
+    const request: string = `UPDATE cardMarket SET ${patterns.join(", ")} WHERE id_card=?`;
+    values.push(cardMarket.card.id.toString());
+
+    (await this.db).run(request, values);
+  }
+
+  async delete(cardId: number): Promise<void> {
+    const request: string = `DELETE FROM cardMarket WHERE id_card = ?`;
+    const values: string[] = [cardId.toString()];
+
+    (await this.db).run(request, values);
+  }
+
+  async findAll(): Promise<CardMarket[]> {
+    const request: string = `SELECT * FROM cardMarket`;
+    const rows = await (await this.db).all(request);
+
+    return rows.map(row => new CardMarket(
+      row.price,
+      new Card(row.id_card),
+      new Currency(row.id_currency)
+    ));
+  }
+
+  async findByCard(cardId: number): Promise<CardMarket | undefined> {
+    const request: string = `SELECT * FROM cardMarket WHERE id_card = ?`;
+    const values: string[] = [cardId.toString()];
+
+    const row = await (await this.db).get(request, values);
+    return row ? new CardMarket(
+      row.price,
+      new Card(row.id_card),
+      new Currency(row.id_currency)
+    ) : undefined;
+  }
+
+  async findByCurrency(currencyId: number): Promise<CardMarket[]> {
+    const request: string = `SELECT * FROM cardMarket WHERE id_currency = ?`;
+    const values: string[] = [currencyId.toString()];
+
+    const rows = await (await this.db).all(request, values);
+    return rows.map(row => new CardMarket(
+      row.price,
+      new Card(row.id_card),
+      new Currency(row.id_currency)
+    ));
+  }
+}
+```
+
 ## File: src/DAO/Sqlite/CardModelSqliteDAO.ts
 ```typescript
 import sqlite3 from "sqlite3";
@@ -1617,6 +1600,96 @@ export class CardTradeSqliteDAO implements CardTradeDAO {
 }
 ```
 
+## File: src/DAO/Sqlite/CurrencySqliteDAO.ts
+```typescript
+import sqlite3 from "sqlite3";
+import { open, Database } from "sqlite";
+import { Currency } from "../../Models/Currency";
+import { CurrencyDAO } from "../CurrencyDAO";
+
+export class CurrencySqliteDAO implements CurrencyDAO {
+  private db: Promise<Database>;
+
+  constructor(dbFilePath: string) {
+    this.db = open({
+      filename: dbFilePath,
+      driver: sqlite3.Database
+    });
+  }
+
+  async insert(currency: Currency): Promise<void> {
+    const request: string = `INSERT INTO currency(name, ration) VALUES (?, ?)`;
+    const values: string[] = [
+      currency.name,
+      currency.ratio.toString()
+    ];
+
+    (await this.db).run(request, values);
+  }
+
+  async update(currency: Currency): Promise<void> {
+    const patterns: string[] = [];
+    const values: string[] = [];
+
+    if (currency.name != null) {
+      patterns.push("name=?");
+      values.push(currency.name);
+    }
+    if (currency.ratio != null) {
+      patterns.push("ration=?");
+      values.push(currency.ratio.toString());
+    }
+
+    const request: string = `UPDATE currency SET ${patterns.join(", ")} WHERE id=?`;
+    values.push(currency.id.toString());
+
+    (await this.db).run(request, values);
+  }
+
+  async delete(id: number): Promise<void> {
+    const request: string = `DELETE FROM currency WHERE id = ?`;
+    const values: string[] = [id.toString()];
+
+    (await this.db).run(request, values);
+  }
+
+  async findAll(): Promise<Currency[]> {
+    const request: string = `SELECT * FROM currency`;
+    const rows = await (await this.db).all(request);
+
+    return rows.map(row => new Currency(
+      row.id,
+      row.name,
+      row.ration
+    ));
+  }
+
+  async findById(id: number): Promise<Currency | undefined> {
+    const request: string = `SELECT * FROM currency WHERE id = ?`;
+    const values: string[] = [id.toString()];
+
+    const row = await (await this.db).get(request, values);
+    return row ? new Currency(
+      row.id,
+      row.name,
+      row.ration
+    ) : undefined;
+  }
+
+  async findByName(name: string): Promise<Currency | undefined> {
+    const request: string = `SELECT * FROM currency WHERE name = ?`;
+    const values: string[] = [name];
+
+    const row = await (await this.db).get(request, values);
+    return row ? new Currency(
+      row.id,
+      row.name,
+      row.ration
+    ) : undefined;
+  }
+}
+```
+
 ## File: src/DAO/Sqlite/FactorySqliteDAO.ts
 ```typescript
 import { BoosterDropRateSqliteDAO } from "./BoosterDropRateSqliteDAO";
@@ -1630,6 +1703,9 @@ import { RaritySqliteDAO } from "./RaritySqliteDAO";
 import { RefreshTokenSqliteDAO } from "./RefreshTokenSqliteDAO";
 import { TradeSqliteDAO } from "./TradeSqliteDAO";
 import { UserSqliteDAO } from "./UserSqliteDAO";
+import { CurrencySqliteDAO } from "./CurrencySqliteDAO";
+import { WalletSqliteDAO } from "./WalletSqliteDAO";
+import { CardMarketSqliteDAO } from "./CardMarketSqliteDAO";
 
 import { FactoryDAO } from "../FactoryDAO";
 
@@ -1644,6 +1720,9 @@ import { RarityDAO } from "../RarityDAO";
 import { RefreshTokenDAO } from "../RefreshTokenDAO";
 import { TradeDAO } from "../TradeDAO";
 import { UserDAO } from "../UserDAO";
+import { CurrencyDAO } from "../CurrencyDAO";
+import { WalletDAO } from "../WalletDAO";
+import { CardMarketDAO } from "../CardMarketDAO";
 
 export class FactorySqliteDAO extends FactoryDAO{
     private path:string;
@@ -1695,6 +1774,18 @@ export class FactorySqliteDAO extends FactoryDAO{
 
     createUserDAO():UserDAO{
         return new UserSqliteDAO(this.path);
+    }
+
+    createCurrencyDAO(): CurrencyDAO {
+        return new CurrencySqliteDAO(this.path);
+    }
+
+    createWalletDAO(): WalletDAO {
+        return new WalletSqliteDAO(this.path);
+    }
+
+    createCardMarketDAO(): CardMarketDAO {
+        return new CardMarketSqliteDAO(this.path);
     }
 }
 ```
@@ -2106,6 +2197,114 @@ export class UserSqliteDAO implements UserDAO {
 }
 ```
 
+## File: src/DAO/Sqlite/WalletSqliteDAO.ts
+```typescript
+import sqlite3 from "sqlite3";
+import { open, Database } from "sqlite";
+import { Wallet } from "../../Models/Wallet";
+import { WalletDAO } from "../WalletDAO";
+import { User } from "../../Models/User";
+import { Currency } from "../../Models/Currency";
+
+export class WalletSqliteDAO implements WalletDAO {
+  private db: Promise<Database>;
+
+  constructor(dbFilePath: string) {
+    this.db = open({
+      filename: dbFilePath,
+      driver: sqlite3.Database
+    });
+  }
+
+  async insert(wallet: Wallet): Promise<void> {
+    const request: string = `INSERT INTO wallet(amount, id_user, id_currency) VALUES (?, ?, ?)`;
+    const values: string[] = [
+      wallet.amount.toString(),
+      wallet.user.id.toString(),
+      wallet.currency.id.toString()
+    ];
+
+    (await this.db).run(request, values);
+  }
+
+  async update(wallet: Wallet): Promise<void> {
+    const patterns: string[] = [];
+    const values: string[] = [];
+
+    if (wallet.amount != null) {
+      patterns.push("amount=?");
+      values.push(wallet.amount.toString());
+    }
+
+    const request: string = `UPDATE wallet SET ${patterns.join(", ")} WHERE id_user=? AND id_currency=?`;
+    values.push(wallet.user.id.toString());
+    values.push(wallet.currency.id.toString());
+
+    (await this.db).run(request, values);
+  }
+
+  async delete(userId: number, currencyId: number): Promise<void> {
+    const request: string = `DELETE FROM wallet WHERE id_user = ? AND id_currency = ?`;
+    const values: string[] = [
+      userId.toString(),
+      currencyId.toString()
+    ];
+
+    (await this.db).run(request, values);
+  }
+
+  async findAll(): Promise<Wallet[]> {
+    const request: string = `SELECT * FROM wallet`;
+    const rows = await (await this.db).all(request);
+
+    return rows.map(row => new Wallet(
+      row.amount,
+      new User(row.id_user),
+      new Currency(row.id_currency)
+    ));
+  }
+
+  async findByUser(userId: number): Promise<Wallet[]> {
+    const request: string = `SELECT * FROM wallet WHERE id_user = ?`;
+    const values: string[] = [userId.toString()];
+
+    const rows = await (await this.db).all(request, values);
+    return rows.map(row => new Wallet(
+      row.amount,
+      new User(row.id_user),
+      new Currency(row.id_currency)
+    ));
+  }
+
+  async findByCurrency(currencyId: number): Promise<Wallet[]> {
+    const request: string = `SELECT * FROM wallet WHERE id_currency = ?`;
+    const values: string[] = [currencyId.toString()];
+
+    const rows = await (await this.db).all(request, values);
+    return rows.map(row => new Wallet(
+      row.amount,
+      new User(row.id_user),
+      new Currency(row.id_currency)
+    ));
+  }
+
+  async findByUserAndCurrency(userId: number, currencyId: number): Promise<Wallet | undefined> {
+    const request: string = `SELECT * FROM wallet WHERE id_user = ? AND id_currency = ?`;
+    const values: string[] = [
+      userId.toString(),
+      currencyId.toString()
+    ];
+
+    const row = await (await this.db).get(request, values);
+    return row ? new Wallet(
+      row.amount,
+      new User(row.id_user),
+      new Currency(row.id_currency)
+    ) : undefined;
+  }
+}
+```
+
 ## File: src/DAO/BoosterDAO.ts
 ```typescript
 import { Booster } from "../Models/Booster";
@@ -2178,6 +2377,20 @@ export interface CardHistDAO {
 }
 ```
 
+## File: src/DAO/CardMarketDAO.ts
+```typescript
+import { CardMarket } from "../Models/CardMarket";
+
+export interface CardMarketDAO {
+  insert(cardMarket: CardMarket): Promise<void>;
+  update(cardMarket: CardMarket): Promise<void>;
+  delete(cardId: number): Promise<void>;
+  findAll(): Promise<CardMarket[]>;
+  findByCard(cardId: number): Promise<CardMarket | undefined>;
+  findByCurrency(currencyId: number): Promise<CardMarket[]>;
+}
+```
+
 ## File: src/DAO/CardModelDAO.ts
 ```typescript
 import { CardModel } from "../Models/CardModel";
@@ -2205,6 +2418,20 @@ export interface CardTradeDAO {
 }
 ```
 
+## File: src/DAO/CurrencyDAO.ts
+```typescript
+import { Currency } from "../Models/Currency";
+
+export interface CurrencyDAO {
+  insert(currency: Currency): Promise<void>;
+  update(currency: Currency): Promise<void>;
+  delete(id: number): Promise<void>;
+  findAll(): Promise<Currency[]>;
+  findById(id: number): Promise<Currency | undefined>;
+  findByName(name: string): Promise<Currency | undefined>;
+}
+```
+
 ## File: src/DAO/FactoryDAO.ts
 ```typescript
 import { BoosterDAO } from "./BoosterDAO";
@@ -2218,6 +2445,9 @@ import { RarityDAO } from "./RarityDAO";
 import { RefreshTokenDAO } from "./RefreshTokenDAO";
 import { TradeDAO } from "./TradeDAO";
 import { UserDAO } from "./UserDAO";
+import { CurrencyDAO } from "./CurrencyDAO";
+import { WalletDAO } from "./WalletDAO";
+import { CardMarketDAO } from "./CardMarketDAO";
 
 export abstract class FactoryDAO{
     abstract createBoosterDAO():BoosterDAO;
@@ -2231,6 +2461,9 @@ export abstract class FactoryDAO{
     abstract createRefreshTokenDAO():RefreshTokenDAO;
     abstract createTradeDAO():TradeDAO;
     abstract createUserDAO():UserDAO;
+    abstract createCurrencyDAO():CurrencyDAO;
+    abstract createWalletDAO():WalletDAO;
+    abstract createCardMarketDAO():CardMarketDAO;
 }
 ```
 
@@ -2287,6 +2520,21 @@ export interface UserDAO {
     findAll():Promise<User[]>;
     findById(id:number):Promise<User|undefined>;
     findByEmail(email:string):Promise<User|undefined>;
+}
+```
+
+## File: src/DAO/WalletDAO.ts
+```typescript
+import { Wallet } from "../Models/Wallet";
+
+export interface WalletDAO {
+  insert(wallet: Wallet): Promise<void>;
+  update(wallet: Wallet): Promise<void>;
+  delete(userId: number, currencyId: number): Promise<void>;
+  findAll(): Promise<Wallet[]>;
+  findByUser(userId: number): Promise<Wallet[]>;
+  findByCurrency(currencyId: number): Promise<Wallet[]>;
+  findByUserAndCurrency(userId: number, currencyId: number): Promise<Wallet | undefined>;
 }
 ```
 
@@ -2745,6 +2993,48 @@ export class CardHist {
 }
 ```
 
+## File: src/Models/CardMarket.ts
+```typescript
+import { Card } from "./Card";
+import { Currency } from "./Currency";
+
+export class CardMarket {
+  private _price: number;
+  private _card: Card;
+  private _currency: Currency;
+
+  constructor(price: number = 0, card: Card = new Card(), currency: Currency = new Currency()) {
+    this._price = price;
+    this._card = card;
+    this._currency = currency;
+  }
+
+  // Price
+  get price(): number {
+    return this._price;
+  }
+  set price(price: number) {
+    this._price = price;
+  }
+
+  // Card
+  get card(): Card {
+    return this._card;
+  }
+  set card(card: Card) {
+    this._card = card;
+  }
+
+  // Currency
+  get currency(): Currency {
+    return this._currency;
+  }
+  set currency(currency: Currency) {
+    this._currency = currency;
+  }
+}
+```
+
 ## File: src/Models/CardModel.ts
 ```typescript
 export class CardModel {
@@ -2854,6 +3144,45 @@ export class CardTrade {
     public set owner(owner: User) {
         this._owner = owner;
     }
+}
+```
+
+## File: src/Models/Currency.ts
+```typescript
+export class Currency {
+  private _id: number;
+  private _name: string;
+  private _ratio: number;
+
+  constructor(id: number = 0, name: string = "", ratio: number = 0) {
+    this._id = id;
+    this._name = name || '';
+    this._ratio = ratio || 1;
+  }
+
+  // Id
+  public get id(): number {
+    return this._id;
+  }
+  public set id(id: number) {
+    this._id = id;
+  }
+
+  // Name
+  public get name(): string {
+    return this._name;
+  }
+  public set name(name: string) {
+    this._name = name;
+  }
+
+  // Ratio
+  public get ratio(): number {
+    return this._ratio;
+  }
+  public set ratio(ratio: number) {
+    this._ratio = ratio;
+  }
 }
 ```
 
@@ -3101,6 +3430,48 @@ export class User {
 }
 ```
 
+## File: src/Models/Wallet.ts
+```typescript
+import { User } from "./User";
+import { Currency } from "./Currency";
+
+export class Wallet {
+  private _amount: number;
+  private _user: User;
+  private _currency: Currency;
+
+  constructor(amount: number = 0, user: User = new User(), currency: Currency = new Currency()) {
+    this._amount = amount;
+    this._user = user;
+    this._currency = currency;
+  }
+
+  // Amount
+  get amount(): number {
+    return this._amount;
+  }
+  set amount(amount: number) {
+    this._amount = amount;
+  }
+
+  // User
+  get user(): User {
+    return this._user;
+  }
+  set user(user: User) {
+    this._user = user;
+  }
+
+  // Currency
+  get currency(): Currency {
+    return this._currency;
+  }
+  set currency(currency: Currency) {
+    this._currency = currency;
+  }
+}
+```
+
 ## File: src/Routes/AuthRoutes.ts
 ```typescript
 import { Router } from "express";
@@ -3129,35 +3500,6 @@ export function authRoutes(factoryDAO:FactoryDAO): Router {
 }
 ```
 
-## File: src/Routes/BoosterDropRateRoutes.ts
-```typescript
-import { Router } from "express";
-import { authJWT, requireRole } from "../Middleware/authMiddleware";
-
-import { FactoryDAO } from "../DAO/FactoryDAO";
-
-import { BoosterDropRateDAO } from "../DAO/BoosterDropRateDAO";
-import { BoosterDropRateService } from "../Services/BoosterDropRateService";
-import { BoosterDropRateController } from "../Controllers/BoosterDropRateController";
-
-export function boosterDropRateRoutes(factoryDAO:FactoryDAO): Router {
-    const router = Router();
-
-    const boosterDropRateDAO = factoryDAO.createBoosterDropRateDAO();
-    const boosterDropRateService = new BoosterDropRateService(boosterDropRateDAO);
-    const boosterDropRateController = new BoosterDropRateController(boosterDropRateService);
-
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), boosterDropRateController.getAll.bind(boosterDropRateController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), boosterDropRateController.get.bind(boosterDropRateController));
-    router.post("/", authJWT, requireRole(["ADMIN"]), boosterDropRateController.create.bind(boosterDropRateController));
-    router.delete("/:id", authJWT, requireRole(["ADMIN"]), boosterDropRateController.delete.bind(boosterDropRateController));
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), boosterDropRateController.update.bind(boosterDropRateController));
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), boosterDropRateController.update.bind(boosterDropRateController));
-
-    return router;
-}
-```
-
 ## File: src/Routes/BoosterModelRoutes.ts
 ```typescript
 import { Router } from "express";
@@ -3176,8 +3518,8 @@ export function boosterModelRoutes(factoryDAO:FactoryDAO): Router {
     const boosterModelService = new BoosterModelService(boosterModelDAO);
     const boosterModelController = new BoosterModelController(boosterModelService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), boosterModelController.getAll.bind(boosterModelController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), boosterModelController.get.bind(boosterModelController));
+    router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), boosterModelController.getAll.bind(boosterModelController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER", "BOT"]), boosterModelController.get.bind(boosterModelController));
     router.post("/", authJWT, requireRole(["ADMIN"]), boosterModelController.create.bind(boosterModelController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), boosterModelController.delete.bind(boosterModelController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), boosterModelController.update.bind(boosterModelController));
@@ -3205,41 +3547,12 @@ export function boosterRoutes(factoryDAO:FactoryDAO): Router {
     const boosterService = new BoosterService(boosterDAO);
     const boosterController = new BoosterController(boosterService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), boosterController.getAll.bind(boosterController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), boosterController.get.bind(boosterController));
-    router.post("/", authJWT, requireRole(["ADMIN"]), boosterController.create.bind(boosterController));
-    router.delete("/:id", authJWT, requireRole(["ADMIN"]), boosterController.delete.bind(boosterController));
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), boosterController.update.bind(boosterController));
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), boosterController.update.bind(boosterController));
-
-    return router;
-}
-```
-
-## File: src/Routes/CardHistRoutes.ts
-```typescript
-import { Router } from "express";
-import { authJWT, requireRole } from "../Middleware/authMiddleware"
-
-import { FactoryDAO } from "../DAO/FactoryDAO";
-
-import { CardHistDAO } from "../DAO/CardHistDAO";
-import { CardHistService } from "../Services/CardHistService";
-import { CardHistController } from "../Controllers/CardHistController";
-
-export function cardHistRoutes(factoryDAO:FactoryDAO): Router {
-    const router = Router();
-
-    const cardHistDAO = factoryDAO.createCardHistDAO();
-    const cardHistService = new CardHistService(cardHistDAO);
-    const cardHistController = new CardHistController(cardHistService);
-
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.getAll.bind(cardHistController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardHistController.get.bind(cardHistController));
-    router.post("/", authJWT, requireRole(["ADMIN","USER"]), cardHistController.create.bind(cardHistController));
-    router.delete("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.delete.bind(cardHistController));
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update.bind(cardHistController));
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardHistController.update.bind(cardHistController));
+    router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), boosterController.getAll.bind(boosterController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER", "BOT"]), boosterController.get.bind(boosterController));
+    router.post("/", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.create.bind(boosterController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.delete.bind(boosterController));
+    router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.update.bind(boosterController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.update.bind(boosterController));
 
     return router;
 }
@@ -3263,8 +3576,8 @@ export function cardModelRoutes(factoryDAO:FactoryDAO): Router {
     const cardModelService = new CardModelService(cardModelDAO);
     const cardModelController = new CardModelController(cardModelService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardModelController.getAll.bind(cardModelController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardModelController.get.bind(cardModelController));
+    router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), cardModelController.getAll.bind(cardModelController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER", "BOT"]), cardModelController.get.bind(cardModelController));
     router.post("/", authJWT, requireRole(["ADMIN"]), cardModelController.create.bind(cardModelController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.delete.bind(cardModelController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), cardModelController.update.bind(cardModelController));
@@ -3292,12 +3605,12 @@ export function cardRoutes(factoryDAO:FactoryDAO): Router {
     const cardService = new CardService(cardDAO);
     const cardController = new CardController(cardService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), cardController.getAll.bind(cardController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), cardController.get.bind(cardController));
-    router.post("/", authJWT, requireRole(["ADMIN"]), cardController.create.bind(cardController));
-    router.delete("/:id", authJWT, requireRole(["ADMIN"]), cardController.delete.bind(cardController));
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), cardController.update.bind(cardController));
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), cardController.update.bind(cardController));
+    router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), cardController.getAll.bind(cardController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER", "BOT"]), cardController.get.bind(cardController));
+    router.post("/", authJWT, requireRole(["ADMIN", "BOT"]), cardController.create.bind(cardController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN", "BOT"]), cardController.delete.bind(cardController));
+    router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), cardController.update.bind(cardController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN", "BOT"]), cardController.update.bind(cardController));
 
     return router;
 }
@@ -3321,8 +3634,8 @@ export function rarityRoutes(factoryDAO:FactoryDAO): Router {
     const rarityService = new RarityService(rarityDAO);
     const rarityController = new RarityController(rarityService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), rarityController.getAll.bind(rarityController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), rarityController.get.bind(rarityController));
+    router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), rarityController.getAll.bind(rarityController));
+    router.get("/:id", authJWT, requireRole(["ADMIN","USER", "BOT"]), rarityController.get.bind(rarityController));
     router.post("/", authJWT, requireRole(["ADMIN"]), rarityController.create.bind(rarityController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), rarityController.delete.bind(rarityController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), rarityController.update.bind(rarityController));
@@ -3350,8 +3663,8 @@ export function tradeRoutes(factoryDAO:FactoryDAO): Router {
     const tradeService = new TradeService(tradeDAO);
     const tradeController = new TradeController(tradeService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), tradeController.getAll.bind(tradeController));
-    router.get("/:id", authJWT, requireRole(["ADMIN","USER"]), tradeController.get.bind(tradeController));
+    router.get("/", authJWT, requireRole(["ADMIN"]), tradeController.getAll.bind(tradeController));
+    router.get("/:id", authJWT, requireRole(["ADMIN"]), tradeController.get.bind(tradeController));
     router.post("/", authJWT, requireRole(["ADMIN"]), tradeController.create.bind(tradeController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), tradeController.delete.bind(tradeController));
     router.put("/:id", authJWT, requireRole(["ADMIN"]), tradeController.update.bind(tradeController));
@@ -3376,6 +3689,10 @@ import { CardDAO } from "../DAO/CardDAO";
 import { CardService } from "../Services/CardService";
 import { CardController } from "../Controllers/CardController";
 
+import { BoosterDAO } from "../DAO/BoosterDAO";
+import { BoosterService } from "../Services/BoosterService";
+import { BoosterController } from "../Controllers/BoosterController";
+
 export function userRoutes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
@@ -3387,14 +3704,19 @@ export function userRoutes(factoryDAO:FactoryDAO): Router {
     const cardService = new CardService(cardDAO);
     const cardController = new CardController(cardService);
 
-    router.get("/", authJWT, requireRole(["ADMIN","USER"]), userController.getAll.bind(userController));
-    router.get("/:id", authJWT, requireRole(["ADMIN"]), userController.get.bind(userController));
-    router.post("/", authJWT, requireRole(["ADMIN"]), userController.create.bind(userController));
-    router.delete("/:id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
-    router.put("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
-    router.patch("/:id", authJWT, requireRole(["ADMIN"]), userController.update.bind(userController));
+    const boosterDAO = factoryDAO.createBoosterDAO();
+    const boosterService = new BoosterService(boosterDAO);
+    const boosterController = new BoosterController(boosterService);
 
-    router.get("/:id/cards", authJWT, requireRole(["ADMIN"]), cardController.getByUser.bind(cardController));
+    router.get("/", authJWT, requireRole(["ADMIN", "BOT"]), userController.getAll.bind(userController));
+    router.get("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.get.bind(userController));
+    router.post("/", authJWT, requireRole(["ADMIN", "BOT"]), userController.create.bind(userController));
+    router.delete("/:id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
+    router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.update.bind(userController));
+    router.patch("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.update.bind(userController));
+
+    router.get("/:id/cards", authJWT, requireRole(["ADMIN", "BOT"]), cardController.getByUser.bind(cardController));
+    router.get("/:id/boosters", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.getByUser.bind(boosterController));
 
     router.get("/me", authJWT, requireRole(["ADMIN","USER"]), userController.getMe.bind(userController));
     router.put("/me", authJWT, requireRole(["ADMIN","USER"]), userController.updateMe.bind(userController));
@@ -3478,43 +3800,6 @@ export class AuthService {
 }
 ```
 
-## File: src/Services/BoosterDropRateService.ts
-```typescript
-import { BoosterDropRate } from "../Models/BoosterDropRate";
-import { BoosterDropRateDAO } from "../DAO/BoosterDropRateDAO";
-
-export class BoosterDropRateService {
-    constructor(private boosterDropRateDAO: BoosterDropRateDAO){}
-
-    async getAll(limit:number, page:number):Promise<BoosterDropRate[]>{
-        var boosterDropRates:BoosterDropRate[] = await this.boosterDropRateDAO.findAll();
-        boosterDropRates = boosterDropRates.slice((page-1)*limit, page*limit);
-        return boosterDropRates;
-    }
-
-    async get(id: number):Promise<BoosterDropRate>{
-        const boosterDropRate = await this.boosterDropRateDAO.findById(id);
-        if(!boosterDropRate){
-            throw new Error("BoosterDropRate not found");
-        }
-        return boosterDropRate;
-    }
-
-    async create(boosterDropRate:BoosterDropRate):Promise<void>{
-        
-        this.boosterDropRateDAO.insert(boosterDropRate);
-    }
-
-    async delete(id:number):Promise<void>{
-        await this.boosterDropRateDAO.delete(id);
-    }
-
-    async update(data:BoosterDropRate):Promise<void>{
-        await this.boosterDropRateDAO.update(data);
-    }
-}
-```
-
 ## File: src/Services/BoosterModelService.ts
 ```typescript
 import { BoosterModel } from "../Models/BoosterModel";
@@ -3574,6 +3859,11 @@ export class BoosterService {
         return booster;
     }
 
+    async getByUser(idUser: number):Promise<Booster[]>{
+        const booster = await this.boosterDAO.findByUser(idUser);
+        return booster;
+    }
+
     async create(booster:Booster):Promise<void>{
         
         this.boosterDAO.insert(booster);
@@ -3585,43 +3875,6 @@ export class BoosterService {
 
     async update(data:Booster):Promise<void>{
         await this.boosterDAO.update(data);
-    }
-}
-```
-
-## File: src/Services/CardHistService.ts
-```typescript
-import { CardHist } from "../Models/CardHist";
-import { CardHistDAO } from "../DAO/CardHistDAO";
-
-export class CardHistService {
-    constructor(private cardHistDAO: CardHistDAO){}
-
-    async getAll(limit:number, page:number):Promise<CardHist[]>{
-        var cardHists:CardHist[] = await this.cardHistDAO.findAll();
-        cardHists = cardHists.slice((page-1)*limit, page*limit);
-        return cardHists;
-    }
-
-    async get(id: number):Promise<CardHist>{
-        const cardHist = await this.cardHistDAO.findById(id);
-        if(!cardHist){
-            throw new Error("CardHist not found");
-        }
-        return cardHist;
-    }
-
-    async create(cardHist:CardHist):Promise<void>{
-        cardHist.obtened = Date.now();
-        this.cardHistDAO.insert(cardHist);
-    }
-
-    async delete(id:number):Promise<void>{
-        await this.cardHistDAO.delete(id);
-    }
-
-    async update(data:CardHist):Promise<void>{
-        await this.cardHistDAO.update(data);
     }
 }
 ```
@@ -3876,10 +4129,8 @@ if (!process.env.LogDir) throw new Error("Missing LogDir");
 if (!process.env.BDDSqliteDir) throw new Error("Missing BDDSqliteDir");
 
 import { authRoutes } from "./Routes/AuthRoutes";
-import { boosterDropRateRoutes } from "./Routes/BoosterDropRateRoutes";
 import { boosterModelRoutes } from "./Routes/BoosterModelRoutes";
 import { boosterRoutes } from "./Routes/BoosterRoutes";
-import { cardHistRoutes } from "./Routes/CardHistRoutes";
 import { cardModelRoutes } from "./Routes/CardModelRoutes";
 import { cardRoutes } from "./Routes/CardRoutes";
 import { rarityRoutes } from "./Routes/RarityRoutes";
@@ -3899,10 +4150,8 @@ const port = process.env.port;
 
 const factoryDAO:FactoryDAO = new FactorySqliteDAO(process.env.BDDSqliteDir);
 
-app.use("/boosterdroprates", boosterDropRateRoutes(factoryDAO));
 app.use("/boostermodels", boosterModelRoutes(factoryDAO));
 app.use("/boosters", boosterRoutes(factoryDAO));
-app.use("/cardhists", cardHistRoutes(factoryDAO));
 app.use("/cardmodels", cardModelRoutes(factoryDAO));
 app.use("/cards", cardRoutes(factoryDAO));
 app.use("/raritys", rarityRoutes(factoryDAO));
@@ -3921,10 +4170,10 @@ PRAGMA foreign_keys = ON;
 CREATE TABLE IF NOT EXISTS User (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(50) NOT NULL,
-    discord_id VARCHAR(100) DEFAULT NULL,
+    discord_id VARCHAR(100) UNIQUE DEFAULT NULL,
     email VARCHAR(50) NOT NULL,
     password TEXT NOT NULL,
-    role VARCHAR(15) NOT NULL CHECK (role IN ('USER', 'ADMIN')) DEFAULT 'USER',
+    role VARCHAR(15) NOT NULL CHECK (role IN ('USER', 'ADMIN', 'BOT')) DEFAULT 'USER',
     creation DATETIME NOT NULL
 );
 
@@ -4019,5 +4268,27 @@ CREATE TABLE IF NOT EXISTS CardTrade (
     CONSTRAINT fk_cardtrade_trade FOREIGN KEY (id_trade) REFERENCES Trade(id),
     CONSTRAINT fk_cardtrade_card FOREIGN KEY (id_card) REFERENCES Card(id),
     CONSTRAINT fk_cardtrade_user FOREIGN KEY (id_owner) REFERENCES User(id)
+);
+
+CREATE TABLE IF NOT EXISTS Currency (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(20) UNIQUE NOT NULL,
+    ratio DECIMAL(5,2) DEFAULT 1 NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Wallet (
+    amount INT NOT NULL,
+    id_user NOT NULL,
+    id_currency NOT NULL,
+    CONSTRAINT fk_wallet_user FOREIGN KEY (id_user) REFERENCES User(id),
+    CONSTRAINT fk_wallet_currency FOREIGN KEY (id_currency) REFERENCES Currency(id)
+);
+
+CREATE TABLE IF NOT EXISTS CardMarket (
+    price INT NOT NULL,
+    id_card NOT NULL,
+    id_currency NOT NULL,
+    CONSTRAINT fk_cardmarket_card FOREIGN KEY (id_card) REFERENCES Card(id),
+    CONSTRAINT fk_cardmarket_currency FOREIGN KEY (id_currency) REFERENCES Currency(id)
 );
 ```

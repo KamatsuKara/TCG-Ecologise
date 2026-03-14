@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { BoosterService } from "../Services/BoosterService";
+import { Booster } from "../Models/Booster";
+import { User } from "../Models/User";
 
 export class BoosterController{
     constructor(private boosterService:BoosterService){}
@@ -38,7 +40,15 @@ export class BoosterController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.boosterService.create(req.body);
+            const obj = new Booster(
+                0,
+                req.body.seed,
+                req.body.boosterModel,
+                new User(req.body.idUser),
+                req.body.obtened,
+                req.body.created
+            );
+            await this.boosterService.create(obj);
             res.json("Booster created");
         }catch(error:any){
             console.log(error.message);
@@ -58,7 +68,15 @@ export class BoosterController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.boosterService.update(req.body);
+            const obj = new Booster(
+                req.body.id,
+                req.body.seed,
+                req.body.boosterModel,
+                new User(req.body.idUser),
+                req.body.obtened,
+                req.body.created
+            );
+            await this.boosterService.update(obj);
             res.json("Booster updated");
         }catch(error:any){
             console.log(error.message);

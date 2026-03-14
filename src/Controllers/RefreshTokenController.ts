@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { RefreshTokenService } from "../Services/RefreshTokenService";
+import { RefreshToken } from "../Models/RefreshToken";
+import { User } from "../Models/User";
 
 export class RefreshTokenController{
     constructor(private refreshTokenService:RefreshTokenService){}
@@ -26,7 +28,14 @@ export class RefreshTokenController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.refreshTokenService.create(req.body);
+            const obj = new RefreshToken(
+                req.body.id,
+                req.body.tokenHash,
+                new User(req.body.idUser),
+                req.body.expirationDate,
+                req.body.revoked,
+            );
+            await this.refreshTokenService.create(obj);
             res.json("RefreshToken created");
         }catch(error:any){
             res.status(400).json({ error: error.message });
@@ -44,7 +53,14 @@ export class RefreshTokenController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.refreshTokenService.update(req.body);
+            const obj = new RefreshToken(
+                req.body.id,
+                req.body.tokenHash,
+                new User(req.body.idUser),
+                req.body.expirationDate,
+                req.body.revoked,
+            );
+            await this.refreshTokenService.update(obj);
             res.json("RefreshToken updated");
         }catch(error:any){
             res.status(400).json({ error: error.message });

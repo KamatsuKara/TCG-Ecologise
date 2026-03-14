@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../Services/UserService";
+import { User } from "../Models/User";
 
 export class UserController{
     constructor(private userService:UserService){}
@@ -38,7 +39,16 @@ export class UserController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.userService.create(req.body);
+            const obj = new User(
+                req.body.id,
+                req.body.name,
+                req.body.discordId,
+                req.body.email,
+                req.body.password,
+                req.body.role,
+                req.body.create,
+            );
+            await this.userService.create(obj);
             res.json("User created");
         }catch(error:any){
             console.log(error.message);
@@ -58,7 +68,16 @@ export class UserController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.userService.update(req.body);
+            const obj = new User(
+                req.body.id,
+                req.body.name,
+                req.body.discordId,
+                req.body.email,
+                req.body.password,
+                req.body.role,
+                req.body.create,
+            );
+            await this.userService.update(obj);
             res.json("User updated");
         }catch(error:any){
             console.log(error.message);
@@ -68,8 +87,17 @@ export class UserController{
 
     async updateMe(req:Request, res:Response):Promise<void>{
         try{
-            req.body.id = req.user?.sub;
-            await this.userService.update(req.body);
+            if(req.user?.sub == null) throw new Error('No User Id Provided');
+            const obj = new User(
+                parseInt(req.user.sub),
+                req.body.name,
+                req.body.discordId,
+                req.body.email,
+                req.body.password,
+                req.body.role,
+                req.body.create,
+            );
+            await this.userService.update(obj);
             res.json("User updated");
         }catch(error:any){
             console.log(error.message);

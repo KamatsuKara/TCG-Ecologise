@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { RarityService } from "../Services/RarityService";
+import { Rarity } from "../Models/Rarity";
 
 export class RarityController{
     constructor(private rarityService:RarityService){}
@@ -28,7 +29,11 @@ export class RarityController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.rarityService.create(req.body);
+            const obj = new Rarity(
+                req.body.id,
+                req.body.name,
+            );
+            await this.rarityService.create(obj);
             res.json("Rarity created");
         }catch(error:any){
             console.log(error.message);
@@ -48,7 +53,11 @@ export class RarityController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.rarityService.update(req.body);
+            const obj = new Rarity(
+                req.body.id,
+                req.body.name,
+            );
+            await this.rarityService.update(obj);
             res.json("Rarity updated");
         }catch(error:any){
             console.log(error.message);
