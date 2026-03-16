@@ -95,4 +95,16 @@ export class CardController{
             res.status(500).json({ error: error.message });
         }
     };
+
+    async sellCard(req:Request, res:Response):Promise<void> {
+        try {
+            const userId = Number(Number(req.user?.sub));
+            const cardId = Number(req.params.id);
+            const result = await this.cardService.sellCard(userId, cardId);
+            res.json(result);
+        } catch (error:any) {
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    }
 }

@@ -11,7 +11,10 @@ export function cardRoutes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
     const cardDAO = factoryDAO.createCardDAO();
-    const cardService = new CardService(cardDAO);
+    const walletDAO = factoryDAO.createWalletDAO();
+    const cardMarketDAO = factoryDAO.createCardMarketDAO();
+
+    const cardService = new CardService(cardDAO, walletDAO, cardMarketDAO);
     const cardController = new CardController(cardService);
 
     router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), cardController.getAll.bind(cardController));
@@ -20,6 +23,9 @@ export function cardRoutes(factoryDAO:FactoryDAO): Router {
     router.delete("/:id", authJWT, requireRole(["ADMIN", "BOT"]), cardController.delete.bind(cardController));
     router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), cardController.update.bind(cardController));
     router.patch("/:id", authJWT, requireRole(["ADMIN", "BOT"]), cardController.update.bind(cardController));
+
+    router.patch("/sell/:id", authJWT, requireRole(["ADMIN", "USER"]), cardController.sellCard.bind(cardController));
+    
 
     return router;
 }
