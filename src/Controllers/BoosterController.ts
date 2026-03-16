@@ -38,6 +38,16 @@ export class BoosterController{
         }
     };
 
+    async getByMe(req:Request, res:Response):Promise<void>{
+        try{
+            const booster = await this.boosterService.getByUser(Number(req.user?.sub));
+            res.json(booster);
+        }catch(error:any){
+            console.log(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    };
+
     async create(req:Request, res:Response):Promise<void>{
         try{
             const obj = new Booster(

@@ -45,6 +45,7 @@ export function userRoutes(factoryDAO:FactoryDAO): Router {
     router.patch("/me", authJWT, requireRole(["ADMIN","USER"]), userController.updateMe.bind(userController));
 
     router.get("/me/cards", authJWT, requireRole(["ADMIN","USER"]), cardController.getByMe.bind(cardController));
+    router.get("/me/boosters", authJWT, requireRole(["ADMIN","USER"]), boosterController.getByMe.bind(boosterController));
 
     return router;
 }
