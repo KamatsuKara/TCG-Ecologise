@@ -17,3 +17,20 @@
 [] construction d'object avant les requete update
 
 [] cree code pour currency, market et wallet
+[] same card trade, card market, booster drop rate ?
+
+[] gere les images
+
+[] get me daily -> user
+[X] get all card Model
+[X] get all booster Model
+[X] get me crad
+[X] get me booster
+[] buy booster -> boosterModel
+[] open my booster -> booster
+[] sell me card -> card
+[X] get all tarde -> tadre
+[] open tarde -> trade
+[] close trade -> trade
+[] response trade -> trade
+[] accepte trade -> trade
