@@ -30,8 +30,8 @@ export function userRoutes(factoryDAO:FactoryDAO): Router {
     const boosterService = new BoosterService(boosterDAO);
     const boosterController = new BoosterController(boosterService);
 
-    router.get("/", authJWT, requireRole(["ADMIN", "BOT"]), userController.getAll.bind(userController));
-    router.get("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.get.bind(userController));
+    router.get("/", authJWT, requireRole(["ADMIN", "BOT", "USER"]), userController.getAll.bind(userController));
+    router.get("/:id", authJWT, requireRole(["ADMIN", "BOT", "USER"]), userController.get.bind(userController));
     router.post("/", authJWT, requireRole(["ADMIN", "BOT"]), userController.create.bind(userController));
     router.delete("/:id", authJWT, requireRole(["ADMIN"]), userController.delete.bind(userController));
     router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), userController.update.bind(userController));
