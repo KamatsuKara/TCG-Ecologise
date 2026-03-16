@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { TradeService } from "../Services/TradeService";
+import { Trade } from "../Models/Trade";
+import { User } from "../Models/User";
 
 export class TradeController{
     constructor(private tradeService:TradeService){}
@@ -28,7 +30,15 @@ export class TradeController{
 
     async create(req:Request, res:Response):Promise<void>{
         try{
-            await this.tradeService.create(req.body);
+            const obj = new Trade(
+                req.body.id,
+                new User(req.body.sender),
+                new User(req.body.receiver),
+                req.body.status,
+                req.body.created,
+                req.body.updated,
+            );
+            await this.tradeService.create(obj);
             res.json("Trade created");
         }catch(error:any){
             console.log(error.message);
@@ -48,7 +58,15 @@ export class TradeController{
 
     async update(req:Request, res:Response):Promise<void>{
         try{
-            await this.tradeService.update(req.body);
+            const obj = new Trade(
+                req.body.id,
+                new User(req.body.sender),
+                new User(req.body.receiver),
+                req.body.status,
+                req.body.created,
+                req.body.updated,
+            );
+            await this.tradeService.update(obj);
             res.json("Trade updated");
         }catch(error:any){
             console.log(error.message);
