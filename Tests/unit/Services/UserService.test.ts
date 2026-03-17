@@ -62,7 +62,7 @@ describe("UserService", () => {
 
   test("create throws error if password is missing", async () => {
     const user: any = { password: null };
-    await expect(service.create(user)).rejects.toThrow();
+    await expect(service.create(user)).rejects.toThrow("Password is required");
   });
 
   test("update calls DAO with correct data", async () => {

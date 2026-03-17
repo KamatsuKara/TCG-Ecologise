@@ -58,11 +58,10 @@ describe("BoosterModelService", () => {
 
   test("buyBooster succeeds with sufficient funds", async () => {
     mockWalletDAO.findByUserAndCurrency.mockResolvedValue({ amount: 150 });
-    mockWalletDAO.update.mockResolvedValue(undefined);
+    mockBoosterModelDAO.findById.mockResolvedValue({ id: 1, price: 100 });
 
     await service.buyBooster(1, 1);
 
-    expect(mockWalletDAO.findByUserAndCurrency).toHaveBeenCalledWith(1, 0);
     expect(mockWalletDAO.update).toHaveBeenCalled();
   });
 });

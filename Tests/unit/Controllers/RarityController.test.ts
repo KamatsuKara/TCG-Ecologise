@@ -1,4 +1,5 @@
 import { RarityController } from "../../../src/Controllers/RarityController";
+import { Rarity } from "../../../src/Models/Rarity";
 
 const mockRarityService: any = {
   getAll: jest.fn(),
@@ -30,11 +31,13 @@ describe("RarityController", () => {
   test("create responds with message", async () => {
     const req: any = { body: { label: "L" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const rarity = new Rarity(0, "L");
+
     mockRarityService.create.mockResolvedValue(undefined);
 
     await controller.create(req, res);
 
-    expect(mockRarityService.create).toHaveBeenCalledWith(req.body);
+    expect(mockRarityService.create).toHaveBeenCalledWith(rarity);
     expect(res.json).toHaveBeenCalledWith("Rarity created");
   });
 

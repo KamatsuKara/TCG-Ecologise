@@ -1,4 +1,5 @@
 import { CardModelController } from "../../../src/Controllers/CardModelController";
+import { CardModel } from "../../../src/Models/CardModel";
 
 const mockCardModelService: any = {
   getAll: jest.fn(),
@@ -30,11 +31,13 @@ describe("CardModelController", () => {
   test("create responds with message", async () => {
     const req: any = { body: { title: "T" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const cardModel = new CardModel(0, "T", "", "", "", "");
+
     mockCardModelService.create.mockResolvedValue(undefined);
 
     await controller.create(req, res);
 
-    expect(mockCardModelService.create).toHaveBeenCalledWith(req.body);
+    expect(mockCardModelService.create).toHaveBeenCalledWith(cardModel);
     expect(res.json).toHaveBeenCalledWith("CardModel created");
   });
 
