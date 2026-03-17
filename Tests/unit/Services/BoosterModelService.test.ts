@@ -10,6 +10,7 @@ const mockBoosterModelDAO: any = {
 
 const mockWalletDAO: any = {
   findByUserAndCurrency: jest.fn(),
+  update: jest.fn(),
 };
 
 describe("BoosterModelService", () => {
@@ -57,7 +58,11 @@ describe("BoosterModelService", () => {
 
   test("buyBooster succeeds with sufficient funds", async () => {
     mockWalletDAO.findByUserAndCurrency.mockResolvedValue({ amount: 150 });
+    mockWalletDAO.update.mockResolvedValue(undefined);
+
     await service.buyBooster(1, 1);
+
     expect(mockWalletDAO.findByUserAndCurrency).toHaveBeenCalledWith(1, 0);
+    expect(mockWalletDAO.update).toHaveBeenCalled();
   });
 });

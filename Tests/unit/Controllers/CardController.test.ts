@@ -1,3 +1,7 @@
+import { Card } from "../../../src/Models/Card";
+import { CardModel } from "../../../src/Models/CardModel";
+import { User } from "../../../src/Models/User";
+import { Rarity } from "../../../src/Models/Rarity";
 import { CardController } from "../../../src/Controllers/CardController";
 
 const mockCardService: any = {
@@ -31,11 +35,21 @@ describe("CardController", () => {
   test("create responds with success message", async () => {
     const req: any = { body: { name: "C" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+
+    const card = new Card(
+      0,
+      new User(0, "", "", "", "", "USER", Date.now()),
+      new CardModel(0, "", "", "", "", ""),
+      new Rarity(0, ""),
+      Date.now(),
+      Date.now()
+    );
+
     mockCardService.create.mockResolvedValue(undefined);
 
     await controller.create(req, res);
 
-    expect(mockCardService.create).toHaveBeenCalledWith(req.body);
+    expect(mockCardService.create).toHaveBeenCalledWith(card);
     expect(res.json).toHaveBeenCalledWith("Card created");
   });
 

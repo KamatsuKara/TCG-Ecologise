@@ -1,6 +1,7 @@
 import { UserController } from "../../../src/Controllers/UserController";
 import { CardController } from "../../../src/Controllers/CardController";
 import { BoosterController } from "../../../src/Controllers/BoosterController";
+import { User } from "../../../src/Models/User";
 
 const mockUserService: any = {
   getAll: jest.fn(),
@@ -42,11 +43,13 @@ describe("UserController", () => {
   test("create responds with message", async () => {
     const req: any = { body: { email: "x" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const user = new User(0, "", "", "x", "", "USER", Date.now());
+
     mockUserService.create.mockResolvedValue(undefined);
 
     await controller.create(req, res);
 
-    expect(mockUserService.create).toHaveBeenCalledWith(req.body);
+    expect(mockUserService.create).toHaveBeenCalledWith(user);
     expect(res.json).toHaveBeenCalledWith("User created");
   });
 
@@ -58,25 +61,25 @@ describe("UserController", () => {
     const reqDelete: any = { params: { id: "9" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
 
-    mockUserService.get.mockResolvedValue({ id: 4 });
-    await controller.get(reqGet, res);
-    expect(res.json).toHaveBeenCalledWith({ id: 4 });
+    const user = new User(4, "", "", "", "", "USER", Date.now());
 
-    mockUserService.get.mockResolvedValue({ id: 8 });
-    await controller.getMe(reqMe, res);
-    expect(res.json).toHaveBeenCalledWith({ id: 8 });
+    mockUserService.get.mockResolvedValue(user);
+    await controller.get(reqGet, res);
+    expect(res.json).toHaveBeenCalledWith(user);
 
     mockUserService.update.mockResolvedValue(undefined);
     await controller.update(reqUpdate, res);
-    expect(mockUserService.update).toHaveBeenCalledWith(reqUpdate.body);
+    expect(mockUserService.update).toHaveBeenCalledWith(new User(4, "", "", "", "", "USER", Date.now()));
     expect(res.json).toHaveBeenCalledWith("User updated");
 
     reqUpdateMe.body = { name: "n" };
     await controller.updateMe(reqUpdateMe, res);
-    expect(mockUserService.update).toHaveBeenCalledWith({ id: 8, name: "n" });
+    expect(mockUserService.update).toHaveBeenCalledWith(new User(8, "n", "", "", "", "USER", Date.now()));
+    expect(res.json).toHaveBeenCalledWith("User updated");
 
     mockUserService.delete.mockResolvedValue(undefined);
     await controller.delete(reqDelete, res);
+    expect(mockUserService.delete).toHaveBeenCalledWith(9);
     expect(res.json).toHaveBeenCalledWith("User deleted");
   });
 });
@@ -98,6 +101,7 @@ describe("UserController - Additional Routes", () => {
 
     await mockCardController.getByMe(req, res);
 
+    expect(mockCardController.getByMe).toHaveBeenCalledWith(req);
     expect(res.json).toHaveBeenCalledWith(["card1"]);
   });
 
@@ -108,6 +112,7 @@ describe("UserController - Additional Routes", () => {
 
     await mockCardController.getByUser(req, res);
 
+    expect(mockCardController.getByUser).toHaveBeenCalledWith(req);
     expect(res.json).toHaveBeenCalledWith(["card2"]);
   });
 
@@ -118,6 +123,7 @@ describe("UserController - Additional Routes", () => {
 
     await mockBoosterController.getByMe(req, res);
 
+    expect(mockBoosterController.getByMe).toHaveBeenCalledWith(req);
     expect(res.json).toHaveBeenCalledWith(["booster1"]);
   });
 
@@ -128,6 +134,7 @@ describe("UserController - Additional Routes", () => {
 
     await mockBoosterController.getByUser(req, res);
 
+    expect(mockBoosterController.getByUser).toHaveBeenCalledWith(req);
     expect(res.json).toHaveBeenCalledWith(["booster2"]);
   });
 });
