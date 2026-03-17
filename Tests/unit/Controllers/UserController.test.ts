@@ -14,11 +14,15 @@ const mockUserService: any = {
 const mockCardController: any = {
   getByMe: jest.fn(),
   getByUser: jest.fn(),
+  getMe: jest.fn(),
+  get: jest.fn(),
 };
 
 const mockBoosterController: any = {
   getByMe: jest.fn(),
   getByUser: jest.fn(),
+  getMe: jest.fn(),
+  get: jest.fn(),
 };
 
 describe("UserController", () => {
