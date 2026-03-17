@@ -93,4 +93,20 @@ export class BoosterController{
             res.status(500).json({ error: error.message });
         }
     };
+
+    async openBooster(req: Request, res: Response): Promise<void> {
+        try {
+            if (!req.user) {
+                res.status(401).json({ error: "Unauthorized" });
+                return;
+            }
+            const userId = req.user.id; // Assuming user ID is available in the request
+            const boosterId = Number(req.params.id);
+            const openedCards = await this.boosterService.openBooster(userId, boosterId);
+            res.json({ success: true, cards: openedCards });
+        } catch (error: any) {
+            console.error(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    }
 }

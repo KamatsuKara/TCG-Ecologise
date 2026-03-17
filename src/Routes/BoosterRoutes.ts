@@ -11,7 +11,12 @@ export function boosterRoutes(factoryDAO:FactoryDAO): Router {
     const router = Router();
 
     const boosterDAO = factoryDAO.createBoosterDAO();
-    const boosterService = new BoosterService(boosterDAO);
+    const boosterDropRateDAO = factoryDAO.createBoosterDropRateDAO();
+    const cardDAO = factoryDAO.createCardDAO();
+    const rarityDAO = factoryDAO.createRarityDAO();
+    const cardModelDAO = factoryDAO.createCardModelDAO();
+    const boosterModelDAO = factoryDAO.createBoosterModelDAO();
+    const boosterService = new BoosterService(boosterDAO, boosterDropRateDAO, cardDAO, rarityDAO, cardModelDAO, boosterModelDAO);
     const boosterController = new BoosterController(boosterService);
 
     router.get("/", authJWT, requireRole(["ADMIN","USER", "BOT"]), boosterController.getAll.bind(boosterController));
@@ -20,6 +25,7 @@ export function boosterRoutes(factoryDAO:FactoryDAO): Router {
     router.delete("/:id", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.delete.bind(boosterController));
     router.put("/:id", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.update.bind(boosterController));
     router.patch("/:id", authJWT, requireRole(["ADMIN", "BOT"]), boosterController.update.bind(boosterController));
+    router.post("/open/:id", authJWT, requireRole(["USER"]), boosterController.openBooster.bind(boosterController));
 
     return router;
 }
