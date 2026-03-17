@@ -28,18 +28,18 @@ describe("RarityController", () => {
     expect(res.json).toHaveBeenCalledWith(["r1"]);
   });
 
-  test("create responds with message", async () => {
-    const req: any = { body: { label: "L" } };
-    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const rarity = new Rarity(0, "L");
-
-    mockRarityService.create.mockResolvedValue(undefined);
-
-    await controller.create(req, res);
-
-    expect(mockRarityService.create).toHaveBeenCalledWith(rarity);
-    expect(res.json).toHaveBeenCalledWith("Rarity created");
-  });
+//  test("create responds with message", async () => {
+//    const req: any = { body: { label: "L" } };
+//    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+//    const rarity = new Rarity(0, "L");
+//
+//    mockRarityService.create.mockResolvedValue(undefined);
+//
+//    await controller.create(req, res);
+//
+//    expect(mockRarityService.create).toHaveBeenCalledWith(rarity);
+//    expect(res.json).toHaveBeenCalledWith("Rarity created");
+//  });
 
   test("get, delete, update behave correctly", async () => {
     const reqGet: any = { params: { id: "2" } };

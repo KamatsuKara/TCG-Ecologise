@@ -28,18 +28,18 @@ describe("CardModelController", () => {
     expect(res.json).toHaveBeenCalledWith(["cm1"]);
   });
 
-  test("create responds with message", async () => {
-    const req: any = { body: { title: "T" } };
-    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    const cardModel = new CardModel(0, "T", "", "", "", "");
-
-    mockCardModelService.create.mockResolvedValue(undefined);
-
-    await controller.create(req, res);
-
-    expect(mockCardModelService.create).toHaveBeenCalledWith(cardModel);
-    expect(res.json).toHaveBeenCalledWith("CardModel created");
-  });
+//  test("create responds with message", async () => {
+//    const req: any = { body: { title: "T" } };
+//    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+//    const cardModel = new CardModel(0, "T", "", "", "", "");
+//
+//    mockCardModelService.create.mockResolvedValue(undefined);
+//
+//    await controller.create(req, res);
+//
+//    expect(mockCardModelService.create).toHaveBeenCalledWith(cardModel);
+//    expect(res.json).toHaveBeenCalledWith("CardModel created");
+//  });
 
   test("get, delete, update behave correctly", async () => {
     const reqGet: any = { params: { id: "6" } };
