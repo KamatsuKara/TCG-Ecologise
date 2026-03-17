@@ -63,7 +63,7 @@ export class CardService {
 
         const price = cardMarket.price;
 
-        await this.walletDAO.update(new Wallet(price, new User(userId), new Currency(1))); // Fixed method name
+        await this.walletDAO.update(new Wallet(price, new User(userId), new Currency(0)));
         await this.cardDAO.delete(cardId);
 
         return { message: 'Card sold successfully', price };

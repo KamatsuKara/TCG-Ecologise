@@ -28,7 +28,7 @@
 [X] get me booster
 [] buy booster -> boosterModel
 [] open my booster -> booster
-[] sell me card -> card
+[X] sell me card -> card
 [X] get all tarde -> tadre
 [] open tarde -> trade
 [] close trade -> trade
