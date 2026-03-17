@@ -1,4 +1,6 @@
 import { UserController } from "../../../src/Controllers/UserController";
+import { CardController } from "../../../src/Controllers/CardController";
+import { BoosterController } from "../../../src/Controllers/BoosterController";
 
 const mockUserService: any = {
   getAll: jest.fn(),
@@ -6,6 +8,16 @@ const mockUserService: any = {
   create: jest.fn(),
   delete: jest.fn(),
   update: jest.fn(),
+};
+
+const mockCardController: any = {
+  getByMe: jest.fn(),
+  getByUser: jest.fn(),
+};
+
+const mockBoosterController: any = {
+  getByMe: jest.fn(),
+  getByUser: jest.fn(),
 };
 
 describe("UserController", () => {
@@ -66,5 +78,56 @@ describe("UserController", () => {
     mockUserService.delete.mockResolvedValue(undefined);
     await controller.delete(reqDelete, res);
     expect(res.json).toHaveBeenCalledWith("User deleted");
+  });
+});
+
+describe("UserController - Additional Routes", () => {
+  let controller: UserController;
+
+  beforeEach(() => {
+    jest.restoreAllMocks();
+    Object.values(mockCardController).forEach((m: any) => m.mockReset());
+    Object.values(mockBoosterController).forEach((m: any) => m.mockReset());
+    controller = new UserController(mockUserService);
+  });
+
+  test("getByMe for cards responds with user's cards", async () => {
+    const req: any = { user: { sub: 1 } };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockCardController.getByMe.mockResolvedValue(["card1"]);
+
+    await mockCardController.getByMe(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(["card1"]);
+  });
+
+  test("getByUser for cards responds with user's cards", async () => {
+    const req: any = { params: { id: "2" } };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockCardController.getByUser.mockResolvedValue(["card2"]);
+
+    await mockCardController.getByUser(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(["card2"]);
+  });
+
+  test("getByMe for boosters responds with user's boosters", async () => {
+    const req: any = { user: { sub: 1 } };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockBoosterController.getByMe.mockResolvedValue(["booster1"]);
+
+    await mockBoosterController.getByMe(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(["booster1"]);
+  });
+
+  test("getByUser for boosters responds with user's boosters", async () => {
+    const req: any = { params: { id: "2" } };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockBoosterController.getByUser.mockResolvedValue(["booster2"]);
+
+    await mockBoosterController.getByUser(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(["booster2"]);
   });
 });

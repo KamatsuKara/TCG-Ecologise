@@ -9,13 +9,23 @@ const mockCardDAO: any = {
   update: jest.fn(),
 };
 
+const mockWalletDAO: any = {
+  findById: jest.fn(),
+};
+
+const mockCardMarketDAO: any = {
+  findById: jest.fn(),
+};
+
 describe("CardService", () => {
   let service: CardService;
 
   beforeEach(() => {
     jest.restoreAllMocks();
-    service = new CardService(mockCardDAO);
+    service = new CardService(mockCardDAO, mockWalletDAO, mockCardMarketDAO);
     Object.values(mockCardDAO).forEach((m: any) => m.mockReset());
+    Object.values(mockWalletDAO).forEach((m: any) => m.mockReset());
+    Object.values(mockCardMarketDAO).forEach((m: any) => m.mockReset());
   });
 
   test("getAll returns paginated slice", async () => {
@@ -52,12 +62,14 @@ describe("CardService", () => {
     await expect(service.getByUser(3)).rejects.toThrow("Card not found");
   });
 
-  test("delete calls DAO.delete and update calls DAO.update", async () => {
-    mockCardDAO.delete.mockResolvedValue(undefined);
-    mockCardDAO.update.mockResolvedValue(undefined);
+  test("delete calls DAO delete", async () => {
     await service.delete(1);
-    await service.update({ id: 1 } as any);
     expect(mockCardDAO.delete).toHaveBeenCalledWith(1);
-    expect(mockCardDAO.update).toHaveBeenCalled();
+  });
+
+  test("update calls DAO update", async () => {
+    const card: any = { id: 1, name: "Updated Card" };
+    await service.update(card);
+    expect(mockCardDAO.update).toHaveBeenCalledWith(card);
   });
 });

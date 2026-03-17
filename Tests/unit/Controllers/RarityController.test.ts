@@ -56,4 +56,26 @@ describe("RarityController", () => {
     await controller.update(reqUp, res);
     expect(res.json).toHaveBeenCalledWith("Rarity updated");
   });
+
+  test("getAll handles errors correctly", async () => {
+    const req: any = { query: {} };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockRarityService.getAll.mockRejectedValue(new Error("Database error"));
+
+    await controller.getAll(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: "Database error" });
+  });
+
+  test("create throws error for invalid data", async () => {
+    const req: any = { body: {} };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockRarityService.create.mockRejectedValue(new Error("Invalid data"));
+
+    await controller.create(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: "Invalid data" });
+  });
 });

@@ -23,11 +23,18 @@ export function userRoutes(factoryDAO:FactoryDAO): Router {
     const userController = new UserController(userService);
 
     const cardDAO = factoryDAO.createCardDAO();
-    const cardService = new CardService(cardDAO);
+    const cardMarketDAO = factoryDAO.createCardMarketDAO();
+    const walletDAO = factoryDAO.createWalletDAO();
+
+    const cardService = new CardService(cardDAO, walletDAO, cardMarketDAO);
     const cardController = new CardController(cardService);
 
     const boosterDAO = factoryDAO.createBoosterDAO();
-    const boosterService = new BoosterService(boosterDAO);
+    const boosterDropRateDAO = factoryDAO.createBoosterDropRateDAO();
+    const rarityDAO = factoryDAO.createRarityDAO();
+    const cardModelDAO = factoryDAO.createCardModelDAO();
+    const boosterModelDAO = factoryDAO.createBoosterModelDAO();
+    const boosterService = new BoosterService(boosterDAO, boosterDropRateDAO, cardDAO, rarityDAO, cardModelDAO, boosterModelDAO);
     const boosterController = new BoosterController(boosterService);
 
     router.get("/", authJWT, requireRole(["ADMIN", "BOT", "USER"]), userController.getAll.bind(userController));

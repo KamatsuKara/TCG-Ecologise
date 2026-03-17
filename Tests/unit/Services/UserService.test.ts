@@ -53,4 +53,21 @@ describe("UserService", () => {
     expect(mockUserDAO.delete).toHaveBeenCalledWith(2);
     expect(mockUserDAO.update).toHaveBeenCalled();
   });
+
+  test("getAll paginates correctly with empty results", async () => {
+    mockUserDAO.findAll.mockResolvedValue([]);
+    const res = await service.getAll(2, 1);
+    expect(res).toEqual([]);
+  });
+
+  test("create throws error if password is missing", async () => {
+    const user: any = { password: null };
+    await expect(service.create(user)).rejects.toThrow();
+  });
+
+  test("update calls DAO with correct data", async () => {
+    const user: any = { id: 1, name: "Updated User" };
+    await service.update(user);
+    expect(mockUserDAO.update).toHaveBeenCalledWith(user);
+  });
 });

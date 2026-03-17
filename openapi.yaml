@@ -53,7 +53,212 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserPublic'
-
+  /auth/refresh:
+    post:
+      security: []
+      summary: Rafraîchir le token JWT
+      tags: [Auth]
+      responses:
+        '200':
+          description: Nouveau token JWT
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+  /boostermodels:
+    get:
+      summary: Récupérer tous les modèles de boosters
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des modèles de boosters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BoosterModel'
+    post:
+      summary: Créer un modèle de booster
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoosterModel'
+      responses:
+        '201':
+          description: Modèle de booster créé
+  /boostermodels/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupérer un modèle de booster par ID
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Modèle de booster
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BoosterModel'
+    put:
+      summary: Remplacer un modèle de booster
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BoosterModel'
+      responses:
+        '200':
+          description: Modèle de booster mis à jour
+    patch:
+      summary: Mise à jour partielle d'un modèle de booster
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Modèle de booster mis à jour
+    delete:
+      summary: Supprimer un modèle de booster
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Modèle de booster supprimé
+  /boostermodels/buy/{id}:
+    post:
+      summary: Acheter un booster
+      tags: [BoosterModels]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Booster acheté
+  /boosters:
+    get:
+      summary: Récupérer tous les boosters
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste des boosters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booster'
+    post:
+      summary: Créer un booster
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booster'
+      responses:
+        '201':
+          description: Booster créé
+  /boosters/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupérer un booster par ID
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Booster
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booster'
+    put:
+      summary: Remplacer un booster
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booster'
+      responses:
+        '200':
+          description: Booster mis à jour
+    patch:
+      summary: Mise à jour partielle d'un booster
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Booster mis à jour
+    delete:
+      summary: Supprimer un booster
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Booster supprimé
+  /boosters/open/{id}:
+    post:
+      summary: Ouvrir un booster
+      tags: [Boosters]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Booster ouvert
   /users:
     get:
       summary: Récupère la liste des utilisateurs
@@ -220,6 +425,42 @@ paths:
                 items:
                   $ref: '#/components/schemas/Card'
 
+  /users/{id}/boosters:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Récupère les boosters d'un utilisateur (admin)
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de boosters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booster'
+  /users/me/boosters:
+    get:
+      summary: Récupère les boosters du profil connecté
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste de boosters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booster'
   /cards:
     get:
       summary: Récupère toutes les cartes
@@ -303,7 +544,25 @@ paths:
       responses:
         '204':
           description: Carte supprimée
-
+  /cards/sell/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    patch:
+      summary: Vendre une carte
+      tags: [Cards]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Carte vendue avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Card'
   /cardmodels:
     get:
       summary: Récupère tous les modèles de carte
@@ -387,90 +646,6 @@ paths:
       responses:
         '204':
           description: Modèle supprimé
-
-  /cardhists:
-    get:
-      summary: Récupère l'historique des cartes
-      tags: [CardHists]
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Liste d'historique
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CardHist'
-    post:
-      summary: Créer un enregistrement d'historique
-      tags: [CardHists]
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CardHistCreate'
-      responses:
-        '201':
-          description: Historique créé
-
-  /cardhists/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-    get:
-      summary: Récupère un historique par id
-      tags: [CardHists]
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Historique
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CardHist'
-    put:
-      summary: Remplace un historique (admin)
-      tags: [CardHists]
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CardHistCreate'
-      responses:
-        '200':
-          description: Historique mis à jour
-    patch:
-      summary: Mise à jour partielle (admin)
-      tags: [CardHists]
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        '200':
-          description: Historique mis à jour
-    delete:
-      summary: Supprime un historique (admin)
-      tags: [CardHists]
-      security:
-        - bearerAuth: []
-      responses:
-        '204':
-          description: Historique supprimé
 
   /raritys:
     get:
@@ -646,24 +821,4 @@ components:
         cardModelId:
           type: integer
         rarityId:
-          type: integer
-    CardHist:
-      type: object
-      properties:
-        id:
-          type: integer
-        card:
-          $ref: '#/components/schemas/Card'
-        owner:
-          $ref: '#/components/schemas/UserPublic'
-        obtened:
-          type: integer
-    CardHistCreate:
-      type: object
-      properties:
-        cardId:
-          type: integer
-        ownerId:
-          type: integer
-        obtened:
           type: integer

@@ -49,17 +49,26 @@ describe("CardController", () => {
     expect(res.json).toHaveBeenCalledWith({ id: 5 });
   });
 
-  test("getByUser and getByMe respond with data", async () => {
-    const reqU: any = { params: { id: "2" } };
-    const reqMe: any = { user: { sub: 3 } };
+  test("getByUser responds with user's cards", async () => {
+    const req: any = { params: { id: "2" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-    mockCardService.getByUser.mockResolvedValue(["a"]);
+    mockCardService.getByUser.mockResolvedValue(["card1", "card2"]);
 
-    await controller.getByUser(reqU, res);
-    expect(res.json).toHaveBeenCalledWith(["a"]);
+    await controller.getByUser(req, res);
 
-    await controller.getByMe(reqMe, res);
-    expect(res.json).toHaveBeenCalledWith(["a"]);
+    expect(mockCardService.getByUser).toHaveBeenCalledWith(2);
+    expect(res.json).toHaveBeenCalledWith(["card1", "card2"]);
+  });
+
+  test("getByMe responds with user's cards", async () => {
+    const req: any = { user: { sub: 1 } };
+    const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    mockCardService.getByUser.mockResolvedValue(["cardA", "cardB"]);
+
+    await controller.getByMe(req, res);
+
+    expect(mockCardService.getByUser).toHaveBeenCalledWith(1);
+    expect(res.json).toHaveBeenCalledWith(["cardA", "cardB"]);
   });
 
   test("delete and update respond with messages", async () => {

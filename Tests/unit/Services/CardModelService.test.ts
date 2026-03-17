@@ -41,4 +41,15 @@ describe("CardModelService", () => {
     expect(mockCardModelDAO.delete).toHaveBeenCalledWith(4);
     expect(mockCardModelDAO.update).toHaveBeenCalled();
   });
+
+  test("getAll returns empty array when no cardModels are found", async () => {
+    mockCardModelDAO.findAll.mockResolvedValue([]);
+    const res = await service.getAll(3, 1);
+    expect(res).toEqual([]);
+  });
+
+  test("update throws error for invalid data", async () => {
+    mockCardModelDAO.update.mockRejectedValue(new Error("Invalid data"));
+    await expect(service.update({} as any)).rejects.toThrow("Invalid data");
+  });
 });

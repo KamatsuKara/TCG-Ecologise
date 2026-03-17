@@ -23,6 +23,12 @@ describe("RarityService", () => {
     expect(res).toEqual([1,2,3]);
   });
 
+  test("getAll returns empty array when no rarities are found", async () => {
+    mockRarityDAO.findAll.mockResolvedValue([]);
+    const res = await service.getAll(3, 1);
+    expect(res).toEqual([]);
+  });
+
   test("get throws when not found", async () => {
     mockRarityDAO.findById.mockResolvedValue(null);
     await expect(service.get(5)).rejects.toThrow("Rarity not found");
@@ -40,5 +46,10 @@ describe("RarityService", () => {
     expect(mockRarityDAO.insert).toHaveBeenCalled();
     expect(mockRarityDAO.delete).toHaveBeenCalledWith(3);
     expect(mockRarityDAO.update).toHaveBeenCalled();
+  });
+
+  test("update throws error for invalid data", async () => {
+    mockRarityDAO.update.mockRejectedValue(new Error("Invalid data"));
+    await expect(service.update({} as any)).rejects.toThrow("Invalid data");
   });
 });
