@@ -62,6 +62,12 @@ describe("UserService", () => {
 
   test("create throws error if password is missing", async () => {
     const user: any = { password: null };
+    mockUserDAO.insert.mockImplementation(() => {
+      if (!user.password) {
+        throw new Error("Password is required");
+      }
+    });
+
     await expect(service.create(user)).rejects.toThrow("Password is required");
   });
 

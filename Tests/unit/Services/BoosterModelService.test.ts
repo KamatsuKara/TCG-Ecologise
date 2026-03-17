@@ -13,6 +13,10 @@ const mockWalletDAO: any = {
   update: jest.fn(),
 };
 
+const mockBoosterDAO: any = {
+  insert: jest.fn(),
+};
+
 describe("BoosterModelService", () => {
   let service: BoosterModelService;
 
@@ -63,5 +67,6 @@ describe("BoosterModelService", () => {
     await service.buyBooster(1, 1);
 
     expect(mockWalletDAO.update).toHaveBeenCalled();
+    expect(mockBoosterDAO.insert).toHaveBeenCalled();
   });
 });
