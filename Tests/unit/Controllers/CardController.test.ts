@@ -33,17 +33,10 @@ describe("CardController", () => {
   });
 
   test("create responds with success message", async () => {
-    const req: any = { body: { name: "C" } };
+    const req: any = { body: { title: "New Card" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
-
-    const card = new Card(
-      0,
-      new User(0, "", "", "", "", "USER", Date.now()),
-      new CardModel(0, "", "", "", "", ""),
-      new Rarity(0, ""),
-      Date.now(),
-      Date.now()
-    );
+    const user = new User(0, "", "", "", "", "", Date.now());
+    const card = new Card(0, "New Card", user, Date.now(), Date.now());
 
     mockCardService.create.mockResolvedValue(undefined);
 

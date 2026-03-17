@@ -1,4 +1,5 @@
 import { BoosterModelController } from "../../../src/Controllers/BoosterModelController";
+import { BoosterModel } from "../../../src/Models/BoosterModel";
 
 const mockBoosterModelService: any = {
   getAll: jest.fn(),
@@ -38,13 +39,15 @@ describe("BoosterModelController", () => {
   });
 
   test("create responds with success message", async () => {
-    const req: any = { body: { name: "New BoosterModel" } };
+    const req: any = { body: { name: "New BoosterModel", nmbCard: 1, category: "[]" } };
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
+    const boosterModel = new BoosterModel(0, "New BoosterModel", 1, "[]");
+
     mockBoosterModelService.create.mockResolvedValue(undefined);
 
     await controller.create(req, res);
 
-    expect(mockBoosterModelService.create).toHaveBeenCalledWith(req.body);
+    expect(mockBoosterModelService.create).toHaveBeenCalledWith(boosterModel);
     expect(res.json).toHaveBeenCalledWith("BoosterModel created");
   });
 
