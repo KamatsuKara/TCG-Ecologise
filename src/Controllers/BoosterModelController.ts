@@ -68,4 +68,16 @@ export class BoosterModelController{
             res.status(500).json({ error: error.message });
         }
     };
+
+    async buyBooster(req: Request, res: Response): Promise<void> {
+        try {
+            const userId = Number(req.user?.sub);
+            const boosterModelId = Number(req.params.id);;
+            const booster = await this.boosterModelService.buyBooster(userId, boosterModelId);
+            res.status(201).json(booster);
+        } catch (error: any) {
+            console.error(error.message);
+            res.status(500).json({ error: error.message });
+        }
+    }
 }
