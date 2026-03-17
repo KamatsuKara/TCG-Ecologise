@@ -103,9 +103,9 @@ describe("UserController - Additional Routes", () => {
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     mockCardController.getMe.mockResolvedValue(["card1"]);
 
-    await mockCardController.getMe(req, res);
+    await controller.getMe(req, res);
 
-    expect(mockCardController.getMe).toHaveBeenCalledWith(req);
+    expect(mockCardController.getMe).toHaveBeenCalledWith(req.user);
     expect(res.json).toHaveBeenCalledWith(["card1"]);
   });
 
@@ -114,9 +114,9 @@ describe("UserController - Additional Routes", () => {
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     mockCardController.get.mockResolvedValue(["card2"]);
 
-    await mockCardController.get(req, res);
+    await controller.get(req, res);
 
-    expect(mockCardController.get).toHaveBeenCalledWith(req);
+    expect(mockCardController.get).toHaveBeenCalledWith(req.params);
     expect(res.json).toHaveBeenCalledWith(["card2"]);
   });
 
@@ -125,9 +125,9 @@ describe("UserController - Additional Routes", () => {
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     mockBoosterController.getMe.mockResolvedValue(["booster1"]);
 
-    await mockBoosterController.getMe(req, res);
+    await controller.getMe(req, res);
 
-    expect(mockBoosterController.getMe).toHaveBeenCalledWith(req);
+    expect(mockBoosterController.getMe).toHaveBeenCalledWith(req.user);
     expect(res.json).toHaveBeenCalledWith(["booster1"]);
   });
 
@@ -136,9 +136,9 @@ describe("UserController - Additional Routes", () => {
     const res: any = { json: jest.fn(), status: jest.fn().mockReturnThis() };
     mockBoosterController.get.mockResolvedValue(["booster2"]);
 
-    await mockBoosterController.get(req, res);
+    await controller.get(req, res);
 
-    expect(mockBoosterController.get).toHaveBeenCalledWith(req);
+    expect(mockBoosterController.get).toHaveBeenCalledWith(req.params);
     expect(res.json).toHaveBeenCalledWith(["booster2"]);
   });
 });
